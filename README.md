@@ -60,8 +60,18 @@ irm.cninfo.com.cn
 **mootdx（通达信 TCP 7709）在云环境永远不可用**——代理只放行 HTTPS，
 裸 TCP 出不去。技能会自动回退到腾讯 HTTP 接口，不影响行情/PE 获取。
 
-## 待办
+## Routine prompt 存档
 
-白名单放行并实测 159516 通过后，再把两个每日简报 routine 的 prompt 中
-A 股数据来源改为「优先 a-stock-data 技能、web 搜索兜底」
-（在 claude.ai/code/routines 编辑，或让 Claude 重建 trigger）。
+`routines/` 下是两个每日简报 routine（早间 09:00 / 晚间 21:00 SGT）当前生效的
+prompt 全文备份（2026-07-05 重建版，v14 档案基线 + A股数据来源改为
+「优先 a-stock-data 技能、web 搜索兜底」）。日后在 claude.ai/code/routines
+改 prompt 时，请同步更新这两个文件。
+
+## 已完成（2026-07-05）
+
+- 白名单已放行全部所需域名，159516 实测通过：场内价走腾讯 `qt.gtimg.cn`，
+  标的指数 931743 的官方 PE 走中证 `www.csindex.com.cn`
+  （`/csindex-home/perf/index-perf?indexCode=931743&startDate=...&endDate=...`，
+  返回字段 `peg` 即市盈率，已用沪深300≈14.5 交叉验证）。
+- 两个 routine 已重建为新 trigger（旧 trigger 已删）：
+  早间 `trig_019E2wm3FKRUuRK2xrjxrSBt`，晚间 `trig_01Kp6jADz62a8E9A1m31dHeW`。
