@@ -19,6 +19,19 @@ Allowed domains 中添加后，技能才能实际取数：
 qt.gtimg.cn
 ```
 
+**PE 指标必需（159516 触发器的"PE<40"指标的指数 931743 的估值）：**
+
+```
+www.csindex.com.cn
+push2delay.eastmoney.com
+danjuanfunds.com
+```
+
+> 实测(2026-07-05)：ETF 本身无 PE，需查标的指数「中证半导体材料设备主题指数
+> (931743)」估值。csindex 为中证官方估值源；push2delay 是东财对海外 IP 的
+> 302 重定向域名——不加它，push2 全系（资金流/板块/个股信息）实际不可用；
+> danjuanfunds 提供 PE 历史百分位（可选）。
+
 **建议一并添加（技能其余数据层：东财/同花顺/新浪/巨潮/百度）：**
 
 ```
