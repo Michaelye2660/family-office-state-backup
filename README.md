@@ -60,10 +60,19 @@ irm.cninfo.com.cn
 **mootdx（通达信 TCP 7709）在云环境永远不可用**——代理只放行 HTTPS，
 裸 TCP 出不去。技能会自动回退到腾讯 HTTP 接口，不影响行情/PE 获取。
 
+## 组合状态：portfolio-state.md（唯一权威来源）
+
+根目录 `portfolio-state.md` 是项目档案（持仓快照/触发器表/建仓优先级/事件
+日历/价格锚/红线/观察清单/筛选卡等〔A〕–〔L〕全部状态）的 single source of
+truth，当前 v14.1（2026-07-05）。两个 routine 的 prompt 已不再内嵌状态副本，
+每次执行第一步即读取本文件。**持仓/触发器/事件变化只需改这个文件**，
+无需再动 routine prompt。
+
 ## Routine prompt 存档
 
 `routines/` 下是两个每日简报 routine（早间 09:00 / 晚间 21:00 SGT）当前生效的
-prompt 全文备份（2026-07-05 重建版，v14 档案基线 + A股数据来源改为
+prompt 全文备份（2026-07-05 状态迁移版：状态外置到 portfolio-state.md，
+prompt 只保留 SOP——扫描步骤/输出格式/纪律；A股数据来源
 「优先 a-stock-data 技能、web 搜索兜底」）。日后在 claude.ai/code/routines
 改 prompt 时，请同步更新这两个文件。
 
@@ -73,5 +82,7 @@ prompt 全文备份（2026-07-05 重建版，v14 档案基线 + A股数据来源
   标的指数 931743 的官方 PE 走中证 `www.csindex.com.cn`
   （`/csindex-home/perf/index-perf?indexCode=931743&startDate=...&endDate=...`，
   返回字段 `peg` 即市盈率，已用沪深300≈14.5 交叉验证）。
+- 状态迁移：项目档案从两个 routine prompt 迁出至 `portfolio-state.md`
+  （v14.1，含人工核对6处修正），routine 每次执行先读该文件再跑 SOP。
 - 两个 routine 已重建为新 trigger（旧 trigger 已删）：
-  早间 `trig_019E2wm3FKRUuRK2xrjxrSBt`，晚间 `trig_01Kp6jADz62a8E9A1m31dHeW`。
+  早间 `trig_01EFEY15rkCqhPzLSkhv53uz`，晚间 `trig_01N5vmjnYedKMg4Qhfa13qLM`。
