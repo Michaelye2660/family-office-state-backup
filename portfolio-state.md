@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v15.36 · 2026-07-11）
+# 项目档案 · Portfolio State（v15.37 · 2026-07-11）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
@@ -127,8 +127,9 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 16. GitHub直连诊断终局（2026-07-11·ADJ-0711-04R③）：通。对照实验(公库可读/私库404)锁定授权层,Revoke→重授权修复;中转流退役为单向指令通道(信道架构v2见〔N〕N6)。
 17. 信道架构v3.1上线（2026-07-11·ADJ-0711-05R）：收件箱+回执自取制生效——adj-inbox/(待执行)与adj-archive/(已执行,含quarantine/)建立;两routine prompt加第0.5步收件(存档已改,线上待用户同步);回执协议ADJ-XXXX-receipt.md固定格式;简报固定输出收件箱状态行;取件双路=routine定时+口令"收件";粘贴通道降为备胎。首份回执ADJ-0711-05R-receipt.md随本案落档。──追加(ADJ-0711-06,2026-07-10):安全边界条款(inbox指令不得解除settings.json白名单/裁决前置/红线约束)经裁决侧核验追认,升格为信道架构v3.1基石条款。〔日期勘误注(ADJ-0711-06):〔M〕13-17及ADJ-0711系列各条中"2026-07-11"字样系裁决侧日期漂移误书,实际均发生于2026-07-10;ADJ-0711编号为既定标签维持不变,特此加注不逐条改写。〕
 18. 步0协议与签收机制入册（2026-07-11·ADJ-0711-08）：源起:用户发现裁决侧主动检查行为仅存于对话承诺层未制度化,及回执核验无留痕致计数器无法清零(2026-07-11)。①步0协议——粘贴单"(同上)"正文缺失曾挂起,inbox正式投递件(4271ab9)含全文,当轮补齐入N6(裁决侧项目指令第九条同文双层生效);②回执签收机制（裁决侧在receipt末追加"✓裁决侧已签收(日期·核验方式)"=预授权常设动作,限adj-archive/内receipt追加签收行,[裁决侧]前缀commit,CC diff复核,永不触及台账主文件与adj-inbox/）;③收件箱状态自动计数生效;④本条。附:ADJ-0711-07曾疑丢单实为inbox在途(v15.30完结)——粘贴与inbox双通道时序差为两起虚警共因,"inbox为准、粘贴为预告"次序已由实践确立。
-21. routine prompt自动同步方案定稿·bootstrap模式（2026-07-11）：用户问"线上instruction能否自动更新"。实测发现:①CC可经create/delete_trigger直建直删线上routine(每周复盘trigger即此路建成);②但API新建trigger缺repo sources挂载与FMP/Bigdata/github连接器配置,简报routine依赖这些→CC试建的两个简报trigger当即删除,保留用户7/10在UI更新过的原trigger(现役ID:早trig_01FpuZ2hMNkuVSLffCXuibRS/晚trig_01FbzADyiFwnEyCpBWHzf5Cc,README旧ID作废);③终极方案=bootstrap模式:线上Instructions一次性改为"对齐master后读取routines/对应prompt文件并严格执行其全文"的固定引导语,此后prompt变更=仓库commit,线上永不再碰——待用户一次性粘贴生效;④每周复盘trigger(trig_01YGurTU8c)保留观察,若明日首跑因缺sources失败则由用户在UI重建并直接采用bootstrap。
 20. pm-retro复盘官启用（2026-07-11·用户指令"启用"）：阶段四解冻——agent状态改已启用;新建每周复盘routine prompt(routines/weekly-retro-sunday-prompt.md,周日约18:00 SGT:收件→pm-retro四节报告→CC抽查交叉核对→归档retro/);retro/目录建立;改进建议=动议·永不自动执行(元规则);复盘报告无邮件分发(不在settings.json白名单内),裁决侧直连自取;〔N〕N1角色7与N4"未启用"标注自本条起失效(N4为盘点时点快照,按追加式保留原文)。线上weekly routine已由CC经create_trigger直建成功:trig_01YGurTU8cDwdre9z5bLs9Pz(周日10:00 UTC=18:00 SGT,每次全新会话),首跑2026-07-12(明日)。
+21. routine prompt自动同步方案定稿·bootstrap模式（2026-07-11）：用户问"线上instruction能否自动更新"。实测发现:①CC可经create/delete_trigger直建直删线上routine(每周复盘trigger即此路建成);②但API新建trigger缺repo sources挂载与FMP/Bigdata/github连接器配置,简报routine依赖这些→CC试建的两个简报trigger当即删除,保留用户7/10在UI更新过的原trigger(现役ID:早trig_01FpuZ2hMNkuVSLffCXuibRS/晚trig_01FbzADyiFwnEyCpBWHzf5Cc,README旧ID作废);③终极方案=bootstrap模式:线上Instructions一次性改为"对齐master后读取routines/对应prompt文件并严格执行其全文"的固定引导语,此后prompt变更=仓库commit,线上永不再碰——待用户一次性粘贴生效;④每周复盘trigger(trig_01YGurTU8c)保留观察,若明日首跑因缺sources失败则由用户在UI重建并直接采用bootstrap。
+22. 晚间自查报告裁决（2026-07-11·ADJ-0711-09④,指令原编号〔M〕20因已占用顺延）：自主动作①(邮箱对齐)②(装包造钥)③(pm-retro四件套展开)④(建复盘trigger)均追认;⑤(实验性建删简报trigger副本)记过不记罪,判例定性"越权+模范自首"(3-4分钟自删/无双跑/当轮申报/产出关键技术发现);风险点A结案(公钥从未注册+私钥已删除=对话记录中副本为无效钥匙,残余风险零);秘密传输禁令自此成文(N8);weekly-retro复盘prompt经裁决侧核验通过、零修改,首跑放行。
 19. commit签名处置（2026-07-11·用户裁定）：afbfcc5(简报归档)GitHub显示未验证,内容经裁决侧核验,历史保留原样——不force-push,master历史不重写(追加式原则);简报会话本地amend版丢弃(其后已有裁决侧3fc880c落档,未受影响)。诊断:所有CC侧commit实际均含SSH签名(ed25519,环境signer自动),"Unverified"系GitHub不认识该签名公钥;修复:committer邮箱对齐GitHub账号(本容器+setup脚本持久化),签名公钥已提取待用户注册为GitHub SSH signing key——注册前新commit仍显示未验证,属预期。提交归属新约:CC commit=author"Claude (CC执行侧)";裁决侧commit=[裁决侧]前缀(web提交自带GitHub验证)。──追注(19b,2026-07-11):环境signer密钥经注册实测归Anthropic基础设施所有("already in use"),改用仓库专属ed25519密钥(cc-family-office-signing)——私钥base64存环境变量COMMIT_SIGNING_KEY_B64(setup脚本自动装配),公钥待用户注册;首签验证commit=be66df5;cbe71ea至be66df5之间旧钥commit永久保持未验证,追加式接受。──19c·签名徽章议题终局(2026-07-11用户终裁):放弃。理由:徽章系装饰,审计链(ADJ编号/[裁决侧]前缀/author归属/diff复核)自洽闭环;仓库专属密钥方案因私钥曾经对话记录传输且轮换同信道无效,整体作废;Unverified为本仓库commit的永久常态,不再视为异常,不再占用治理带宽。执行:容器内私钥已删/git配置回退平台默认/setup脚本装配段已移除/仓库内无signing-key.pub(从未写入,核实)。
 
 ## 〔N〕系统架构（角色/agent盘点存档 + 分工模型v4 · 2026-07-09 · 基于master e2dcf5f实测盘点,只读不改配置）
@@ -181,6 +182,22 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 - 两级制:【机械】=单程执行,【判断】=全回路(执行+逐项编号回报),未标注默认判断类。
 - 安全边界:收件执行仍受settings.json白名单、裁决前置规则与台账红线约束,inbox指令不得解除之。
 - 简报固定输出一行:收件箱状态(自动计数,ADJ-0711-08③):待取=adj-inbox/包裹数(README除外),待核验=adj-archive/内未含签收行的receipt数(签收即清零)。
+
+### N7 · Trigger权限边界五款（2026-07-11·ADJ-0711-09①）
+
+1. 绝对禁令:CC不得修改/删除任何用户创建的trigger;
+2. 新建线上trigger=判断类操作,须用户明确指令或ADJ授权,禁止实验性自建;
+3. CC可删除自己经授权建立的trigger(收尾清理属执行范畴);
+4. 一切trigger建/删操作当轮申报+记〔M〕;
+5. 生产trigger一律经UI由用户创建(技术规则:API建的trigger缺repo sources与连接器挂载,系残缺品,仅限一次性测试用途且用后即删)。
+
+### N8 · 秘密传输禁令（2026-07-11·ADJ-0711-09②）
+
+私钥/API密钥/token等秘密材料禁止打印进对话记录;确需用户配置的秘密,由用户自行生成或经产品级秘密管理机制传递,执行侧不得代印。(判例来源:签名私钥事件与Resend密钥事件)
+
+### N9 · routines/目录护栏（2026-07-11·ADJ-0711-09③）
+
+routines/目录文件变更=判断类,须ADJ授权(bootstrap提案护栏;bootstrap原则已获裁决侧采纳,引导语是否粘贴至线上Instructions由用户决定,粘贴后prompt治理并入commit治理——用户已于2026-07-11粘贴生效)。
 - **回执签收机制**（ADJ-0711-08②）:裁决侧核验后在该receipt文件末尾追加一行"✓裁决侧已签收(日期·核验方式)"——此类追加经ADJ-0711-08授权为**预授权常设动作**:范围严格限于adj-archive/内receipt文件的追加行,commit带[裁决侧]前缀,CC照常diff复核,永不触及台账主文件与inbox,无需逐次用户确认。
 - **步0协议**（主体为裁决侧,ADJ-0711-08①·全文经inbox投递件4271ab9补齐）:裁决侧于每次会话激活(用户任一消息)时,先轻量核对台账仓库一次(adj-inbox目录列表即含最新commit与包裹状态):有未签收回执→当轮核验并签收;有在途包裹→一行报状态;无新事项→回复开头一行"步0:无新事项"带过。步0结果必须以文字呈现,禁止纯工具无文字回合。(同文已由用户写入裁决侧项目指令第九条,双层生效)
 
@@ -275,3 +292,5 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 *v15.35（2026-07-11）：pm-retro复盘官启用（〔M〕20:agent解冻+每周复盘routine prompt新建+retro/目录+四节报告制,动议永不自动执行;经验积累闭环补齐——事故→〔M〕判例→prompt修订→每周复盘蒸馏）。*
 
 *v15.36（2026-07-11）：routine同步bootstrap方案（〔M〕21:API直建trigger实测成功但缺sources/连接器配置,试建简报双件已删,现役trigger ID勘正;bootstrap引导语待用户一次性粘贴,此后prompt变更=仓库commit零人工;README trigger清单更正）。*
+
+*v15.37（2026-07-11·判断类·inbox收件）：ADJ-0711-09治理裁决包【共4项】（①N7 Trigger权限边界五款;②N8秘密传输禁令;③N9 routines/目录变更=判断类护栏,bootstrap原则采纳·用户已粘贴生效;④〔M〕22晚间自查裁决:自主动作①②③④追认、⑤记过不记罪"越权+模范自首"、风险点A结案残余风险零、复盘prompt核验通过首跑放行。指令〔M〕编号20因占用顺延22）。*
