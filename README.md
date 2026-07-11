@@ -86,3 +86,5 @@ prompt 只保留 SOP——扫描步骤/输出格式/纪律；A股数据来源
   （v14.1，含人工核对6处修正），routine 每次执行先读该文件再跑 SOP。
 - 两个 routine 已重建为新 trigger（旧 trigger 已删）：
   早间 `trig_01EFEY15rkCqhPzLSkhv53uz`，晚间 `trig_01N5vmjnYedKMg4Qhfa13qLM`。
+- 每周复盘 routine（2026-07-11 新增，pm-retro）：周日 18:00 SGT，
+  `trig_01YGurTU8cDwdre9z5bLs9Pz`（prompt 存档：routines/weekly-retro-sunday-prompt.md）。
