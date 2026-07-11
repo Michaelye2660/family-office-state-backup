@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v15.33 · 2026-07-11）
+# 项目档案 · Portfolio State（v15.34 · 2026-07-11）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
@@ -127,7 +127,7 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 16. GitHub直连诊断终局（2026-07-11·ADJ-0711-04R③）：通。对照实验(公库可读/私库404)锁定授权层,Revoke→重授权修复;中转流退役为单向指令通道(信道架构v2见〔N〕N6)。
 17. 信道架构v3.1上线（2026-07-11·ADJ-0711-05R）：收件箱+回执自取制生效——adj-inbox/(待执行)与adj-archive/(已执行,含quarantine/)建立;两routine prompt加第0.5步收件(存档已改,线上待用户同步);回执协议ADJ-XXXX-receipt.md固定格式;简报固定输出收件箱状态行;取件双路=routine定时+口令"收件";粘贴通道降为备胎。首份回执ADJ-0711-05R-receipt.md随本案落档。──追加(ADJ-0711-06,2026-07-10):安全边界条款(inbox指令不得解除settings.json白名单/裁决前置/红线约束)经裁决侧核验追认,升格为信道架构v3.1基石条款。〔日期勘误注(ADJ-0711-06):〔M〕13-17及ADJ-0711系列各条中"2026-07-11"字样系裁决侧日期漂移误书,实际均发生于2026-07-10;ADJ-0711编号为既定标签维持不变,特此加注不逐条改写。〕
 18. 步0协议与签收机制入册（2026-07-11·ADJ-0711-08）：源起:用户发现裁决侧主动检查行为仅存于对话承诺层未制度化,及回执核验无留痕致计数器无法清零(2026-07-11)。①步0协议——粘贴单"(同上)"正文缺失曾挂起,inbox正式投递件(4271ab9)含全文,当轮补齐入N6(裁决侧项目指令第九条同文双层生效);②回执签收机制（裁决侧在receipt末追加"✓裁决侧已签收(日期·核验方式)"=预授权常设动作,限adj-archive/内receipt追加签收行,[裁决侧]前缀commit,CC diff复核,永不触及台账主文件与adj-inbox/）;③收件箱状态自动计数生效;④本条。附:ADJ-0711-07曾疑丢单实为inbox在途(v15.30完结)——粘贴与inbox双通道时序差为两起虚警共因,"inbox为准、粘贴为预告"次序已由实践确立。
-19. commit签名处置（2026-07-11·用户裁定）：afbfcc5(简报归档)GitHub显示未验证,内容经裁决侧核验,历史保留原样——不force-push,master历史不重写(追加式原则);简报会话本地amend版丢弃(其后已有裁决侧3fc880c落档,未受影响)。诊断:所有CC侧commit实际均含SSH签名(ed25519,环境signer自动),"Unverified"系GitHub不认识该签名公钥;修复:committer邮箱对齐GitHub账号(本容器+setup脚本持久化),签名公钥已提取待用户注册为GitHub SSH signing key——注册前新commit仍显示未验证,属预期。提交归属新约:CC commit=author"Claude (CC执行侧)";裁决侧commit=[裁决侧]前缀(web提交自带GitHub验证)。──追注(19b,2026-07-11):环境signer密钥经注册实测归Anthropic基础设施所有("already in use"),改用仓库专属ed25519密钥(cc-family-office-signing)——私钥base64存环境变量COMMIT_SIGNING_KEY_B64(setup脚本自动装配),公钥待用户注册;首签验证commit=be66df5;cbe71ea至be66df5之间旧钥commit永久保持未验证,追加式接受。
+19. commit签名处置（2026-07-11·用户裁定）：afbfcc5(简报归档)GitHub显示未验证,内容经裁决侧核验,历史保留原样——不force-push,master历史不重写(追加式原则);简报会话本地amend版丢弃(其后已有裁决侧3fc880c落档,未受影响)。诊断:所有CC侧commit实际均含SSH签名(ed25519,环境signer自动),"Unverified"系GitHub不认识该签名公钥;修复:committer邮箱对齐GitHub账号(本容器+setup脚本持久化),签名公钥已提取待用户注册为GitHub SSH signing key——注册前新commit仍显示未验证,属预期。提交归属新约:CC commit=author"Claude (CC执行侧)";裁决侧commit=[裁决侧]前缀(web提交自带GitHub验证)。──追注(19b,2026-07-11):环境signer密钥经注册实测归Anthropic基础设施所有("already in use"),改用仓库专属ed25519密钥(cc-family-office-signing)——私钥base64存环境变量COMMIT_SIGNING_KEY_B64(setup脚本自动装配),公钥待用户注册;首签验证commit=be66df5;cbe71ea至be66df5之间旧钥commit永久保持未验证,追加式接受。──19c·签名徽章议题终局(2026-07-11用户终裁):放弃。理由:徽章系装饰,审计链(ADJ编号/[裁决侧]前缀/author归属/diff复核)自洽闭环;仓库专属密钥方案因私钥曾经对话记录传输且轮换同信道无效,整体作废;Unverified为本仓库commit的永久常态,不再视为异常,不再占用治理带宽。执行:容器内私钥已删/git配置回退平台默认/setup脚本装配段已移除/仓库内无signing-key.pub(从未写入,核实)。
 
 ## 〔N〕系统架构（角色/agent盘点存档 + 分工模型v4 · 2026-07-09 · 基于master e2dcf5f实测盘点,只读不改配置）
 
@@ -267,3 +267,5 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 *v15.32（2026-07-11·机械类）：commit签名处置（〔M〕19:afbfcc5未签名标注保留原样·不force-push;committer邮箱对齐GitHub账号并写入setup脚本;签名公钥提取待注册;归属新约:CC=author"Claude (CC执行侧)"/裁决侧=[裁决侧]前缀）。*
 
 *v15.33（2026-07-11·机械类）：签名密钥方案v2（〔M〕19b:环境signer密钥归Anthropic无法注册,改仓库专属ed25519钥,COMMIT_SIGNING_KEY_B64环境变量+setup脚本装配,首签be66df5验证通过,公钥待用户注册GitHub Signing Key）。*
+
+*v15.34（2026-07-11·机械类）：签名密钥方案整体作废【共4项】（用户终裁·〔M〕19c:①容器私钥删除+git配置回退平台默认;②setup脚本COMMIT_SIGNING_KEY_B64装配段全部移除;③仓库内无signing-key.pub核实;④19c终局落档——Unverified为永久常态,审计链自洽,不再占用治理带宽）。*

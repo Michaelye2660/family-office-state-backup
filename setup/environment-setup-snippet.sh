@@ -21,21 +21,8 @@ fi
 #    但装上无害；实际行情/PE 走腾讯 HTTP 接口 qt.gtimg.cn）
 pip install --quiet mootdx requests pandas stockstats || true
 
-# 3) commit签名验证配置(2026-07-11,〔M〕19/19b):
-#    环境内置signer的密钥归Anthropic基础设施账号所有,无法注册到用户GitHub("already in use"),
-#    改用仓库专属签名密钥:私钥base64存环境变量 COMMIT_SIGNING_KEY_B64,
-#    对应公钥(cc-family-office-signing)注册为用户GitHub账号的SSH Signing Key
+# 3) commit归属配置(2026-07-11,〔M〕19c):签名徽章议题已终局放弃——Unverified为本仓库
+#    commit永久常态;审计链依赖ADJ编号/[裁决侧]前缀/author归属/diff复核,不依赖GitHub徽章。
+#    仅保留author归属对齐(签名密钥装配逻辑已按用户终裁移除):
 git config --global user.email "Michaelye2660@users.noreply.github.com" || true
 git config --global user.name "Claude (CC执行侧)" || true
-if [ -n "$COMMIT_SIGNING_KEY_B64" ]; then
-  mkdir -p ~/.ssh
-  echo "$COMMIT_SIGNING_KEY_B64" | base64 -d > ~/.ssh/cc_repo_signing
-  chmod 600 ~/.ssh/cc_repo_signing
-  command -v ssh-keygen >/dev/null 2>&1 || { apt-get update -q >/dev/null 2>&1; apt-get install -y -q openssh-client >/dev/null 2>&1; } || true
-  if command -v ssh-keygen >/dev/null 2>&1; then
-    git config --global gpg.format ssh
-    git config --global gpg.ssh.program ssh-keygen
-    git config --global user.signingkey ~/.ssh/cc_repo_signing
-    git config --global commit.gpgsign true
-  fi
-fi
