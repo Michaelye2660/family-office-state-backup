@@ -84,7 +84,11 @@ prompt 只保留 SOP——扫描步骤/输出格式/纪律；A股数据来源
   返回字段 `peg` 即市盈率，已用沪深300≈14.5 交叉验证）。
 - 状态迁移：项目档案从两个 routine prompt 迁出至 `portfolio-state.md`
   （v14.1，含人工核对6处修正），routine 每次执行先读该文件再跑 SOP。
-- 两个 routine 已重建为新 trigger（旧 trigger 已删）：
-  早间 `trig_01EFEY15rkCqhPzLSkhv53uz`，晚间 `trig_01N5vmjnYedKMg4Qhfa13qLM`。
+- 现役 trigger（2026-07-11 经 list_triggers 实测勘正，此前记录的旧 ID 已作废）：
+  早间 `trig_01FpuZ2hMNkuVSLffCXuibRS`（09:00 SGT），晚间 `trig_01FbzADyiFwnEyCpBWHzf5Cc`（21:00 SGT）
+  ——均带 repo sources+FMP/Bigdata/github 连接器配置，勿经 API 删除重建（会丢配置，见〔M〕21）。
 - 每周复盘 routine（2026-07-11 新增，pm-retro）：周日 18:00 SGT，
-  `trig_01YGurTU8cDwdre9z5bLs9Pz`（prompt 存档：routines/weekly-retro-sunday-prompt.md）。
+  `trig_01YGurTU8cDwdre9z5bLs9Pz`（prompt 存档：routines/weekly-retro-sunday-prompt.md；
+  经 API 直建，sources 挂载待首跑验证）。
+- prompt 同步机制：目标态=bootstrap 模式（线上 Instructions 固定为"读取 routines/ 对应文件并执行"
+  的引导语，prompt 变更只需 commit 仓库）。
