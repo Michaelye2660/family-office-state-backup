@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v15.39 · 2026-07-11）
+# 项目档案 · Portfolio State（v15.40 · 2026-07-12）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
@@ -101,7 +101,7 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 
 ## 〔K〕事件日历
 
-（六家财报日期均经data-verifier 2026-07-10对公司IR/PR直核,ADJ-0710-05④）7/14 CPI → 7/21(二) DHR财报（盘前·材料6:00 a.m. ET/电话会8:00,IR PR 2026-06-22）→ 7/23(四) TMO财报（盘前·电话会8:30 a.m. ET,公司PR 2026-07-01;原7/29记录无任何公司来源支持,裁定更正为7/23）→ 7/28(二) SPGI财报（盘前·新闻稿约7:15 a.m. EDT,IR PR 2026-07-06直接确认,含分拆后2026指引）→ 7/29(三) 微软财报（盘后·电话会5:30 p.m. ET,微软官方2026-07-08）+美联储决议 → 7/30(四) AMZN Q2财报（盘后·FMP/TipRanks/MarketBeat第三方口径,公司PR未发·7月中旬回补一手来源）=ADJ-0710-03之R1复议点（data-verifier新数据包+capex口径收敛核查,届时AMZN编制案可重审）→ 8/5(三) NVO中报（哥本哈根07:30 CEST=美东01:30,美股ADR盘前,公司IR财务日历）→ MDT约8月底。数据/财报公布前后1小时大额单一律限价。每月首周:早间简报到期提示"手动ZIP备份到本地(GitHub→Code→Download ZIP,2分钟)";每季度首月:早间简报到期提示"claude.ai导出数据存档(Settings→导出数据,3分钟)"+知识库季度复审(docs/adjudicator-knowledge.md,与对话导出同节奏)(备份三层架构第三层+ADJ-0711-11R②,ADJ-0711-10R④)。
+（六家财报日期均经data-verifier 2026-07-10对公司IR/PR直核,ADJ-0710-05④）7/14 CPI → 7/21(二) DHR财报（盘前·材料6:00 a.m. ET/电话会8:00,IR PR 2026-06-22）→ 7/23(四) TMO财报（盘前·电话会8:30 a.m. ET,公司PR 2026-07-01;原7/29记录无任何公司来源支持,裁定更正为7/23）→ 7/28(二) SPGI财报（盘前·新闻稿约7:15 a.m. EDT,IR PR 2026-07-06直接确认,含分拆后2026指引）→ 7/29(三) 微软财报（盘后·电话会5:30 p.m. ET,微软官方2026-07-08）+美联储决议 → 7/30(四) AMZN Q2财报（盘后·FMP/TipRanks/MarketBeat第三方口径,公司PR未发·7月中旬回补一手来源）=ADJ-0710-03之R1复议点（data-verifier新数据包+capex口径收敛核查,届时AMZN编制案可重审）→ 8/5(三) NVO中报（哥本哈根07:30 CEST=美东01:30,美股ADR盘前,公司IR财务日历）→ MDT约8月底。数据/财报公布前后1小时大额单一律限价。每月首周:早间简报到期提示"手动ZIP备份到本地(GitHub→Code→Download ZIP,2分钟)";每季度首月:早间简报到期提示"claude.ai导出数据→上传至CC会话入库docs/conversation-archive/(消毒涂黑密钥后提交,Settings→导出数据+入库闭环,约5分钟)"+知识库季度复审(docs/adjudicator-knowledge.md,与对话导出同节奏)(备份三层架构第三层+ADJ-0711-11R②,ADJ-0711-10R④,入库闭环见ADJ-0711-12R⑤)。
 
 ## 〔L〕近期价格锚（仅参考,下单前必刷实时）
 
@@ -131,6 +131,7 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 21. routine prompt自动同步方案定稿·bootstrap模式（2026-07-11）：用户问"线上instruction能否自动更新"。实测发现:①CC可经create/delete_trigger直建直删线上routine(每周复盘trigger即此路建成);②但API新建trigger缺repo sources挂载与FMP/Bigdata/github连接器配置,简报routine依赖这些→CC试建的两个简报trigger当即删除,保留用户7/10在UI更新过的原trigger(现役ID:早trig_01FpuZ2hMNkuVSLffCXuibRS/晚trig_01FbzADyiFwnEyCpBWHzf5Cc,README旧ID作废);③终极方案=bootstrap模式:线上Instructions一次性改为"对齐master后读取routines/对应prompt文件并严格执行其全文"的固定引导语,此后prompt变更=仓库commit,线上永不再碰——待用户一次性粘贴生效;④每周复盘trigger(trig_01YGurTU8c)保留观察,若明日首跑因缺sources失败则由用户在UI重建并直接采用bootstrap。
 22. 晚间自查报告裁决（2026-07-11·ADJ-0711-09④,指令原编号〔M〕20因已占用顺延）：自主动作①(邮箱对齐)②(装包造钥)③(pm-retro四件套展开)④(建复盘trigger)均追认;⑤(实验性建删简报trigger副本)记过不记罪,判例定性"越权+模范自首"(3-4分钟自删/无双跑/当轮申报/产出关键技术发现);风险点A结案(公钥从未注册+私钥已删除=对话记录中副本为无效钥匙,残余风险零);秘密传输禁令自此成文(N8);weekly-retro复盘prompt经裁决侧核验通过、零修改,首跑放行。
 19. commit签名处置（2026-07-11·用户裁定）：afbfcc5(简报归档)GitHub显示未验证,内容经裁决侧核验,历史保留原样——不force-push,master历史不重写(追加式原则);简报会话本地amend版丢弃(其后已有裁决侧3fc880c落档,未受影响)。诊断:所有CC侧commit实际均含SSH签名(ed25519,环境signer自动),"Unverified"系GitHub不认识该签名公钥;修复:committer邮箱对齐GitHub账号(本容器+setup脚本持久化),签名公钥已提取待用户注册为GitHub SSH signing key——注册前新commit仍显示未验证,属预期。提交归属新约:CC commit=author"Claude (CC执行侧)";裁决侧commit=[裁决侧]前缀(web提交自带GitHub验证)。──追注(19b,2026-07-11):环境signer密钥经注册实测归Anthropic基础设施所有("already in use"),改用仓库专属ed25519密钥(cc-family-office-signing)——私钥base64存环境变量COMMIT_SIGNING_KEY_B64(setup脚本自动装配),公钥待用户注册;首签验证commit=be66df5;cbe71ea至be66df5之间旧钥commit永久保持未验证,追加式接受。──19c·签名徽章议题终局(2026-07-11用户终裁):放弃。理由:徽章系装饰,审计链(ADJ编号/[裁决侧]前缀/author归属/diff复核)自洽闭环;仓库专属密钥方案因私钥曾经对话记录传输且轮换同信道无效,整体作废;Unverified为本仓库commit的永久常态,不再视为异常,不再占用治理带宽。执行:容器内私钥已删/git配置回退平台默认/setup脚本装配段已移除/仓库内无signing-key.pub(从未写入,核实)。
+23. 监察官设立（2026-07-12·ADJ-0711-12R④）——源起:用户指出裁决侧作为chat载体存在记忆长度与漂移等天生弱点,且为全系统唯一未审计器官;裁决侧全盘承认。用户修正:首审纳入季度对话史(有则审,无则如实标注缺项)+审计频率定为双周(复盘班次检查audits/最新报告日期,≥13天并行调用;月度化须经ADJ)。新席位:constitutional-auditor,只读+建议权,唯一硬约束=🔴级发现强制回应机制;详见〔N〕N11。
 
 ## 〔N〕系统架构（角色/agent盘点存档 + 分工模型v4 · 2026-07-09 · 基于master e2dcf5f实测盘点,只读不改配置）
 
@@ -209,6 +210,17 @@ routines/目录文件变更=判断类,须ADJ授权(bootstrap提案护栏;bootstr
 - **明确记载:对话史无自动化备份通道**——产品边界+主动裁决不绕行(浏览器自动化脆弱/无人值守权限面过大/草稿不值管线)。
 - **回执签收机制**（ADJ-0711-08②）:裁决侧核验后在该receipt文件末尾追加一行"✓裁决侧已签收(日期·核验方式)"——此类追加经ADJ-0711-08授权为**预授权常设动作**:范围严格限于adj-archive/内receipt文件的追加行,commit带[裁决侧]前缀,CC照常diff复核,永不触及台账主文件与inbox,无需逐次用户确认。
 - **步0协议**（主体为裁决侧,ADJ-0711-08①·全文经inbox投递件4271ab9补齐）:裁决侧于每次会话激活(用户任一消息)时,先轻量核对台账仓库一次(adj-inbox目录列表即含最新commit与包裹状态):有未签收回执→当轮核验并签收;有在途包裹→一行报状态;无新事项→回复开头一行"步0:无新事项"带过。步0结果必须以文字呈现,禁止纯工具无文字回合。(同文已由用户写入裁决侧项目指令第九条,双层生效)
+- **对话档案入库协议**（ADJ-0711-12R⑤,2026-07-12）：用户自claude.ai导出数据→上传至CC会话→CC入库前消毒(扫描并涂黑一切密钥模式字符串:re_开头token/SSH私钥块/长base64密钥团,遵N8)→消毒结果在回执申报→提交至docs/conversation-archive/(命名YYYY-QN-export)→随周镜像自动入备份仓。落库前监察官"加餐输入"从缺,审计报告须如实标注。
+
+### N11 · 监察官条款（2026-07-12·ADJ-0711-12R①③）
+
+- 席位定义:监察官(constitutional-auditor),编制第8席,专审裁决侧(claude.ai对话侧)本身的判断质量与漂移——全系统唯一以裁决者为对象的审计器官(区别于pm-retro审"系统运行");独立子agent上下文(硬独立),tools=只读(Read/Grep/Glob),禁止修改任何文件、禁止自行取数;定义:.claude/agents/constitutional-auditor.md
+- 输入:docs/constitution.md+docs/adjudicator-knowledge.md(漂移检测基准)、adj-inbox归档与adj-archive全部[裁决侧]commit及签收行、〔M〕决策日志、briefings/裁决附录;加餐输入=docs/conversation-archive/对话导出档案(有则必读,未落库则如实标注缺项)
+- 审计清单七项(①-⑥为ADJ-0711-12R原始要件,⑦档案自洽性为CC起草时增补,已于回执申报):①合宪性②判例一致性③漂移检测(对照adjudicator-knowledge.md §3七条失败模式)④阿谀指数(〔M〕异议存档频率趋势,崩塌=警报)⑤越权检测(直写范围)⑥制度空转(承诺机制执行证据)⑦档案自洽性(版本历史行与正文章节/ADJ编号是否吻合)
+- 输出:audits/YYYY-MM-DD.md,逐项分级🟢🟡🔴,须附具体证据
+- 权力边界:只读+建议权;唯一硬约束=强制回应机制——🔴级发现必须原文进入下一份简报、裁决侧下次会话当轮公开回应(认领+补丁或抗辩),用户终裁;不得推翻裁决、不得阻止操作
+- 频率:双周(复盘班次检查audits/内最新报告日期,≥13天则本班并行调用;调整为月度须经ADJ);首跑特例2026-07-12复盘首跑执行基线审计(对话加餐从缺时如实标注,不推定)
+- 元规则:编制由7席扩至8席,记录于本条;清单/权限边界任何增删须走多空辩论庭并经用户批准(沿用risk-devil清单元规则同款约束)
 
 ---
 
@@ -307,3 +319,5 @@ routines/目录文件变更=判断类,须ADJ授权(bootstrap提案护栏;bootstr
 *v15.38（2026-07-11·判断类·粘贴预告先行执行,后经ADJ-0711-10R修订版完结:宪法占位改"以用户粘贴版为准·CC无留存待补传"/秘密清单作废钥不再登记/bootstrap归档更名bootstrap-loader.md/第5步措辞按仓已建修订/〔K〕增季度导出提醒/N10按三层新定义重写——inbox为准判例适用）：ADJ-0711-10备份架构【共4项·①挂起】（①docs/constitution.md建占位——宪法全文"由投递件内嵌"而inbox投递件未到,按"inbox为准"判例挂起待达;②docs/SECRETS-INVENTORY.md〔仅名称/用途/再生成路径,零值,遵N8〕+bootstrap引导语归档docs/;③weekly-retro第5步周备份〔push至family-office-state-backup,仓不存在报错提醒UI创建禁API自建,结果入周报;N9授权=本单〕;④〔K〕月度首周一ZIP提醒行+N10备份三层架构入册〔对话为草稿仓库为正本+宪法副本同步责任〕）。*
 
 *v15.39（2026-07-11·判断类·inbox收件）：ADJ-0711-11R裁决侧知识库v2入库【共4项】（①docs/adjudicator-knowledge.md全文一字不改入库〔用途条款:校准用·禁博弈式补偿·零持仓数字·状态唯一以台账为准〕;②〔K〕知识库季度复审提醒行〔与对话导出同节奏〕;③两routine prompt加阅读行〔可读作语境校准,禁据此调整建议幅度,N9授权〕;④本行）。*
+
+*v15.40（2026-07-12·判断类·inbox收件）：ADJ-0711-12R监察官席位设立【共5项】（①新建.claude/agents/constitutional-auditor.md监察官,专审裁决侧本身判断质量与漂移,只读+建议权,唯一硬约束=🔴级发现强制回应机制,CC起草时增补第⑦项"档案自洽性"审计项;②routines/weekly-retro-sunday-prompt.md增补第1.5步:监察官双周审计+2026-07-12首跑基线审计特例;③〔N〕新增N11监察官条款,编制7席扩至8席;④〔M〕23源起记录:用户指出裁决侧作为chat载体存在记忆长度与漂移等天生弱点且为全系统唯一未审计器官,裁决侧全盘承认,用户修正首审纳入对话档案+双周频率;⑤新增对话档案入库协议〔N10〕:导出→CC入库前消毒涂黑密钥→提交docs/conversation-archive/,〔K〕季度提醒行同步改为"导出+上传CC入库"闭环表述）。*
