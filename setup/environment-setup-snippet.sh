@@ -20,3 +20,9 @@ fi
 # 2) 安装 Python 依赖（mootdx 在云环境不可用——TCP 7709 出不了代理，
 #    但装上无害；实际行情/PE 走腾讯 HTTP 接口 qt.gtimg.cn）
 pip install --quiet mootdx requests pandas stockstats || true
+
+# 3) commit签名验证配置(2026-07-11,〔M〕19):签名本身由环境signer自动完成(SSH ed25519),
+#    此处仅将committer邮箱对齐GitHub账号,使GitHub显示Verified
+#    (前提:该ed25519签名公钥已注册为GitHub账号的SSH signing key)
+git config --global user.email "Michaelye2660@users.noreply.github.com" || true
+git config --global user.name "Claude (CC执行侧)" || true
