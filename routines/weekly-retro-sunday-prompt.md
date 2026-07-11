@@ -18,7 +18,7 @@
 
 第4步 运行输出末尾固定三行：本周事故数/breach数/动议数；改进建议一律标注"动议·待裁决侧与用户批复"——pm-retro 只读+建议权，任何变更仍走辩论庭+用户批准（元规则），本 routine 不得直接实施任何改进建议。
 
-第5步 周备份（ADJ-0711-10③授权新增·N9合规）：执行 `git push https://github.com/Michaelye2660/family-office-state-backup.git master:master`（同账号备份仓）；若远端不存在则**报错提醒用户在 GitHub UI 创建该仓**，禁止经 API 自建仓（遵N7精神）；推送结果（成功哈希/失败原因）一行写入当周复盘报告。
+第5步 周备份（ADJ-0711-10R③授权·N9合规）：执行 `git push https://github.com/Michaelye2660/family-office-state-backup.git master:master`（同账号备份仓，用户已建）；远端异常则在复盘报告中报错提醒，禁止经 API 自建仓（遵N7）；推送结果（成功哈希/失败原因）一行写入当周复盘报告。
 
 ══════ 纪律 ══════
 ① 复盘基于记录，不重跑市场分析；无记录处写"无记录"，不推测。② 报告如实：无事故写"本周无事故"，不为显得有用而制造问题。③ 收件执行仍受 settings.json 白名单、裁决前置规则与台账红线约束。④ 用中文输出。
