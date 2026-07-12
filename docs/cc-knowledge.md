@@ -72,7 +72,7 @@
 ## §6 运行手册（继承者第一天用）
 
 - **收件流程**：口令"收件"→ git pull --rebase → 读adj-inbox/ → 三要素校验 → 执行 → 写adj-archive/ADJ-XXXX-receipt.md（编号|项数对应|逐项结果|commit哈希|异常与建议）→ 原件git mv归档 → 台账版本行 → commit+push+镜像 → 向用户报"分支+哈希"。
-- **push纪律**：git pull --rebase origin master 先行；被拒绝重试（网络错误指数退避2/4/8/16s）；每次master push后跟一次镜像 `git push https://github.com/Michaelye2660/family-office-state-backup.git master:master`。会话环境若指定工作分支:commit落分支后**默认直接归一master**（〔M〕56常设授权,2026-07-12;仅限快进,永不force-push,内容层授权要件不变）。
+- **push纪律**：git pull --rebase origin master 先行；被拒绝重试（网络错误指数退避2/4/8/16s）；每次master push后跟一次镜像 `git push https://github.com/Michaelye2660/family-office-state-backup.git master:master`。会话环境若指定工作分支:commit落分支后**默认直接归一master**（〔M〕56常设授权,2026-07-12;仅限快进,永不force-push,内容层授权要件不变）;继任会话完成重建阅读后**自动切master**（`git checkout -B master origin/master`,〔M〕57,告知不请示,cgm-succession§五步4a）。
 - **台账纪律**：任何更新必留版本历史行（含类别:机械类/判断类）；头部版本号同步刷新；机械类=单程执行，判断类=全回路（执行+逐项编号回报）。
 - **邮件白名单**（settings.json autoMode）：收件人恒等 yxy2660@gmail.com、发件 onboarding@resend.dev、端点仅 api.resend.com/emails、正文只装简报文本、key只从 $RESEND_API_KEY 读。
 - **备份三层**（N10）：git历史 / 周镜像备份仓 / 用户本地月度ZIP+季度claude.ai导出。
@@ -108,3 +108,4 @@
 *v1.1（2026-07-12）：增§7监督审查与自省档案（用户终裁ADJ-M-0712-01同令设立之双侧对称条款）,首批两条目入档;台账v15.49落档。*
 *v1.2（2026-07-12）：§5增第10条硬教训（〔M〕55 CGM-1转写稀释判例+归档保真三款）;台账v15.85落档（原号v15.84撞号顺延）。*
 *v1.3（2026-07-12）：§6 push纪律增归一常设授权行（〔M〕56）;台账v15.86落档。*
+*v1.4（2026-07-12）：§6增继任会话自动切master条款（〔M〕57）;台账v15.87落档。*
