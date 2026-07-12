@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v15.69 · 2026-07-12）
+# 项目档案 · Portfolio State（v15.70 · 2026-07-12）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
@@ -475,4 +475,6 @@ routines/目录文件变更=判断类,须ADJ授权(bootstrap提案护栏;bootstr
 *v15.68（2026-07-12·判断类·用户终裁两件）：L3存量豁免+回应补发（①监察官章程L3存量豁免条款+⑧统计使用限制条款;②EXT🔴4/🔴10补发合规回应件落库〔判例测试集7-19限期·L5列管/归一化分母提请GM/阈值校准挂Q4过庭〕;③〔M〕47落档）。*
 
 *v15.69（2026-07-12·机械类）：复盘trigger修复收官（委托人申报Instructions已换bootstrap引导语,〔M〕46追注;修复三件套全齐:sources+连接器〔已实测〕/Instructions〔申报,7-19首跑验证〕;bootstrap-loader.md第三段自此为该trigger现役引导语,"迁移目标态"表述成为现状）。*
+
+*v15.70（2026-07-12·机械类）：EXT红标处置表落库（docs/external-audits/2026-07-12-EXT-01-disposition.md,十项逐行处置+证据定位,供EXT第2期E3闭环核验;外审节奏建议同步录:双周,随探测器审计后错日,材料=委托人自取快照+本表）。*
 
