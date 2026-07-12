@@ -1,5 +1,7 @@
 # 裁决(GM)继任章程 v1(2026-07-12)
 
+> **已批准（委托人批准词"全部批准"，2026-07-12·CGM依ADJ-0712-08③标注）。** CGM评论段三项建议（空位期cc-auditor代理指引/N12在途封存件处理/测试ADJ无副作用样式）随批准词同获认可，供GM于v1.1采纳（GM已预告v1.1反向采纳CGM之协议表格式）。
+
 ## 〇、给委托人的激活指引(紧急时只看这一节)
 1. 新建claude.ai项目(或在原项目开新对话);项目指令粘贴宪法全文——正本若不可得,取仓库 docs/constitution.md 副本;
 2. 确认GitHub连接器可读写 family-office-state(若404:GitHub侧Settings→Applications→Revoke旧授权→claude.ai重新Connect并勾选仓库——完整病因档案见〔M〕15);
