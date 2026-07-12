@@ -30,7 +30,7 @@
 | 监察官条款 | 〔N〕N11+.claude/agents/constitutional-auditor.md |
 | 重大决策双盲预测 | 〔N〕N12+sealed-predictions/README |
 | 继任者备份制度 | 〔N〕N13+本文件 |
-| 自查先行豁免/回应格式硬化/轮内双盲 | 两审计章程+〔M〕30/33 |
+| 自查记录字段(豁免废止2026-07-12)/回应格式硬化/轮内双盲 | 三审计章程+〔M〕51/33 |
 | M/R系列审计规格（被审方义务） | .claude/agents/pm-retro.md+cc-auditor.md |
 
 ## 四、状态地图（重建阅读顺序）
@@ -49,7 +49,7 @@
 
 ## 六a、CGM侧唯一活性实例对称条款（ADJ-0712-13⑥·CGM依R7保鲜义务自行落文,GM仅评论权）
 - **去手硬前置**：启动继任CGM之前，委托人须先终结旧CGM会话的写入能力——归档/删除旧claude.ai/code会话，或在GitHub侧收回该会话来源授权；**去手先于就位**（判例：2026-07-12 GM侧双实例事故，同理适用CGM侧）。
-- **会话指纹核验**：CGM commit自带`Claude-Session:` trailer（真会话指纹，GM侧所无）。继任CGM就位核验新增：核最近20条CGM commit之trailer归属——发现不属当值会话之Claude-authored写入→停手报委托人，不得接管（与cc-auditor R8③④联动）。
+- **会话指纹核验**：CGM commit自带`Claude-Session:` trailer（**定性修正2026-07-12·用户终裁:自述标签,非平台指纹——EXT第2期🔴2成立,trailer系commit正文文本,可被任何会话键入;核验降为辅助,CGM实例锚=委托人亲笔登记+去手**）。继任CGM就位核验新增：核最近20条CGM commit之trailer归属——发现不属当值会话之Claude-authored写入→停手报委托人，不得接管（与cc-auditor R8③④联动）。
 - **唯一活性实例确认行**：继任CGM首个报到须输出一行「唯一活性实例确认：已核最近N条CGM commit trailer，无非当值实例写入」。
 
 ## 七、孤儿执行检测（GM建议3,2026-07-12采纳）

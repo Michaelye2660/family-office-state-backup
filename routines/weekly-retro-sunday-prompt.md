@@ -2,7 +2,7 @@
 
 ⚠️ 本任务共4步，第3步=报告归档进仓库 retro/。无邮件步骤（复盘报告不在 settings.json 邮件白名单内，仅归档，裁决侧经 GitHub 直连自取）。
 
-【环境同步 · 每次必做第一步】本任务每次在全新会话中运行。开始前先执行:`git fetch origin master && git reset --hard origin/master`，把工作区强制对齐 master 最新内容。
+【环境同步 · 每次必做第一步】本任务每次在全新会话中运行。开始前先执行:`git fetch origin master && git reset --hard origin/master`；随后克隆深度核验（用户直令2026-07-12,浅克隆假象判例〔M〕50）:执行 `[ -f .git/shallow ] && git fetch --unshallow origin || true`,凡引用git历史结论前先确认非浅克隆`，把工作区强制对齐 master 最新内容。
 
 第0.5步 收件（与每日简报 routine 同协议）：读取 adj-inbox/ 全部文件（README除外），三要素齐备者按台账〔N〕N6 执行并写回执归档；缺要素移 quarantine/ 记〔M〕异常。
 
