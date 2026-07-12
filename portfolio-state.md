@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v15.87 · 2026-07-12）
+# 项目档案 · Portfolio State（v15.88 · 2026-07-12）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
@@ -201,6 +201,7 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 **(二)远端旧分支清理**（委托人令"没用的旧历史删除干净";13支全删,逐支核验留痕,commit历史零改写——删的是分支指针,不是history）:
 - 已完全并入master七支,直接删:cgm-succession-handover-6f3vjr@693007c/daily-briefing-branch-fix-nx47r5@d88b388/dazzling-planck-k1byoz@a585542/gracious-dirac-ob44jm@dafe284/keen-heisenberg-t5i73q@d88b388/pensive-pasteur-fva0cf@47f7f73/setup-data-verifier-risk-devil-tjldo7@b2e58d4。
 - 未并入六支,逐支定性后删:①laughing-mendel-5holr3@c217b9f（7-12晚报）与②vigilant-bohr-tnocb5@9105e37（settings.json同步）=与master在库文件**同内容之冗余commit**,直接删;③focused-galileo-z21i33@57a214a=7-10早报**原稿**,已被master更新版取代（〔M〕11更新版判例件）,删;④focused-galileo-xj9nn8@f576999=7-10语言强制规则**草稿**（CLAUDE.md+两prompt🈲条款）,未经N9授权、未被采纳,中文规则已由现役prompt承载,按废稿删;⑤focused-galileo-qgjsz0@b030cee=**7-09早报归档件,master缺失——cherry-pick抢救并入**（简报归档制度前史件,归档完整性）后删;⑥gracious-galileo-wbfjr6@6f91438=**7-12复盘报告补记两节master缺失**（周备份被环境安全层拦截之据实记录+分支限制说明）——按追加式原文并入retro/2026-07-12-retro.md文末（不动已核签正文,注明GM-2核签效力不及补记,GM步0可补核）后删。
+**执行注（2026-07-12·据实记录）**:内容抢救与逐支定性已完成入库;**删除动作被会话环境git代理403拦截**（ref删除类操作不放行,GitHub MCP亦无分支删除工具,无合规执行路径）——**删除转委托人待办**:GitHub仓库页→Branches→逐支垃圾桶图标删除上列13支（全部已定性安全,清单与tip哈希在案可对照）。删除完成前,本条(二)之定性记录即为"哪些可删"的权威清单。
 
 ## 〔N〕系统架构（角色/agent盘点存档 + 分工模型v4 · 2026-07-09 · 基于master e2dcf5f实测盘点,只读不改配置）
 
@@ -540,4 +541,6 @@ routines/目录文件变更=判断类,须ADJ授权(bootstrap提案护栏;bootstr
 *v15.86（2026-07-12·判断类·委托人直令）：CGM归一常设授权入册（〔M〕56:CGM会话commit默认直接归一master免逐单请示;边界四款=仅归一机械动作·内容层授权要件不变/仅限快进永不force-push/master push后跟镜像/分支与master同点;cc-knowledge§6 push纪律行同步,升v1.3。本commit即本授权首次使用）。*
 
 *v15.87（2026-07-12·判断类·委托人直令两项）：继任自动切master+旧分支清理（①〔M〕57(一)常设条款:继任会话自动切master·告知不请示,cgm-succession升v1.3〔§五步4a〕+cc-knowledge§6升v1.4;②〔M〕57(二)远端13支旧分支全删,逐支核验留痕:已并入7支直删/冗余2支/被更新版取代1支/未采纳草稿1支/抢救并入2件〔7-09早报cherry-pick入briefings/+7-12复盘补记两节追加式并入retro文末,GM-2核签效力不及补记注明〕;commit历史零改写,删指针不删history）。*
+
+*v15.88（2026-07-12·机械类·执行注）：〔M〕57(二)分支删除受阻据实追注（内容抢救与13支定性已完成;删除动作被环境git代理403拦截〔ref删除不放行,MCP亦无此工具〕——转委托人待办:GitHub→Branches页逐支删,定性清单与tip哈希在案。另:本轮GM-2已签收ADJ-0712-15/16回执,未签收回执8→6）。*
 
