@@ -85,3 +85,5 @@ d. 裁决书全文原样附于简报末尾"裁决附录"节；正文行动项须
 (d) 发送前校验:`jq -e '.text|length>800' payload.json` 必须为真,否则回到(a)重做,校验不过绝不发送;
 (e) 发送:`curl -sS -X POST https://api.resend.com/emails -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" --data @payload.json`,返回体含 "id" 即成功,在运行输出末尾写一行「📧 邮件已发送至 yxy2660@gmail.com(正文N字符,Resend id: xxx)」;
 (f) 发送失败(网络拦截/密钥无效等)自动重试一次;仍失败则在运行输出写明错误原因(HTTP 状态码与响应体摘要,绝不含密钥),绝不因发送失败丢弃简报本体——简报全文无论如何都要完整出现在运行输出中(且已于第6步归档入仓库)。
+
+**治理只读条款（ADJ-0712-15①b,2026-07-12）**：本会话系定时/自动触发,一律治理只读——不签收回执、不投递ADJ、不裁决、不追加任何[裁决侧]写入;步0职责=只报状态（未签收回执/在途件计数,列入产出正文）。违者按双实例警报处理（N13活性实例界定）。
