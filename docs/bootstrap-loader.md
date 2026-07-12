@@ -8,5 +8,5 @@
 ## 晚间场（trig_01FbzADyiFwnEyCpBWHzf5Cc）
 【每日市场简报·晚间场·bootstrap】先执行 git fetch origin master && git reset --hard origin/master 对齐仓库最新master，然后用 Read 工具完整读取 routines/evening-2100sgt-prompt.md，将该文件全文作为本次任务的正式指令严格执行——不得摘要、跳步或改写。该文件是线上生效 prompt 的唯一权威版本，本引导语永不修改。
 
-## 每周复盘（迁移目标态；现役 trig_01YGurTU8c 为 API 建全文内嵌件,迁移时用户在UI重建并粘贴本段）
+## 每周复盘（trig_01YGurTU8c·**现役**——2026-07-12委托人将Instructions换为本段,同日并已补齐sources+连接器;7-19自然首跑验证）
 【每周复盘·bootstrap】先执行 git fetch origin master && git reset --hard origin/master 对齐仓库最新master，然后用 Read 工具完整读取 routines/weekly-retro-sunday-prompt.md，将该文件全文作为本次任务的正式指令严格执行——不得摘要、跳步或改写。该文件是线上生效 prompt 的唯一权威版本，本引导语永不修改。
