@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v15.79 · 2026-07-12）
+# 项目档案 · Portfolio State（v15.80 · 2026-07-12）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
@@ -512,4 +512,6 @@ routines/目录文件变更=判断类,须ADJ授权(bootstrap提案护栏;bootstr
 *v15.78（2026-07-12·机械类）：ADJ-0712-15①(c)待办消项（委托人申报线上项目Instructions§九已同步——定时会话治理只读条款双层生效:宪法正本+repo副本+三routine prompt三道防线齐;回执追注留痕）。*
 
 *v15.79（2026-07-12·判断类·委托人令）：EXT信箱通道v2（Issue投递协议入README+〔M〕53;PAT权限面=Issues读写+Contents只读,无文件写权;待委托人完成PAT生成与GPT Action配置后首投验证）。*
+
+*v15.80（2026-07-12·机械类）：EXT信箱通道v2暂缓（委托人裁定配置成本暂不值,维持复制粘贴模式;协议/schema/PAT规格封存README备启用;EXT就位纪律留档:拒绝虚称投递+拒绝对话内索取凭据,行为合规）。*
 
