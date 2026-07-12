@@ -5,6 +5,7 @@
 | 名称 | 用途 | 存放位置 | 再生成/轮换路径 |
 |---|---|---|---|
 | RESEND_API_KEY | 每日简报邮件发送（settings.json 白名单流程） | claude.ai/code 环境变量（personal） | resend.com 后台轮换 → 更新环境变量 |
+| GIT_SIGNING_KEY_B64 | CGM commit SSH签名（〔M〕19c复议选项b,2026-07-12) | claude.ai/code 环境变量（base64单行） | 本地重新ssh-keygen→GitHub Signing Key替换→更新环境变量（流程见docs/signing-setup.md） |
 | GitHub官方MCP连接器（OAuth） | 裁决侧直连读写私库 + CC 侧 github MCP | claude.ai 连接器配置 | GitHub侧Revoke + claude.ai重连（流程详见〔M〕15修订注"存档备后来者"） |
 
 - 环境签名密钥：已作废，不再登记（ADJ-0711-10R②）
