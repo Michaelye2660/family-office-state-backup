@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v15.96 · 2026-07-13）
+# 项目档案 · Portfolio State（v15.97 · 2026-07-13）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
@@ -209,7 +209,8 @@ AI每周动态权益规则（仅核心IWDA）：估值锚（MSCI World 远期P/E
 **(三)生效与验证**:bootstrap模式下prompt变更=commit即生效,今晚21:00晚报为首验场次（该场同时是治理只读首验,双验证并行）。**诚实风险注**:settings.json白名单正文条款按内容不变论解读（html系同一简报文本之排版格式）;若今晚运行层classifier对html字段拦截,邮件自动回退纯文本不丢件,届时白名单措辞增补须由委托人亲改settings.json（该文件信任锚=所有者直接提交,CGM不代改）。
 60. **UHFS首批成交（2026-07-13·ADJ-0713-03,原文一字不改）**："UHFS首批成交(2026-07-13·ADJ-0713-03):$300万成交,委托人对话内报数;深思后结构(UHFS 5%+AHL 2%)之UHFS腿首批落地,覆盖2020/2022型危机情景;季度赎回条款照〔C〕原记;锁定额度占用3%在限。余量~$200万之申购窗安排登记为开放项,不预设。"
 61. **第10席moat-researcher设立（2026-07-13·ADJ-0713-04⑤,原文一字不改）**："第10席moat-researcher设立(2026-07-13·ADJ-0713-04):三位一体使命/错杀vs失守核心判断/双模式硬隔离/双锚制/烟蒂禁令/两速修订N15/原则集v0共12条/历史盲测上岗制/跨模型平行团队协议;委托人七轮对话定稿并'启动'核可。"
-62. **CC弹药安装（2026-07-13·ADJ-0713-05,原文+执行实况）**："CC弹药安装(2026-07-13·ADJ-0713-05):ai-berkshire(锁定hash见回执)+edgartools入环境,MIT双件;定位=moat-researcher参考弹药层与财报法证工具,章程压skill;冒烟测试结果见回执。"执行实况三注:①ai-berkshire全通过（HEAD锁e7a912a55f32,install脚本先审读〔仅复制md+chmod,无网络无提权〕,19skill就位,financial_rigor.py calc冒烟✓）;②edgartools 5.42.0安装✓但**SEC EDGAR被本环境网络策略拦截**（www.sec.gov与data.sec.gov均HTTP 000,代理不放行）——BDX 10-K冒烟无法完成,**转委托人待办:环境网络设置放行sec.gov+data.sec.gov后CGM补跑冒烟**;③依赖冲突警示:edgartools将httpx升至0.28.1,mootdx（a-stock-data主源）声明要求<0.26——import实测仍通过,运行时风险以明晨简报a-stock-data实跑为自然验证点,异常即报。附注:容器级安装系会话生命周期,未来moat会话需重装（安装步骤已在工作指引§五与本条,须持久化另议）。
+62. **CC弹药安装（2026-07-13·ADJ-0713-05,原文+执行实况）**："CC弹药安装(2026-07-13·ADJ-0713-05):ai-berkshire(锁定hash见回执)+edgartools入环境,MIT双件;定位=moat-researcher参考弹药层与财报法证工具,章程压skill;冒烟测试结果见回执。"执行实况三注:①ai-berkshire全通过（HEAD锁e7a912a55f32,install脚本先审读〔仅复制md+chmod,无网络无提权〕,19skill就位,financial_rigor.py calc冒烟✓）;②edgartools 5.42.0安装✓但**SEC EDGAR被本环境网络策略拦截**（www.sec.gov与data.sec.gov均HTTP 000,代理不放行）——BDX 10-K冒烟无法完成,**转委托人待办:环境网络设置放行sec.gov+data.sec.gov后CGM补跑冒烟**;③依赖冲突警示:edgartools将httpx升至0.28.1,mootdx（a-stock-data主源）声明要求<0.26——import实测仍通过,运行时风险以明晨简报a-stock-data实跑为自然验证点,异常即报。附注:容器级安装系会话生命周期,未来moat会话需重装（安装步骤已在工作指引§五与本条,须持久化另议）。**追注:sec.gov放行完成（委托人两步:data.sec.gov先通/www.sec.gov补放）,BDX 10-K冒烟通过（2025-11-25提交/期间2025-09-30）,本条②待办消项。**
+63. **moat-researcher历史盲测上岗考完卷（2026-07-13·ADJ-0713-04⑦·委托人"开考"令）**：5例（错杀2:META2022/穆迪2009;陷阱3:诺基亚2010/Valeant2016/GE2017）,只喂时点数据包+禁用一切工具+识别自报制。**成绩:判对率5/5,Brier=0.023,五案零工具调用（盲测纪律全守）,schema八要素全案合规**。诚实折扣:五案全自报"已识别",后视镜污染满格,基线数字不按面值解读——本考实际验证=纪律/schema/证据锚定/框架检讨产出四项,均过;深查四子agent硬隔离未演,留真金门首场。副产品:五条硬规则修法提案（各带案例+反事实证据门）入考卷提案区,走N15两速通道候GM评审+委托人一字,不自动入原则集。全卷docs/moat-reports/blind-exam-2026-07-13.md（五答卷原文一字不改）。**"过考"判定依零裁量上移委托人判断门,候一字**。
 
 ## 〔N〕系统架构（角色/agent盘点存档 + 分工模型v4 · 2026-07-09 · 基于master e2dcf5f实测盘点,只读不改配置）
 
@@ -573,4 +574,6 @@ routines/目录文件变更=判断类,须ADJ授权(bootstrap提案护栏;bootstr
 *v15.95（2026-07-13·判断类·inbox收件）：ADJ-0713-04第10席moat-researcher全案【共8项】（①章程.claude/agents/moat-researcher.md正文一字不改落库〔sha1=c96a620b42cc,frontmatter系harness装配层加于正文之上,回执申报〕;②工作指引docs/moat/moat-researcher-knowledge.md〔sha1=cb096a20ad55〕;③原则集docs/moat/miskill-principles.md v0共12条〔sha1=ed270ec8f692〕;④N15两速修订通道入〔N〕+JG-6季度复审常设项;⑤org-chart升v1.2增第10席+〔M〕61原文落档;⑥miskill-principles.md入N10季度导出重点点名;⑦历史盲测上岗考登记为CGM跟办〔择5例·只喂时点数据·判对率+Brier入档基线,过考前不碰真钱;agent注册自下一会话生效〕;⑧GPT侧搭建指令docs/moat/gpt-side-build-brief.md存档〔sha1=9cabfb1bf559,摆渡由GM当轮贴呈〕。编制9→10席。附:〔M〕61插入曾错序于60前,当轮自查读回发现并修正,零内容损失,git diff可证——§5.6三查教训第三例,回执留痕）。*
 
 *v15.96（2026-07-13·机械类·inbox收件）：ADJ-0713-05 CC弹药安装【共2项】（①ai-berkshire安装全过〔HEAD锁e7a912a·脚本先审读·19skill·calc冒烟✓〕;edgartools 5.42.0装✓但SEC EDGAR被环境网络策略拦截〔sec.gov HTTP 000〕,冒烟未竟转委托人待办〔放行sec.gov+data.sec.gov后补跑〕;httpx依赖冲突警示〔mootdx要求<0.26,现0.28.1,import通过,明晨简报实跑为验证点〕;②〔M〕62落档含执行实况三注。容器级安装生命周期注记在案）。*
+
+*v15.97（2026-07-13·判断类·委托人"补完,开考"令）：sec.gov放行验证+盲测上岗考完卷（①edgartools冒烟补跑通过〔BDX 10-K:2025-11-25/期间2025-09-30〕,ADJ-0713-05全闭环,回执追注;②〔M〕63上岗考全录:5/5判对·Brier 0.023·零工具调用·识别自报满格之诚实折扣·五条修法提案入N15通道;考卷docs/moat-reports/blind-exam-2026-07-13.md;"过考"候委托人一字）。*
 

@@ -11,3 +11,5 @@
   1. **httpx依赖冲突警示（主动申报）**:edgartools将httpx升至0.28.1,而mootdx（a-stock-data技能主源）声明要求httpx<0.26——import实测通过,运行时未测;**明晨09:00简报的a-stock-data实跑即自然验证点**,异常即报、必要时以venv隔离或版本钉住方案另呈
   2. 容器生命周期注:本次安装随会话容器存亡,未来moat-researcher深查会话须重装（安装命令已在ADJ原文与工作指引§五可复跑）;若需跨会话持久化（如setup脚本方案）,涉环境配置另候指示
   3. edgartools冒烟补跑挂起项与sec.gov放行绑定,放行前moat-researcher美股财报法证降级为FMP+web路径（工作指引§五之分级如实适用）
+
+**追注（2026-07-13·委托人放行sec.gov后补跑）**：①(b)冒烟完成——委托人分两步放行（首放data.sec.gov=200/www.sec.gov仍000,CGM回报后补放www域）,edgartools实取BDX最新10-K元数据成功：**提交日2025-11-25/期间2025-09-30/accession 0000010795-25-000099**。ADJ-0713-05两项就此全闭环；美股财报法证工具链就绪,〔F〕BDX第二批财报后重核可用。httpx冲突警示仍以明晨简报a-stock-data实跑为验证点。
