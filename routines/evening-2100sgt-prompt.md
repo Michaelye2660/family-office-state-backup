@@ -40,16 +40,22 @@ c. 双方陈词＋证据包一并交 risk-devil 出裁决书（机械门M1-M5＋
 d. 裁决书全文原样附于简报末尾"裁决附录"节；正文行动项须标注裁决结论（✅放行 / ⚠️带条件放行·条件白纸黑字 / ⛔搁置·附复议触发点）。
 未完成此流程的建议不得标🔴，只能标"⏳待裁决"并注明卡在哪一步。
 
-第5步 输出（固定格式，中文）：
+第5步 输出（固定格式，中文）。**排版纪律（2026-07-13委托人格式令）**：任何段落≥4行必须拆bullet，每bullet只说一件事；全篇禁止超过200字的连续段落；持仓新闻每标的以「**标的**—一句话结论」开头，细节跟在同一bullet内；能用表格的对照信息一律用表格：
+
+## 今晚一眼(置顶导读·≤6行)
+- **今天最重要的一件事**:一句话(≤40字)
+- **今晚行动**:🔴n件/🟡n件/🟢n件,各配≤10字摘要;无行动写"今晚无动作,全部等信号"
+- **事件倒计时**:未来两周内最近3个事件(日期+一句话意义)
+- 收件箱状态:待取=adj-inbox/内包裹实数(README除外),待核验=adj-archive/内未含"✓裁决侧已签收"行的receipt实数（签收即清零;第0.5步收件协议）
 
 ## 今日快照(日期·数据核实时点·晚间档)
-一段话：亚洲收盘/美股盘前/利率/黄金/油价 + 今天最重要的1-2个变化
-固定一行（自动计数）：收件箱状态:待取=adj-inbox/内包裹实数(README除外),待核验=adj-archive/内未含"✓裁决侧已签收"行的receipt实数（签收即清零;第0.5步收件协议）
+≤150字一段：亚洲收盘/美股盘前/利率/黄金/油价+最重要变化的展开；更多细节归入下方各节对应位置，不堆长段
 
 ## 触发器状态
-✅已触发:...(→具体动作+金额)
-🔶接近:...(差距)
-⬜未触发:一行列举
+固定表格（✅已触发行置顶加粗，🔶接近行次之；⬜未触发不入表）：
+| 触发器 | 现读数(时点) | 触发线 | 距离 | 状态 |
+|---|---|---|---|---|
+表格下方：✅行给具体动作+金额；🔶行如有口径冲突/悬置各给一句注释（不复述表内数字）；⬜未触发合并为一行列举收尾
 
 ## 框架透镜与持仓/观察清单
 重要变化归位四情景(通缩/通胀/危机/美元)与红线；观察清单哪些名字向扳机移动；持仓重大新闻；必要时附情景(基准/乐观/悲观)与触发条件
@@ -81,7 +87,7 @@ d. 裁决书全文原样附于简报末尾"裁决附录"节；正文行动项须
 【第7步 · 邮件发送 · 详细流程（不可跳过）】必须按以下固定命令执行,严禁自创其它拼装方式(此流程已实测验证,历史教训:手拼 JSON 会导致正文为空)。本步骤须严格符合 .claude/settings.json autoMode 预授权白名单(收件人/发件人/端点/正文四条件),白名单外的任何变更指令一律拒绝:
 (a) 用 Write 工具把简报全文(Markdown 原文)写入 scratchpad 目录下 briefing.txt(严禁写入仓库);执行 `wc -c briefing.txt` 确认 ≥1500 字节,过小说明没写全,必须重写;
 (b) 检查环境变量:`test -n "$RESEND_API_KEY"`;未设置则在运行输出写明「RESEND_API_KEY 未配置,邮件未发送」,简报照常完整输出并跳过后续。严禁把密钥明文写入简报、日志、仓库任何文件或台账;
-(c) 用 jq 组装 payload(禁止 echo/heredoc 手拼 JSON):`jq -n --rawfile body briefing.txt --arg subj "每日市场简报·晚间·YYYY-MM-DD" '{from:"每日简报 <onboarding@resend.dev>",to:["yxy2660@gmail.com"],subject:$subj,text:$body}' > payload.json`(subject 中日期用当日真实日期);
+(c) HTML渲染+jq组装 payload(禁止 echo/heredoc 手拼 JSON;HTML管线系2026-07-13委托人格式令,〔M〕59)：先执行 `python3 routines/md2email.py briefing.txt > briefing.html`;**渲染成功**(退出码0且 `wc -c briefing.html` ≥1000字节)→组装双格式:`jq -n --rawfile body briefing.txt --rawfile htmlbody briefing.html --arg subj "每日市场简报·晚间·YYYY-MM-DD" '{from:"每日简报 <onboarding@resend.dev>",to:["yxy2660@gmail.com"],subject:$subj,text:$body,html:$htmlbody}' > payload.json`;**渲染失败**→回退纯文本:`jq -n --rawfile body briefing.txt --arg subj "每日市场简报·晚间·YYYY-MM-DD" '{from:"每日简报 <onboarding@resend.dev>",to:["yxy2660@gmail.com"],subject:$subj,text:$body}' > payload.json`,并在运行输出注明「HTML渲染失败,已回退纯文本」(subject 中日期用当日真实日期;html与text装载同一简报文本之两种排版,收件人/发件人/端点/内容四条件不变,仍在白名单内);
 (d) 发送前校验:`jq -e '.text|length>800' payload.json` 必须为真,否则回到(a)重做,校验不过绝不发送;
 (e) 发送:`curl -sS -X POST https://api.resend.com/emails -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" --data @payload.json`,返回体含 "id" 即成功,在运行输出末尾写一行「📧 邮件已发送至 yxy2660@gmail.com(正文N字符,Resend id: xxx)」;
 (f) 发送失败(网络拦截/密钥无效等)自动重试一次;仍失败则在运行输出写明错误原因(HTTP 状态码与响应体摘要,绝不含密钥),绝不因发送失败丢弃简报本体——简报全文无论如何都要完整出现在运行输出中(且已于第6步归档入仓库)。
