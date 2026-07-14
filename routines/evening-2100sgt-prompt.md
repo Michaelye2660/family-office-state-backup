@@ -77,7 +77,7 @@ d. 裁决书全文原样附于简报末尾"裁决附录"节；正文行动项须
 
 结尾固定一句：数据核实于(日期)，下单前必须再核实实时价；本简报为基于既有框架的分析草稿，非投资建议，最终决策在用户。
 
-第6步 简报归档（收尾必做，不可跳过）：把本次简报全文（含裁决附录）写入仓库 briefings/YYYY-MM-DD-pm.md（日期用当日SGT真实日期，晚间场后缀-pm），git add + commit（message形如 "briefing: YYYY-MM-DD pm"）并 push 到 master；push失败按2s/4s/8s/16s退避重试。归档供 pm-retro 复盘官与审计使用。
+第6步 简报归档（收尾必做，不可跳过）：把本次简报全文（含裁决附录）写入仓库 briefings/YYYY-MM-DD-pm.md（日期用当日SGT真实日期，晚间场后缀-pm），git add + commit（message形如 "briefing: YYYY-MM-DD pm"）后 push——**必须写明refspec：`git push origin HEAD:master`**（⚠️本会话当前分支系CCR outcome分支，裸`git push`或`git push origin master`会推到outcome分支或推送过期本地master并报"成功"＝归档假成功——2026-07-14晚报事故根因，简报上了claude/*分支master零痕迹，ADJ-0715-02④）。**push后强制验证归档确已上master**：执行 `git fetch origin master && git log origin/master --oneline -1 -- briefings/当日文件名`，输出非空才算第6步完成；为空＝归档失败，执行 `git pull --rebase origin master && git push origin HEAD:master` 按2s/4s/8s/16s退避重试；重试穷尽仍失败→第7步邮件正文顶部加一行"⚠️本简报归档未上master，正文以邮件为准"如实申报。归档供 pm-retro 复盘官与审计使用。
 
 第7步 邮件发送（收尾必做，流程固定，见文末【第7步 · 邮件发送】详细命令）：把第5步简报全文通过 Resend 发送至 yxy2660@gmail.com，并在运行输出末尾报告发送结果。做完第6、7步任务才算完成。
 
