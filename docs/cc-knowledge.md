@@ -73,6 +73,7 @@
 ## §6 运行手册（继承者第一天用）
 
 - **收件流程**：口令"收件"→ git pull --rebase → 读adj-inbox/ → 三要素校验 → 执行 → 写adj-archive/ADJ-XXXX-receipt.md（编号|项数对应|逐项结果|commit哈希|异常与建议）→ 原件git mv归档 → 台账版本行 → commit+push+镜像 → 向用户报"分支+哈希"。
+- **中止轮孤儿·收件门条款（ADJ-0716-17②·2026-07-16）**：GM侧commit采轮次终止标记制（每笔尾带 `|轮:xxxx`·末笔 `|轮:xxxx·终`）。**CGM见轮号无`终`收尾之[裁决侧]commit链＝候GM追认闭合，勿判异常、勿拒收**（该链系GM本会话被中止之轮所出孤儿·工具服务端已落库·非实例增殖·三起"双实例"事件已全部修正为此机制〔M〕123/124）；**收件门权威四字段校验照旧**（纪元/指纹/激活锚/编号失配仍拒收），`终`缺失本身不构成拒收事由。兜底=若见疑似非当值[裁决侧]写入且无轮号可判，第一问委托人"是否中止过本会话轮次"（最便宜假设优先·报警在后·ADJ-0716-15③）；本机制上线后该问降兜底、自动识别（同纪元同指纹无终）优先。
 - **push纪律**：git pull --rebase origin master 先行；被拒绝重试（网络错误指数退避2/4/8/16s）；每次master push后跟一次镜像 `git push https://github.com/Michaelye2660/family-office-state-backup.git master:master`。会话环境若指定工作分支:commit落分支后**默认直接归一master**（〔M〕56常设授权,2026-07-12;仅限快进,永不force-push,内容层授权要件不变）;继任会话完成重建阅读后**自动切master**（`git checkout -B master origin/master`,〔M〕57,告知不请示,cgm-succession§五步4a）。
 - **台账纪律**：任何更新必留版本历史行（含类别:机械类/判断类）；头部版本号同步刷新；机械类=单程执行，判断类=全回路（执行+逐项编号回报）。
 - **邮件白名单**（settings.json autoMode）：收件人恒等 yxy2660@gmail.com、发件 onboarding@resend.dev、端点仅 api.resend.com/emails、正文只装简报文本、key只从 $RESEND_API_KEY 读。
