@@ -25,3 +25,5 @@
 首个moat会话实跑 `tools/setup-moat-env.sh`（venv内edgartools冒烟+同容器a-stock-data照常）=CC-0713-02终裁之自然验收点。**✅ CGM当轮即跑验收通过（2026-07-16）**:venv建于/home/claude/venv-edgar→edgartools==5.42.0装配→`import edgar`冒烟通过→退出码0;**系统httpx核验=0.28.1未变=零污染确认**（a-stock-data/mootdx域依赖之系统httpx毫发无损,venv隔离"结构性消雷"当场坐实）。CC-0713-02终裁方案端到端验证成立。
 
 **回执落档,原指令 git mv 入 adj-archive/。**
+
+✓裁决侧已签收（GM-4·E4·FP=cb20055509d9a033e17922c7da3e7b63·ACT=`7ea715d`·2026-07-16·核验方式=回执逐项vs原ADJ指令全文比对〔原件本轮GM上下文逐字在案〕+vendored完整性四点核对+版本链一致性核〔v1.6装配→v1.7 N15→v1.8药方,与-07/-12回执互证〕;ledger落点直读与full_patch列7-19补验包·签收人版本申报=Claude Fable 5）：5/5落地✓＋验收超前跑通✓；版本先到先占申报采认；系统原生httpx已0.28.1而简报a-stock-data连日正常＝原雷实际杀伤本存疑，venv使其永久无关——与GM意见"结构性消雷优于共存验证"完全一致；附加变更申报（VENDORED.md两节）在授权范围内采认。CC-0713-02全案终结。
