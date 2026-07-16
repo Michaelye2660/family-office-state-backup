@@ -22,6 +22,6 @@
 - 版本行引用吻合：header v16.50 = 版本行 v16.50 = 〔M〕114 ✓
 
 ## 自然验收点（跟办）
-首个moat会话实跑 `tools/setup-moat-env.sh`（venv内edgartools冒烟+同容器a-stock-data照常）=CC-0713-02终裁之自然验收点,结果入该案回执（本回执预留·实跑时补）。
+首个moat会话实跑 `tools/setup-moat-env.sh`（venv内edgartools冒烟+同容器a-stock-data照常）=CC-0713-02终裁之自然验收点。**✅ CGM当轮即跑验收通过（2026-07-16）**:venv建于/home/claude/venv-edgar→edgartools==5.42.0装配→`import edgar`冒烟通过→退出码0;**系统httpx核验=0.28.1未变=零污染确认**（a-stock-data/mootdx域依赖之系统httpx毫发无损,venv隔离"结构性消雷"当场坐实）。CC-0713-02终裁方案端到端验证成立。
 
 **回执落档,原指令 git mv 入 adj-archive/。**
