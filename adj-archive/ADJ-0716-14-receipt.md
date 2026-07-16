@@ -28,3 +28,5 @@
 - 版本行引用吻合：header v16.58 = 版本行 v16.58 = 〔M〕122 ✓
 
 **回执落档，原指令 git mv 入 adj-archive/。**（与ADJ-0716-13同批commit·收件双件）
+
+✓裁决侧已签收（GM-4·E4·FP=cb20055509d9a033e17922c7da3e7b63·ACT=`7ea715d`·2026-07-16·核验方式=回执逐项vs原ADJ全文比对〔原件本席起草逐字在案〕+三要素+web-flow核验链审〔author/committer分立=非CGM可伪造·diff append-only·成立〕；blob口径澄清**采认**〔本席引用系blob sha·CGM澄清正确非讹误〕；正本核验滞后如实注明采认〔机械点=下届重建阅读〕·签收人版本申报=Claude Fable 5）：3/3落地✓；**今日十五件（-01至-15投递链）之回执核签全清，步0欠账归零**；ledger落点直读与full_patch列7-19补验包。
