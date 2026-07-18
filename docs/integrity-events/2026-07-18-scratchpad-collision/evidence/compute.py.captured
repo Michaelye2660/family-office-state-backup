@@ -1,0 +1,123 @@
+import pickle
+from datetime import date
+data=pickle.load(open("/tmp/claude-0/-home-user-family-office-state/607d00af-9bdb-5e79-8e74-5a5bb311c2be/scratchpad/data.pkl","rb"))
+
+def dur(e):
+    sy,sm,sd=map(int,e["start"].split("-")); ey,em,ed=map(int,e["end"].split("-"))
+    return (date(ey,em,ed)-date(sy,sm,sd)).days
+
+def flow_by_fy(ent):
+    """return {fylabel: value}. label = min fy among entries sharing end date (annual dur)."""
+    groups={}
+    for e in ent:
+        if "start" not in e: continue
+        if not (350<=dur(e)<=380): continue
+        groups.setdefault(e["end"],[]).append(e)
+    out={}
+    for end,es in groups.items():
+        label=min(x["fy"] for x in es if x.get("fy") is not None)
+        # value from entry with fy==label (original current-year report)
+        cand=[x for x in es if x.get("fy")==label]
+        val=cand[-1]["val"] if cand else es[-1]["val"]
+        out[label]=(val,end)
+    return out
+
+def inst_by_fy(ent):
+    groups={}
+    for e in ent:
+        if "start" in e: continue
+        groups.setdefault(e["end"],[]).append(e)
+    out={}
+    for end,es in groups.items():
+        label=min(x["fy"] for x in es if x.get("fy") is not None)
+        cand=[x for x in es if x.get("fy")==label]
+        val=cand[-1]["val"] if cand else es[-1]["val"]
+        out[label]=(val,end)
+    return out
+
+def get(d,key,kind):
+    c=d.get(key)
+    if not c: return None,None
+    tag,ent=c
+    m = flow_by_fy(ent) if kind=="flow" else inst_by_fy(ent)
+    return m,tag
+
+def val(m, fy):
+    if not m: return None
+    if fy in m: return m[fy][0]
+    return None
+
+def latest_fy(m):
+    if not m: return None
+    return max(m.keys())
+
+flowkeys={"rev","cor","oi","cfo","ni","da"}
+instkeys={"assets","curliab","goodwill","intang","ltd_nc","ltd_c","cash"}
+
+rows=[]
+notes=[]
+for tk in [c for c in data]:
+    d=data[tk]
+    M={}
+    tags={}
+    for k in flowkeys:
+        M[k],tags[k]=get(d,k,"flow")
+    for k in instkeys:
+        M[k],tags[k]=get(d,k,"inst")
+    # latest fy: use oi flow latest as anchor
+    L = latest_fy(M["oi"]) or latest_fy(M["rev"])
+    def v(k,fy): return val(M[k],fy)
+    def fmt_pct(x): return "未能核验" if x is None else f"{x*100:.1f}%"
+    def fmt_r(x): return "未能核验" if x is None else f"{x:.2f}"
+
+    # Gross margin
+    def gm(fy):
+        r=v("rev",fy); c=v("cor",fy)
+        if r is None: return None,"norev"
+        if c is None: return None,"nocor"
+        return (r-c)/r,None
+    gm20,gm20e=gm(2020)
+    gmL,gmLe=gm(L)
+
+    # ROIC latest
+    oi=v("oi",L); assets=v("assets",L); cl=v("curliab",L); gw=v("goodwill",L); it=v("intang",L)
+    roic=None; troic=None
+    if oi is not None and assets is not None and cl is not None:
+        ic=assets-cl
+        if ic!=0: roic=oi*0.79/ic
+        tic=assets-cl-(gw or 0)-(it or 0)
+        if tic!=0: troic=oi*0.79/tic
+    # ND/EBITDA
+    ltdn=v("ltd_nc",L); ltdc=v("ltd_c",L); cash=v("cash",L); da=v("da",L)
+    nde=None
+    if oi is not None and da is not None:
+        ebitda=oi+da
+        nd=(ltdn or 0)+(ltdc or 0)-(cash or 0)
+        if ebitda!=0: nde=nd/ebitda
+    # CFO/NI
+    cfo=v("cfo",L); ni=v("ni",L)
+    cfoni=None
+    if cfo is not None and ni is not None and ni!=0: cfoni=cfo/ni
+
+    flags=[]
+    tic_val=None
+    if oi is not None and assets is not None and cl is not None:
+        tic_val=assets-cl-(gw or 0)-(it or 0)
+    if tic_val is not None and tic_val<0: flags.append("有形净资产为负")
+    if da is None: flags.append("D&A缺失")
+    if ltdn is None and ltdc is None: flags.append("无长期债务标签")
+
+    gm20s = "n/a(服务业无COGS口径)" if gm20e=="nocor" else fmt_pct(gm20)
+    gmLs  = "n/a(服务业无COGS口径)" if gmLe=="nocor" else fmt_pct(gmL)
+    if gm20e=="norev": gm20s="未能核验"
+    if gmLe=="norev": gmLs="未能核验"
+
+    rows.append((tk,gm20s,f"{gmLs} (FY{L})",fmt_r(roic),fmt_r(troic),fmt_r(nde),fmt_r(cfoni),"; ".join(flags)))
+    # debug note
+    print(f"{tk}: L={L} rev_tag={tags['rev']} cor_tag={tags['cor']} oi={oi} assets={assets} cl={cl} gw={gw} it={it} da={da} ltdn={ltdn} ltdc={ltdc} cash={cash} cfo={cfo} ni={ni} rev20={v('rev',2020)} revL={v('rev',L)}")
+
+print("\n\n=== TABLE ===")
+print("| Ticker | GM FY2020 | GM latest (FY yr) | ROIC | Tangible ROIC | ND/EBITDA | CFO/NI | flags |")
+print("|---|---|---|---|---|---|---|---|")
+for r in rows:
+    print("| "+" | ".join(r)+" |")
