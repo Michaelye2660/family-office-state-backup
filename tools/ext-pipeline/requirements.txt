@@ -1,0 +1,3 @@
+# EXT 管道 live（段二）依赖·段一 mock 不需要
+# 装：pip install -r tools/ext-pipeline/requirements.txt
+openai>=1.0
