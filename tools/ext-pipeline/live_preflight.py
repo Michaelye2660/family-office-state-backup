@@ -10,6 +10,7 @@
 
 用法：python3 live_preflight.py
 """
+import json
 import os
 import ssl
 import sys
@@ -21,17 +22,25 @@ TIMEOUT = 20
 
 
 def _http_status(headers: dict) -> tuple:
-    """GET API_PROBE·返回 (状态码 or None, 失败说明)。走环境代理(urllib 自动读 https_proxy)。"""
+    """GET API_PROBE·返回 (状态码 or None, 失败说明, error.code or "")。
+    走环境代理(urllib 自动读 https_proxy)。
+    error.code 取自平台错误体的结构化字段（如 invalid_api_key）·不含任何 key 片段（N8）。"""
     req = urllib.request.Request(API_PROBE, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-            return resp.status, ""
+            return resp.status, "", ""
     except urllib.error.HTTPError as e:
-        return e.code, ""
+        code = ""
+        try:
+            code = json.loads(e.read().decode("utf-8", "replace")).get(
+                "error", {}).get("code") or ""
+        except Exception:
+            pass
+        return e.code, "", code
     except urllib.error.URLError as e:
-        return None, f"连接失败：{e.reason}"
+        return None, f"连接失败：{e.reason}", ""
     except (ssl.SSLError, OSError) as e:
-        return None, f"连接失败：{e}"
+        return None, f"连接失败：{e}", ""
 
 
 def run_preflight() -> dict:
@@ -49,7 +58,7 @@ def run_preflight() -> dict:
         r["B_openai_pkg"] = False
 
     # C. 出网连通性（不带 key·401=可达）
-    status, err = _http_status({})
+    status, err, _ = _http_status({})
     r["C_status"] = status
     r["C_err"] = err
     r["C_reachable"] = status in (200, 401, 403) and status is not None
@@ -59,13 +68,19 @@ def run_preflight() -> dict:
         r["C_reachable"] = False
         r["C_err"] += "（=出网网关策略拒绝 CONNECT·须环境网络白名单放行 api.openai.com）"
 
-    # D. key 有效性（仅当 A+C 过·只报状态码）
+    # D. key 有效性（仅当 A+C 过·只报状态码+平台 error.code·N8 不打印值/长度/片段）
     r["D_status"] = None
+    r["D_error_code"] = ""
     if r["A_key_present"] and r["C_reachable"]:
-        status, err = _http_status(
-            {"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"]})
+        key = os.environ["OPENAI_API_KEY"]
+        # 形状自检（只产出布尔·辅助区分"值无效"vs"注入格式问题"）
+        r["D_shape_clean"] = (key == key.strip()
+                              and not any(c in key for c in "'\"\r\n")
+                              and key.startswith("sk-"))
+        status, err, ecode = _http_status({"Authorization": "Bearer " + key})
         r["D_status"] = status
         r["D_err"] = err
+        r["D_error_code"] = ecode
 
     return r
 
@@ -89,7 +104,9 @@ def main() -> int:
     if r["D_status"] is not None:
         label = {200: "key 有效", 401: "key 无效/过期/未授权（平台侧核对或重建）"}.get(
             r["D_status"], "如实报·人工判")
-        print(f"  {'✅' if ok_d else '❌'} D key有效性  HTTP {r['D_status']}（{label}）")
+        extra = f"·error.code={r['D_error_code']}" if r.get("D_error_code") else ""
+        shape = "" if r.get("D_shape_clean", True) else "·注意：key 形状异常（含空白/引号或非 sk- 前缀·疑注入格式问题）"
+        print(f"  {'✅' if ok_d else '❌'} D key有效性  HTTP {r['D_status']}（{label}{extra}{shape}）")
     else:
         print("  ⏸️  D key有效性  跳过（前置 A/C 未过）")
 
