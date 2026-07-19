@@ -14,12 +14,17 @@
 | `pipeline.py` | 编排器：路由→组装→出包检查→（过则）调净室→归档 |
 | `verify.py` | 三层核验制层2：月度抽验（sha1+禁词复扫）+ EXT-R 注入清单对表 |
 | `selftest.py` | 段一干跑自测（mock 回环·无 key·23 用例） |
+| `live_preflight.py` | **段二预检**：key存在/openai包/出网连通/key有效 四项（N8·不打印秘钥值） |
+| `live_acceptance.py` | **段二首跑验收 runner**：预检→金丝雀 live 往返→成本实测（`--dry` 可 mock 验证 runner） |
 
 ## 两段推进（-17①(b)）
 - **段一（已建·无 key）**：全体建成 + 干跑自测（`python3 selftest.py` → 23/23）。**mock 回环·不触 OpenAI。**
 - **段二（候委托人「key 已配好」）**：live 联调 + 首跑验收（金丝雀程序确认 + 成本实测首账替换估算）。
   - 配 key：见 `docs/ext/pipeline-setup-guide.md`（平台生成→CC 环境变量 `OPENAI_API_KEY`·**严禁入库**）。
+  - **出网白名单**：环境网络策略须放行 `api.openai.com`（2026-07-19 联调实测新发现·setup-guide §二之补）。
   - live 需 `pip install openai`（段一 mock 不需要）。
+  - **联调实况**：第一轮 2026-07-19 双阻塞（key 未注入+域名未放行）·工单见 `docs/ext/pipeline-live-acceptance-report.md`。
+  - 就绪后一键：`python3 live_preflight.py`（四项全✅）→ `python3 live_acceptance.py --stamp $(date -u +%Y%m%dT%H%M%SZ)`。
 
 ## 验收钢印
 - **无出包检查器不上线**（-11②·checker.py 内置于每次往返·拒发即 raise `OutboundRejected`）。

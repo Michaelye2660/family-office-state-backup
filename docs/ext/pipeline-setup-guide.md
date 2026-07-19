@@ -18,6 +18,13 @@
 - 路径：环境设置 → Environment variables（环境变量）→ 新增。参考 https://code.claude.com/docs/en/claude-code-on-the-web （环境/env var 配置节）。
 - 保存后·该 key 只在容器运行时以环境变量存在·**不落盘、不进 git**——我建管道时代码读 `os.environ["OPENAI_API_KEY"]`·永不硬编码、永不打印。
 
+## 二之补、出网白名单（委托人·约1分钟·**2026-07-19 段二联调实测新发现·与 key 同为硬前置**）
+- **实测事实**：CC 云容器出网走环境网关·默认策略**拒绝 `api.openai.com` 的 CONNECT（403）**——即使 key 配好·live 调用也出不去。段二联调第一轮（2026-07-19）即卡在此（+key 未注入·双阻塞·见 `pipeline-live-acceptance-report.md`）。
+- **操作**：同一环境设置页（claude.ai/code → Settings → Environments → personal）的 **Network access / 域名白名单**里·放行域名 **`api.openai.com`**（若当前策略为受限模式）。参考同上 docs 页"网络策略"节。
+- **生效方式与 env var 相同**：改完只对**新容器**生效·活跃旧容器不热更新（SECRETS-INVENTORY 备忘·会话≠容器）。
+- **配好后验证（一条命令·N8 合规不打印任何秘钥值）**：
+  `python3 tools/ext-pipeline/live_preflight.py` → 四项〔A key存在/B openai包/C 出网连通/D key有效〕全 ✅ 即可首跑。
+
 ## 三、配好后告诉我（一句话即可）
 - 你只需回一句"**key 已配好**"（**不要贴 key 本身**）·我即启 task#46 建管道：
   - 出包检查器（sha1 恒等 + 禁词扫描·-11①层1·验收必备·无检查器不上线）；
