@@ -23,7 +23,7 @@
   - 配 key：见 `docs/ext/pipeline-setup-guide.md`（平台生成→CC 环境变量 `OPENAI_API_KEY`·**严禁入库**）。
   - **出网白名单**：环境网络策略须放行 `api.openai.com`（2026-07-19 联调实测新发现·setup-guide §二之补）。
   - live 需 `pip install openai`（段一 mock 不需要）。
-  - **联调实况**：第一轮 2026-07-19 双阻塞（key 未注入+域名未放行）·工单见 `docs/ext/pipeline-live-acceptance-report.md`。
+  - **联调实况**：三轮 2026-07-19·环境侧全通（注入/放行/认证）·第三轮预检四绿·剩唯一阻塞=账户额度 `insufficient_quota`（委托人平台侧 Billing）·工单见 `docs/ext/pipeline-live-acceptance-report.md`。
   - 就绪后一键：`python3 live_preflight.py`（四项全✅）→ `python3 live_acceptance.py --stamp $(date -u +%Y%m%dT%H%M%SZ)`。
 
 ## 验收钢印

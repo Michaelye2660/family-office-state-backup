@@ -56,4 +56,32 @@ python3 tools/ext-pipeline/live_acceptance.py --stamp $(date -u +%Y%m%dT%H%M%SZ)
 **就绪后联调序不变**（预检四绿 → `live_acceptance.py` 首跑验收 → 报告定稿 → GM 验收签字 → T1/T4 现役·日落钟起算）。
 
 ---
+
+## 联调第三轮（2026-07-19·CGM·新容器实测）
+
+**结论：预检四项首次全绿（第二轮阻塞 D 已解除·key 重建生效）·金丝雀 live 首跑被平台拒：`insufficient_quota`·新剩唯一阻塞=账户额度/计费未配·须委托人平台侧动作（约2分钟）。**
+
+| # | 检查项 | 实测结果 | 判定 |
+|---|---|---|---|
+| A | `OPENAI_API_KEY` 环境变量 | 已注入 | ✅ |
+| B | openai 包 | 新容器初始未装·`pip install -r requirements.txt` 后 v2.46.0（会话内动作） | ✅ |
+| C | 出网连通 api.openai.com | 可达（裸探 HTTP 401=正常） | ✅ |
+| D | key 有效性 | GET /v1/models 带 Bearer → **HTTP 200·key 有效**（第二轮 invalid_api_key 已解除） | ✅ |
+| E | 金丝雀 live 首跑 | Responses API 生成调用 → **HTTP 429·error.code=`insufficient_quota`**（平台结构化错误码·非猜测） | ❌ 阻塞·**新剩唯一** |
+
+**E 的判读**：
+- 预检 D（/v1/models）只验 **key 认证**·不验**生成额度**——两者平台侧独立·故预检可全绿而生成被拒（本轮实测确立的边界·已写入 runner 提示语）。
+- `insufficient_quota` = 该 key 所属账户无可用额度：未绑卡/未充值·或预付额度耗尽/过期。**非 key 问题·非环境问题**——环境侧三项（注入/放行/认证）经三轮已全部打通。
+
+**旁证（环境完好性）**：
+- 段一干跑自测复跑 **23/23 全过**（本轮两次:装包后+runner 升级后）。
+- runner 本轮升级：live 平台结构化错误如实报（HTTP 状态+error.code+归因提示·不再裸 traceback·N8 合规）·dry 回归通过。
+- 出包检查器照常内置且通过（request sha1=3cad6f327c0e·与既往验收件恒等）。
+
+**委托人一步（做完回一句即可·不贴任何值）**：
+- 到 platform.openai.com → **Settings → Billing**：绑卡或充值（最低 $5 预付即可·金丝雀单次成本按 setup-guide 估算 < $0.1）。生效通常即时·**无须动 key·无须动环境**——就绪后任一会话直接跑联调序即可。
+
+**就绪后联调序不变**（预检四绿 → `live_acceptance.py` 首跑验收 → 报告定稿 → GM 验收签字 → T1/T4 现役·日落钟起算）。
+
+---
 *编制=CGM·2026-07-19·核实纪律=全部读数系当轮实测·无编造｜秘钥纪律=本件不含任何秘密值（N8）*

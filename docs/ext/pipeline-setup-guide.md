@@ -25,6 +25,12 @@
 - **配好后验证（一条命令·N8 合规不打印任何秘钥值）**：
   `python3 tools/ext-pipeline/live_preflight.py` → 四项〔A key存在/B openai包/C 出网连通/D key有效〕全 ✅ 即可首跑。
 
+## 二之再补、账户额度/计费（委托人·约2分钟·**2026-07-19 段二联调第三轮实测新发现·与 key 同为硬前置**）
+- **实测事实**：key 认证有效（/v1/models 得 200）**不等于**能发生成调用——账户无可用额度时·Responses API 返回 **HTTP 429·error.code=`insufficient_quota`**。段二联调第三轮（2026-07-19）预检四绿后即卡在此（见 `pipeline-live-acceptance-report.md` 第三轮）。
+- **操作**：platform.openai.com → **Settings → Billing** → 绑卡或预付充值（最低 $5 即可起步；金丝雀单次成本按下节估算 < $0.1）。若已按 §一(6) 设了 project 预算上限·确认上限 > 0 且未耗尽。
+- **生效即时·无须动 key·无须动环境**（此项在 OpenAI 平台侧·与容器无关）。
+- 就绪后任一会话直接跑 §二之补 的预检 + `live_acceptance.py` 即可。
+
 ## 三、配好后告诉我（一句话即可）
 - 你只需回一句"**key 已配好**"（**不要贴 key 本身**）·我即启 task#46 建管道：
   - 出包检查器（sha1 恒等 + 禁词扫描·-11①层1·验收必备·无检查器不上线）；

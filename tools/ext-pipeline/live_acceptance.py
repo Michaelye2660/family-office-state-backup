@@ -64,8 +64,21 @@ def main() -> int:
         return 1
     print(f"✅ 出包检查通过 request sha1={check.request_sha1[:12]}")
 
-    # 3) 调净室
-    nr = netroom.call_netroom(request_body, mode=mode)
+    # 3) 调净室（live 平台结构化错误如实报·N8 不含任何 key 片段）
+    try:
+        nr = netroom.call_netroom(request_body, mode=mode)
+    except Exception as e:
+        status = getattr(e, "status_code", None)
+        if status is None:
+            raise  # 非平台 HTTP 错误·照常抛
+        ecode = getattr(e, "code", None)
+        hint = {
+            "insufficient_quota": "账户额度不足/未配计费（platform.openai.com → Billing 充值或绑卡·委托人平台侧动作）",
+            "invalid_api_key": "key 无效（平台侧核对或重建）",
+        }.get(ecode or "", "如实报·人工判")
+        print(f"❌ live 调用被平台拒绝：HTTP {status}·error.code={ecode}（{hint}）")
+        print("   注：预检 D 项（/v1/models）只验 key 认证·不验生成额度·故预检可全绿而此处被拒。")
+        return 1
 
     # 4) 归档留痕（tier=CANARY·不占 T1-T4 档位）
     anchor = archive.archive_roundtrip(
