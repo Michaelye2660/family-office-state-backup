@@ -26,6 +26,7 @@ class NetroomResult:
     model_reported: str = ""
     canary_answer: str = ""
     env_attestation: dict = field(default_factory=dict)
+    usage: dict = field(default_factory=dict)   # live: token 用量（成本实测·-17①(b)段二）
 
 
 def build_request(brief_body: str, *, line: str = "netroom",
@@ -91,10 +92,23 @@ def call_netroom(request_body: str, *, mode: str = "mock",
             input=request_body,
         )
         text = resp.output_text
+        # token 用量登记（成本实测首账替换估算·-17①(b)段二验收项）
+        usage = {}
+        u = getattr(resp, "usage", None)
+        if u is not None:
+            usage = {
+                "input_tokens": getattr(u, "input_tokens", None),
+                "output_tokens": getattr(u, "output_tokens", None),
+                "total_tokens": getattr(u, "total_tokens", None),
+            }
+            det = getattr(u, "output_tokens_details", None)
+            if det is not None:
+                usage["reasoning_tokens"] = getattr(det, "reasoning_tokens", None)
         # 金丝雀/模型自报从答卷首段解析（判读留 canary.py/人工·此处仅登记原文）
         return NetroomResult(mode="live", request_body=request_body, response_text=text,
                              model_reported="(见答卷第二问·判读另行)",
                              canary_answer="(见答卷第一问·判读另行)",
-                             env_attestation=_env_attestation("live", "(见答卷)", "(见答卷)"))
+                             env_attestation=_env_attestation("live", "(见答卷)", "(见答卷)"),
+                             usage=usage)
 
     raise ValueError(f"未知 mode={mode}")

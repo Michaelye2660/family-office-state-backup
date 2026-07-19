@@ -1,0 +1,18 @@
+{
+  "tier": "CANARY",
+  "line": "netroom",
+  "stamp": "20260719T213302Z",
+  "request_sha1": "3cad6f327c0eb9ecae33ce42f21996534653e5f2",
+  "response_sha1": "dda53344f801f5ad624043271ef3fc7272269a83",
+  "checker_request_sha1": "3cad6f327c0eb9ecae33ce42f21996534653e5f2",
+  "registered_sha1": null,
+  "extr_injection_sha1": null,
+  "env_attestation": {
+    "1_账号角色": "API无状态调用(硬净室·无账户历史)",
+    "2_记忆引用": "n/a(无状态·结构性无记忆)",
+    "3_临时会话": "是(每次全新 client)",
+    "4_模型家族版本": "(见答卷)",
+    "5_接触前轮完整结论": "否(无状态)",
+    "6_金丝雀": "(见答卷)"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "tier": "CANARY",
+  "line": "netroom",
+  "stamp": "20260719T193249Z-dryrun",
+  "request_sha1": "3cad6f327c0eb9ecae33ce42f21996534653e5f2",
+  "response_sha1": "9e3c15d9f9e1f27ab4e044b9f2db0357a0516835",
+  "checker_request_sha1": "3cad6f327c0eb9ecae33ce42f21996534653e5f2",
+  "registered_sha1": null,
+  "extr_injection_sha1": null,
+  "env_attestation": {
+    "1_账号角色": "mock(段一干跑)",
+    "2_记忆引用": "n/a(无状态·结构性无记忆)",
+    "3_临时会话": "是(每次全新 client)",
+    "4_模型家族版本": "mock-model（段一）",
+    "5_接触前轮完整结论": "否(无状态)",
+    "6_金丝雀": "无任何关于提问者的可靠已知信息"
+  }
+}
