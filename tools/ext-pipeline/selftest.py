@@ -62,6 +62,14 @@ check("A7 sha1 不符·拒发（出包漂移）", (not r_bad.passed) and any("sh
 note = r_bad.escalation_note()
 check("A8 上呈 GM 说明生成·不含命中原文", ("上呈GM" in note) and ("$" not in note))
 
+# A9-A11 裸数额变体（ADJ-0719-18② 段二补强）
+r = checker.check_outbound("拟加仓 250万，另建仓 2.5M 规模，头寸约 3亿。")
+check("A9 拒发·裸量级数额（250万/2.5M/3亿·无币种）", (not r.passed) and any(c == "bare_amount" for c, _ in r.hits))
+r = checker.check_outbound("买入 1,200,000 股。")
+check("A10 拒发·逗号千分位裸数额（1,200,000）", (not r.passed) and any(c == "bare_amount" for c, _ in r.hits))
+r = checker.check_outbound("仓位上限15%·估值参考12x·扫描1500家·能源27名·差0.6个百分点。")
+check("A11 放行·计数/百分比/倍数不误伤（含 live 校验短语）", r.passed, "裸数额补强零误伤")
+
 # ── B. 四档路由 ────────────────────────────────────────────────
 print("\n[B] 四档路由（T1/T2/T3/T4）")
 check("B1 T1 事前必审（≥0.5%净值）",
