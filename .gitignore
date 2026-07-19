@@ -1,0 +1,4 @@
+# Python 字节码（可再生·平台/版本相关·勿入库·防每次运行 churn）
+__pycache__/
+*.pyc
+*.pyo
