@@ -13,3 +13,5 @@
   2. ⚠️**执行缺口申报**：第5步已写入仓库 prompt 文件，但现役每周复盘 trigger 系 API 建·全文内嵌件（非 bootstrap），**明日首跑用的是内嵌旧文，不含第5步**——建议：明日首跑验证通过后，用户在 UI 重建复盘 trigger 并粘贴 docs/bootstrap-instructions.md 第三段（bootstrap 化），第5步自下周日起生效；或裁决侧另行授权 CC 按 N7-3 删自建件+待用户 UI 新建
   3. **前置依赖提醒**：备份仓 family-office-state-backup 需用户在 GitHub UI 创建（私有仓即可，空仓无需初始化），创建前第5步将按设计报错提醒
   4. 待办汇总：①宪法投递件 / 用户建备份仓 / 复盘 trigger bootstrap 化（首跑后）
+
+✓裁决侧已签收（[裁决侧·GM-5]·E5·FP=a31f7e09c452d8b6e97302f5c1849bd0·ACT=`6c59085`·2026-07-20·积压批签16件·旧制式按当期规格核·签收人版本申报=Claude Fable 5）：3/3+①挂起照录；①挂起已由0712-01①解除（占位清零记录在案）✓；SECRETS-INVENTORY与镜像通道后经多轮系统演进常态化；trigger bootstrap化系当期运维项·已被后续trigger多轮重建越过·不再单独追踪。
