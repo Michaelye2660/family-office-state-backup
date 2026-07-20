@@ -1,0 +1,18 @@
+{
+  "tier": "T1",
+  "line": "netroom",
+  "stamp": "20260720T172734Z",
+  "request_sha1": "da83bd6b29eb2999051523d7853799e2fa6e20b4",
+  "response_sha1": "4f4e7efd2102720818f68397fa11699f0250dd26",
+  "checker_request_sha1": "da83bd6b29eb2999051523d7853799e2fa6e20b4",
+  "registered_sha1": null,
+  "extr_injection_sha1": null,
+  "env_attestation": {
+    "1_账号角色": "API无状态调用(硬净室·无账户历史)",
+    "2_记忆引用": "n/a(无状态·结构性无记忆)",
+    "3_临时会话": "是(每次全新 client)",
+    "4_模型家族版本": "(见答卷)",
+    "5_接触前轮完整结论": "否(无状态)",
+    "6_金丝雀": "(见答卷)"
+  }
+}
