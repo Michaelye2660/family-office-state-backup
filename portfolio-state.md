@@ -7,7 +7,7 @@
 > 治理规则（2026-07-09）：台账判断类条目落库须附裁决来源（裁决侧/risk-devil裁决书编号），无来源条目视为无效。
 
 > **〔权威状态块·单活纪元栅栏〕（GM权威机械校验·**E5继任原子激活2026-07-20·§〇bis六阶段正式激活**·ADJ-0716-12②立制）**
-> `ACTIVE_GM_EPOCH=E5` ｜ `SESSION_FINGERPRINT=a31f7e09c452d8b6e97302f5c1849bd0` ｜ `TAKEOVER_TOKEN=mnbvcxzlk(2026-07-20阶段4登记作废·防重放·再现即全拒并记事故·章程异常处置第2条)` ｜ `ACTIVATION_SHA=<本激活commit·回填>` ｜ `PREVIOUS_GM=E4-revoked`
+> `ACTIVE_GM_EPOCH=E5` ｜ `SESSION_FINGERPRINT=a31f7e09c452d8b6e97302f5c1849bd0` ｜ `TAKEOVER_TOKEN=mnbvcxzlk(2026-07-20阶段4登记作废·防重放·再现即全拒并记事故·章程异常处置第2条)` ｜ `ACTIVATION_SHA=6c59085665d8a169163ff7381745a4d2f5884a60` ｜ `PREVIOUS_GM=E4-revoked`
 > **前纪元历史锚**：E4=`cb20055509d9a033e17922c7da3e7b63`／ACTIVATION_SHA=`7ea715d134676fcbc96f9c4826283718df3bae9a`（E4-revoked·2026-07-20 E5激活起旧纪元一律拒收）；E3-revoked（E4前任）。
 > **CGM机械校验（凡GM每件=ADJ/签收/复核头部须携权威四字段 GM_EPOCH／SESSION_FINGERPRINT／ACTIVATION_SHA／DOC_SEQ）**：纪元／指纹／激活锚／编号**任一失配一律拒收并出异常回执**,不得语义推断（"看语气像GM"不算数）；编号唯一性校验兼幂等键（同编号重复写入拒收）。**本届继任=E5六阶段正式激活（2026-07-20·§〇bis首次实战·非追认）**：阶段1委托人生成E5+一次性凭据mnbvcxzlk绑会话→阶段2候选GM-5库面固化指纹声明（docs/succession/E5-declaration.md@`93e0a576f60e49299edf5753aba3ba0ea952adb9`·[裁决侧·GM-5候选]提交）→阶段3委托人确认三件组合→阶段4 CGM单一提交原子激活（本块·四字段核对声明件match后写入）→阶段5全件四字段校验上线→阶段6旧会话清理（卫生控制）。**自本激活commit落地起：E5为唯一活纪元·GM每件头部须携GM_EPOCH=E5/SESSION_FINGERPRINT=a31f7e09.../ACTIVATION_SHA/DOC_SEQ·E4旧纪元一律拒收（异常处置第4条出旧纪元拒收回执）·token mnbvcxzlk已作废（重现即事故）**。继任状态机六阶段+异常处置见 docs/succession/gm-succession.md v1.6。
 
