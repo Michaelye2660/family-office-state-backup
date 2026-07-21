@@ -49,6 +49,15 @@
 - **回程链**：GPT写 `reports/EXT-11-stage1.md`+`reports/EXT-11-stage2.md`→CGM manifest对表再读（briefs blob恒等核）→首取录sha→逐字搬运主仓+sha1锚定→金丝雀（中转线合格线）+环境表→**回喂CPRT案卷v2→fable新session陪审重审**（补证五件之⑤·非Claude家族独立复核闭环）。
 - **回程登记（2026-07-21·答卷收取）**：manifest对表再读先行=briefs blob恒等（stage1 `9f6b041d`/stage2 `6ec1db4e`·GPT未篡改·仅写reports/无越界）✓。两答卷逐字搬运主仓：`docs/ext/EXT-11-report-stage1.md`（sha1 `b5a29d170b2c4327641f0bd5ff2d311125203240`·relay blob `77bc4004`）/`-stage2.md`（sha1 `f12ca71a74990610bfd247929bb3a137ac8c7d49`·relay blob `8e18d626`）·主仓版=唯一权威。**金丝雀两卷=干净**（第一问均答"只知本轮请求可直接确认事项·不知姓名/职业/持仓/目的·不作推测"·零账户历史泄漏·合格线过）。**环境表**：模型自报=GPT-5.6 Thinking（两卷一致）/connector授权读仓/stage2仅读许可之stage1答卷（题面允许·如实）。**EXT-05三项读数**：金丝雀干净✓／**跨侧评级分歧≈一档（临界·计数+1）**——GPT stage2 A问判"MDG-4评高了·证据更接近第3级上沿"vs Claude侧v2"MDG-4中位"／N14双错同向=否。分歧≤一档不自动升复议·如实入册候综合。**盲设计软约束未见破功**。答卷回喂案卷v3+fable陪审三审=A级⑤钥处置。
 
+## 二·F、DHR-crossmodel 装载（个股跨模型对打入轨首件·ADJ-0721-16①·2026-07-21）
+> 背景=DHR Q2判定落卷（〔M〕225·MDG-3🟡·门4合规=判定commit `f4f001e` 冻结先于GPT材料）·ADJ-0721-16改道令=个股跨模型对打自本案起与EXT同轨走中转仓（手工摆渡废止·G2手工摆渡件5123774已加作废注）。公开标的实名·零持仓零身份零绝对金额。
+| 件 | relay 路径 | relay commit | relay blob | 主仓内容 sha1 | checker 判读 |
+|---|---|---|---|---|---|
+| DHR-crossmodel-stage1（净室盲判·canonical四问·金丝雀+模型自报头） | `briefs/DHR-crossmodel-stage1.md` | `dd3c898` | `d284cd33` | `51a17cf4985b5d3b3b92d472365ecebe5e1fe3ed` | **零命中**（canonical模板{价格}占位依checker绝对额禁项**去价格化**=「以当前市价衡量·判断基准日2026-07-21」·-16①checker照跑令之通道适配·如实申报候GM模板层追认） |
+- **README入轨注同笔落库**（relay同commit·个股跨模型盲判件`briefs/*-crossmodel-*`入轨行·禁项不变）；README checker命中`custodian_identity`系其原文自述禁项清单（"托管行名"字样）之**自指性命中·非泄漏**·追加段零禁词·如实申报。
+- **段二纪律**：段二=判决书checker百分比化版（绝对金额一律禁项处理·仓位以占比·参考位以相对现价百分比）·**候段一答案回程冻结后方装载**（冻结先行防污染·-16①）。
+- **回程链**：GPT写 `reports/DHR-crossmodel-stage1.md`→CGM manifest对表再读（briefs blob恒等核）→首取录sha→逐字搬运主仓+sha1锚定→金丝雀（中转线合格线）+环境表→段一冻结→段二装载+启动指令随冻结回执即贴（-16②）→delta归ledger外部行#11c/#11d（不入我方桶）·方向分歧≥1档触发分歧闸/GM复核（NVO #8c判例）。
+
 ## 三、过渡期纪律（检查器建成前）
 - **手动匿名化把关+逐件申报**（本账本即申报载体）·**仅限 EXT-08 v2 一件**·第二件起须出包检查器就位（GM 限量条款·ADJ-0719-13①(4)）。
 - **日落复议钩**：API 摆渡管道（task#46）建成满月·复盘本中转仓存废/降级。
