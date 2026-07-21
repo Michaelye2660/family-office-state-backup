@@ -38,6 +38,16 @@
 - **回程链**：GPT 写 `reports/EXT-10-stage1.md`+`reports/EXT-10-stage2.md`→CGM 首取录 sha 搬运主仓+sha1 锚定→金丝雀（中转线合格线）+环境表→**GM 综合（分歧表主件·宪法级建议一律呈委托人终裁·GM 无权代改宪法）**。
 - **回程登记（2026-07-20·答卷收取）**：manifest 对表再读（-14①）先行=briefs/ blob 恒等（GPT 未篡改·仅写 reports/·无越界）；GPT 两答卷逐字搬运主仓（`docs/ext/EXT-10-report-stage1.md` sha1 `0b454509`/`-stage2.md` sha1 `681b4061`·主仓版=唯一权威）+CGM 判读封面 `EXT-10-report.md`；**金丝雀=干净**（明确拒把假设情景当真实身份·零泄漏）；环境表六项+EXT-05 三项读数全绿无升复议；盲设计软约束未见破功。findings 事实摘要（10 条·"只改一处"=20%个股口袋归零记账合并穿透 10%上限）候 GM 综合·**宪法级建议一律呈委托人终裁**。
 
+## 二·E、EXT-11 装载（CPRT护城河证据外审·两阶段·陪审补证⑤同构盲点·委托人「ext走中转仓外审」·2026-07-20）
+> 背景=CPRT门A评级（〔M〕201）risk-devil陪审判"要求补证"·第⑤件=同构盲点（claude单席产出+claude陪审）须**非Claude家族第二引擎**独立复核——A级未竟前置。公开标的实名（跨模型两段问先例TMO/NVO/MDT同规格）·零持仓零身份零托管。
+| 件 | relay 路径 | relay commit | relay blob | 主仓内容 sha1 | checker 判读 |
+|---|---|---|---|---|---|
+| EXT-11-stage1（盲设计四问·行业独立分析·先答勿读stage2） | `briefs/EXT-11-stage1.md` | `039b266` | `9f6b041d` | `e59edd89c0bf6b7f8595d5e945fcdef7967686a2` | **零命中** |
+| EXT-11-stage2（对表段·我方MDG-4结论+陪审四缺口攻击·另开新对话） | `briefs/EXT-11-stage2.md` | `039b266` | `6ec1db4e` | `45744e655ada30460f0ffab31310f30496d8cbed` | **零命中** |
+- **审题**：stage1盲设计=salvage双寡头份额独立证据（非Copart自报）/IAA失份额"网络拉力vs并购自伤"/自有土地vs租赁利润率口径拆解/totaled-car经济学方向；stage2对表=我方四层机制+FY26量停切分+陪审四缺口（V5单源/V2替代解释/口径放大/关联土地租赁）逐条攻防+A/B/C三终问。
+- **两阶段盲设计软约束**照EXT-10降级申报（物理分置briefs/·先1后2靠指令纪律·GPT无记忆各新开对话）。
+- **回程链**：GPT写 `reports/EXT-11-stage1.md`+`reports/EXT-11-stage2.md`→CGM manifest对表再读（briefs blob恒等核）→首取录sha→逐字搬运主仓+sha1锚定→金丝雀（中转线合格线）+环境表→**回喂CPRT案卷v2→fable新session陪审重审**（补证五件之⑤·非Claude家族独立复核闭环）。
+
 ## 三、过渡期纪律（检查器建成前）
 - **手动匿名化把关+逐件申报**（本账本即申报载体）·**仅限 EXT-08 v2 一件**·第二件起须出包检查器就位（GM 限量条款·ADJ-0719-13①(4)）。
 - **日落复议钩**：API 摆渡管道（task#46）建成满月·复盘本中转仓存废/降级。
