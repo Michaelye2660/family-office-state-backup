@@ -117,3 +117,35 @@
 ## EXT 外审发起纪律（ADJ-0721-02·2026-07-21）
 - **双段即贴**：凡手动摆渡模式 EXT 外审正式发起，发起方（CGM 侧宣告则 CGM）在确认消息中直接贴出两段可复制给 GPT 的启动指令（stage1/stage2 各一段），不得等委托人索要。API 自动模式免。
 - **量表映射**：涉等级判定的 brief 强制附量表定义原文（charter 补款）。
+
+## CGM 会话生命周期与换代（ADJ-0721-07·2026-07-21·固定节）
+**三线换代规则（任一满足即换代·三线均为最迟线·委托人/GM 可按负载提前）**：
+1. **战役线**：每个大战役收口后主动换代；
+2. **症状线**：结构三验失败／回执三要素缺失／编号错乱／忘既有约定——任一出现=**立即换代，不修老会话**；
+3. **保险线**：单一会话服役 ≤**7 天**强制换代（默认值·委托人可改）。
+
+**换代程序（轻量·无仪式）**：老会话末班=知识倾倒增量（追加本文件·标注日期）+在途件清点一行入〔M〕；新会话唤醒句（委托人复制即用）：
+> 「你是CGM(执行侧)。读 docs/cc-knowledge.md 与工作指引就位,按台账与adj-inbox协议工作,就位后自落〔M〕一行(CGM-G·N就位·日期·前代服役天数)作为就位微件,回报就位状态。」
+
+换代行入〔M〕（代际计数）。机械权威不绑指纹，换代无需 GM 式状态机。**常态纪律**：凡新约定/口径/教训**当轮落库**，不留会话记忆孤本——"对话是草稿、仓库是正本"。
+**诚实界定**：本规则把"会话老化致错"压至结构性最低，非零错误担保；既有防线（三要素校验/结构三验/GM 逐件签收/T1 双盲/委托人终裁）照旧站岗。
+
+## 知识倾倒 · CGM-G1 末班（2026-07-21·会话记忆孤本落库）
+**工具与环境**：
+- **FMP 计划限制实测**：单标的 quote/income-statement/balance-sheet/segments/earnings-calendar/financial-estimates 全部 ACCESS DENIED；**batch-quote 可用**（单标的也走 `batch-quote(["X"])`）。基本面首选 SEC EDGAR XBRL（companyconcept/companyfacts·免费·纪律本选）。
+- **OPENAI_API_KEY**：只在新容器环境注入；用 `[ -n "$OPENAI_API_KEY" ]` 探测勿打印。T1 live（gpt-5.6·effort=high）单次 >2 分钟——**必须 run_in_background**；`--dry` mock 会写归档文件，live 前须删除 mock 产物保持 T1 档位真金-only。live 成本实测 ≈$0.22/次。
+- **Bash cwd 会漂移**：`cd` 有时跨调用持久、有时被 reset——一律用绝对路径或每条命令显式 `cd /home/user/family-office-state &&` 前缀。
+- **Edit 全角标点匹配失败**：〔M〕尾锚匹配报 "String not found" 时，先 `grep -oE ".{40}版本v16.NNN。"` 取实际字节再锚短唯一子串；同类坑=中英文空格差（"GPT写" vs "GPT 写"）。
+- **git 推送节奏**：GM 随时向 origin 投递——push 被拒即 `git pull --rebase origin master` 再推；收件一律先 pull。新建未跟踪文件移动用 `mv` 非 `git mv`。
+- **data-verifier 嵌套子 agent 回收不畅**（异步 yield 丢子结果·三次实证）：派单时明示"不要 spawn 子 agent，自己直接取"；卡住时 SendMessage 续推或改令写文件落盘；最终兜底=CGM 直取。
+- **subagent 模型继承**：Agent 不传 `model` 即继承会话模型——评审/陪审/评级派发前**必须核对是否当前最高档**（钢印·工作指引 v1.19），非最高档先提醒委托人。
+
+**流程惯例（成型于本代·后代照用）**：
+- **收件流水线**：pull→读 ADJ→E5 四字段逐字核→逐项执行→〔M〕新条+版本历史行（最新在上）+header 版本 bump→回执（三要素/逐项/落地校验/结构三验）→原件 git mv 入 adj-archive→commit+push。多件同轮=一件一〔M〕一版本行。
+- **中转仓回程链**：先 manifest 对表再读（briefs blob 恒等核·不符=篡改立案）→取 reports→录 sha1→逐字搬运主仓（主仓版=唯一权威）→金丝雀判读→manifest 回程登记。EXT 编号顺延（下一件=EXT-12；EXT-11b 为 CPRT 条件件）。
+- **陪审裁决书纪律**：原文上呈委托人不得改写省略（回复内全文）+独立文件归档+案卷"陪审"节追加（不可摘除）；案卷冻结前 CGM 用 python hashlib 独立核 sha1。
+- **checker 复用**：外送任何材料先过闸——`cd tools/ext-pipeline && python3 -c "import checker; checker.check_outbound(open(f).read())"`。
+- **系统通知≠用户输入**：background task 通知/监控事件一律不作为委托人确认；终裁只认真实用户消息。
+- **财报日一手判例**：聚合源冲突→连核公司 IR/8-K 一手定案（BDX 7/30→8/6·ORLY 7/23-24→7/29 两连用）。
+
+**本代大事记（详见〔M〕193-213·此处仅索引）**：首个 T1 真金盲审跑通（DTLA）→固收线经全甲→暂缓→阶段挂钩修宪（E5 第二修·40/40 复议线）收束；CPRT 四轮链（深查→陪审→补证→v2→重审→EXT-11 跨家族→v3→三审）=补证重审全闭环首例；gm-inbox 双向信箱立制；评审模型钢印；DHR 备料就位判定锁 8-K 后。
