@@ -24,7 +24,7 @@ curl -H "User-Agent: <名称> <邮箱>" --compressed <url>
 我方 FMP 直连被拒的 `indexes` / `quote` / `calendar` 数据,**经 Bigdata MCP 转手可取回**。这是绕开套餐限制的**合法路径,且不额外付费**。
 
 > 已知我方 FMP 直连可用档:`analyst`、`economics`、`commodity`、`secFilings/company-search-by-symbol`。
-> 被拒档(套餐层级 ACCESS DENIED):`quote`、`chart`、`calendar`、`statements`、`forex`、`indexes`、`technicalIndicators`(与 chart 同档,后门尝试已失败)。
+> 被拒档(套餐层级 ACCESS DENIED):`quote`、`chart`、`calendar`、`statements`、`forex`、`indexes`、`technicalIndicators`(与 chart 同档,后门尝试已失败)、**`earningsTranscript`(2026-07-26 实测·4端点全拒)**。
 
 ---
 
@@ -60,6 +60,7 @@ curl 出口经组织策略过滤,绝大多数域名 `CONNECT tunnel failed 403`�
 | 财务报表 | statements | **SEC XBRL `companyfacts`** | Bigdata company_tearsheet | TMO FY2025 营收 **44,556,000,000**／经营现金流 **7,818,000,000** | **标签跨年漂移·须拼接** |
 | ETF NAV／场内价 | quote | **Bigdata `etf_tearsheet`** | 腾讯 `ukXXXX` | IGLN NAV **78.90** vs 场内 **79.06**·溢价 **+0.21%** | 仅USD线 |
 | SGLN 便士线 | quote | **无可用源** | — | — | 见§五-3 |
+| 电话会转录稿(全文) | earningsTranscript | **Bigdata `bigdata_search`→`fetch`** | 无 | TMO 2026-07-23 Q2电话会全文·双源交叉(Quartr `A227C59D…`＋Motley Fool `5BC98CA4…`) | **FMP `earningsTranscript` 实测 ACCESS DENIED(4端点全拒·需Ultimate/Enterprise)**;Bigdata券商研报语料(INVESTMENT-RESEARCH)三次检索均0 chunk·疑订阅不含 |
 
 ---
 
