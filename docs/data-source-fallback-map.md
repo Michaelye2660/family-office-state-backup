@@ -60,6 +60,8 @@ curl 出口经组织策略过滤,绝大多数域名 `CONNECT tunnel failed 403`�
 | 财务报表 | statements | **SEC XBRL `companyfacts`** | Bigdata company_tearsheet | TMO FY2025 营收 **44,556,000,000**／经营现金流 **7,818,000,000** | **标签跨年漂移·须拼接** |
 | ETF NAV／场内价 | quote | **Bigdata `etf_tearsheet`** | 腾讯 `ukXXXX` | IGLN NAV **78.90** vs 场内 **79.06**·溢价 **+0.21%** | 仅USD线 |
 | SGLN 便士线 | quote | **无可用源** | — | — | 见§五-3 |
+| **无风险利率(美债收益率曲线)** | economics | **FMP `economics/treasury-rates`** | 无 | **10Y 4.69%／30Y 5.16%／2Y 4.33%(2026-07-24)** | ✅ **可用·带日期字段·可锁版本**;实测 2026-07-20~24 逐日全返;**卖出触发器 §3-B-1 之 rf 输入源** |
+| **股权风险溢价 ERP** | economics | **FMP `economics/market-risk-premium`** | 无 | 美国 total **4.46%**(国家风险溢价 0.23／成熟市场基准 4.23) | ⚠️ **可取但端点未返回任何日期字段 → 版本不可锁定**;逐次取值无法证明是否更新过·**引用时须标「取回时刻」而非「数据日期」**(与 Bigdata「As of」同型问题·见§四) |
 | 电话会转录稿(全文) | earningsTranscript | **Bigdata `bigdata_search`→`fetch`** | 无 | TMO 2026-07-23 Q2电话会全文·双源交叉(Quartr `A227C59D…`＋Motley Fool `5BC98CA4…`) | **FMP `earningsTranscript` 实测 ACCESS DENIED(4端点全拒·需Ultimate/Enterprise)**;Bigdata券商研报语料(INVESTMENT-RESEARCH)三次检索均0 chunk·疑订阅不含 |
 
 ---
