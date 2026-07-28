@@ -63,6 +63,7 @@ curl 出口经组织策略过滤,绝大多数域名 `CONNECT tunnel failed 403`�
 | **无风险利率(美债收益率曲线)** | economics | **FMP `economics/treasury-rates`** | 无 | **10Y 4.69%／30Y 5.16%／2Y 4.33%(2026-07-24)** | ✅ **可用·带日期字段·可锁版本**;实测 2026-07-20~24 逐日全返;**卖出触发器 §3-B-1 之 rf 输入源** |
 | **股权风险溢价 ERP** | economics | **FMP `economics/market-risk-premium`** | 无 | 美国 total **4.46%**(国家风险溢价 0.23／成熟市场基准 4.23) | ⚠️ **可取但端点未返回任何日期字段 → 版本不可锁定**;逐次取值无法证明是否更新过·**引用时须标「取回时刻」而非「数据日期」**(与 Bigdata「As of」同型问题·见§四) |
 | 电话会转录稿(全文) | earningsTranscript | **Bigdata `bigdata_search`→`fetch`** | 无 | TMO 2026-07-23 Q2电话会全文·双源交叉(Quartr `A227C59D…`＋Motley Fool `5BC98CA4…`) | **FMP `earningsTranscript` 实测 ACCESS DENIED(4端点全拒·需Ultimate/Enterprise)**;Bigdata券商研报语料(INVESTMENT-RESEARCH)三次检索均0 chunk·疑订阅不含 |
+| **ETF 行业／国家权重(穿透用)** | etfAndMutualFunds | **Bigdata `find_securities`→`etf_tearsheet`** | 无 | IWDA(`C86312`·ISIN IE00B4L5Y983·2026-07-28 04:54 UTC):Technology **30.87%**／Comm Services 8.26%／香港 **0.47%**／中国 **0.01%** | 🔴**三重限制须同时读**:①**FMP `etfAndMutualFunds` 全组 ACCESS DENIED**(需 Starter+;端点自身指示不得重试同组);②**一手源 iShares 官网 HTTP 403**(`ishares.com/uk/individual/en/products/251882/`·WebFetch 被拒);③**无法异源交叉**——`etf_tearsheet` 底层即 FMP,取 IWDA 与 URTH 两标的**系同源双标的**,且**两者 Top-10 逐项权重完全相同至小数点后两位**(提示 FMP 对两只基金可能直接使用同一套指数权重)→**「双标的吻合」证据价值更低而非更高**;**故此类读数一律标〔待核〕·不得用于仓位判断**(ADJ-0727-02⑧)。**待办=另寻真异源**(MSCI 官方 factsheet／iShares 非 403 路径／第二数据商) |
 
 ---
 
