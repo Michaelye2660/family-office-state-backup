@@ -27,6 +27,8 @@
 | 8 | **`core-equity-instrument-prejudgment-addendum-2026-07-27.md`** | GM 六项 + CGM 五项 | **`8884d59`**<br>2026-07-26T20:14:03Z | 段三·入市时机风险 | 原卷 **`ce43b0c`** 20:03:59Z<br>修改版 `4a35dda` 20:15:03Z | **晚于原卷 614 秒** | **B · 弱** |
 
 | 9 | **`defensive-sleeve-prejudgment-2026-07-27.md`** | GM 四项 + CGM 五项 | **`647494d`**<br>2026-07-26T21:00:39Z | 卷四·防御端规模与存废 | **`9deaf9d`**<br>21:20:01Z | **+1,162 秒** | **A · 强** |
+| 10 | `placebo-preregister-2026-07-29.md` | CGM | 随ADJ-0729-12回执commit | 安慰剂对(协议v3§三(6)·内部预注册非外审件) | — | — | 存档 |
+| 11 | `gate2-paired-scoring-rule-2026-07-29.md` | CGM | 随ADJ-0729-12回执commit | 门2计分细则(评分前补注·ADJ-0729-12②(b)) | — | — | 存档 |
 
 ### #9 之注
 
