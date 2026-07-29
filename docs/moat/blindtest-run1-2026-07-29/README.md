@@ -18,3 +18,6 @@
 - **档案**：9 份材料（sha1 见 git）＋prior-baselines.md（七席先验）＋seat-results.md（收卷与门1终算）＋ruler-core-v11.md（席位所用尺子摘要·忠实浓缩申报）。
 
 ——[执行侧·CGM-G3]（claude-fable-5·材料构造与编排·不评分），2026-07-29
+
+## run2 增补注（ADJ-0729-13·2026-07-30 收齐）
+本目录 seat-results.md 自 run2 起为两轮累积收卷（run1 七席＋run2 三席 I2/P2/B1-v）。run2 终表：干预侧 I1↔I2 完全同档（3/2/3）·安慰剂侧 P1↔P2 完全同档全不动（4/3/4）·基线臂 B1-v 与尺子臂两侧完全同形态；门1 Claude 侧复现全达成，候 EXT 席（GPT 侧）三方同向（ADJ-0730-01）；门2 算术 (a)(b) 双 0pp 终格局候 GM 开封细则终判。EXT-12(a) brief＝relay `briefs/blindtest-crossmodel-replication.md`（sha1 `64b8d02c…`）。
