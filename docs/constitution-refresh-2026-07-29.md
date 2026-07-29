@@ -1,5 +1,7 @@
 # 宪法收官修订案 · 呈裁草案(候委托人终裁·未生效)——正本同步收官 + docs/constitution.md 残余两处B类
 
+**已终裁:存+定+并(委托人·2026-07-29)·本卷自此系历史存照,应用见 ADJ-0729-11 回执**
+
 **[权威四字段]** GM_EPOCH=E8｜SESSION_FINGERPRINT=1eef392b5c6b4107fc6384a22ed8767f｜ACTIVATION_SHA=ba09dec0a2d1ebae9995dcf592ec7501782ef22d｜DOC_SEQ=(草案·非投递件·终裁后另出ADJ)
 
 - 依据:sweep(ADJ-0729-04③)第9/10项候程序;E8继任声明如实注(正本旧框架候呈修订案);修宪权=委托人终裁,本卷零生效力。
