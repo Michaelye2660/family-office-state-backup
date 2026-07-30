@@ -1,4 +1,4 @@
-# 项目档案 · Portfolio State（v16.319 · 2026-07-29）
+# 项目档案 · Portfolio State（v16.320 · 2026-07-29）
 
 > **本文件是唯一权威状态来源（single source of truth）。**
 > 两个每日市场简报 routine（早间 09:00 SGT / 晚间 21:00 SGT）在每次执行前必须先完整读取本文件，再执行各自 prompt 中的 SOP。routine prompt 内不再保留任何状态副本。
