@@ -56,7 +56,7 @@
 | prompt 已改 | `routines/weekly-retro-sunday-prompt.md` diff（本 commit） |
 | 授权链完整 | 本件即 `routines/` 变更之 ADJ 授权（台账行871：routines 变更系判断类须 ADJ）——**非事后追认** |
 | 结构四验 | 编号连续 415→421✓／〔N〕节标题存活✓／版本行↔正文↔header 三处吻合✓／U+FFFD＝0✓ |
-| **已并入 master** | **commit `{{SHA}}`**（照 ADJ-0730-19⑧ 之令附哈希） |
+| **已并入 master** | **commit `f74ddbabc785`**（照 ADJ-0730-19⑧ 之令附哈希） |
 
 ---
 
