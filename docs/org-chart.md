@@ -23,7 +23,7 @@ L2 子agent编制(10席,居CC环境,CGM日常管理;各席章程权见注;原9�
  ( scout·猎手——建而未启;启用须委托人令;硬禁令:不得直接建议买入 )
 
 L3 制度基础设施
- 宪法constitution.md(正本=claude.ai项目指令) · 台账portfolio-state.md(唯一权威状态) · 知识库×2(互为对方漂移基准) · **继任章程×2(docs/succession/,交叉起草,保鲜机械核查,含激活指引)** · 信道四条(inbox指令/receipt回执/motions动议/briefings简报)+签收制+N6项数校验和 · 备份三层(git史/周镜像/月ZIP+季度对话导出)
+ 宪法constitution.md(**正本·2026-07-30起·claude.ai项目指令已改bootstrap指针·〔M〕408**) · 台账portfolio-state.md(唯一权威状态) · 知识库×2(互为对方漂移基准) · **继任章程×2(docs/succession/,交叉起草,保鲜机械核查,含激活指引)** · 信道四条(inbox指令/receipt回执/motions动议/briefings简报)+签收制+N6项数校验和 · 备份三层(git史/周镜像/月ZIP+季度对话导出)
 
 审计关系:监察官→审GM(规格CGM写) │ cc-auditor+pm-retro(数据层)→审CGM(规格GM写) │ 委托人→抽查包审探测器 │ 三报告轮内互盲
 强制回应:🔴→被审方下次会话当轮回应(接受+日期+机械判据 或 正式异议);"将改进"=无效
