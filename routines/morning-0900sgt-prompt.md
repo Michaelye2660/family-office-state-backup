@@ -29,15 +29,20 @@
 
 ══════ 🔴 取数数据链 · 委托人直令（2026-07-30·〔M〕401／402·**凌驾本文一切旧取数表述**）══════
 
-**委托人原文**：「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」
+**委托人原文（两令并载·后令补前令）**：
+1. 「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」
+2. 「**A股优先 a-stock-data 技能 这一条规则放在取数第一位，在 fmp 之前**」
 
-**三层链序（顺序固定·不得跳层·不得改序）**
+**四层链序（顺序固定·不得跳层·不得改序）**
 
-**① FMP 连接器 —— 一切取数之首选。** 常用端点（2026-07-30 逐一实测·Starter 档可用）：行情 `chart/historical-price-eod-light`；财报 `statements/income-statement`、`key-metrics-ttm`；公司 `company/profile-symbol`；目标价 `analyst/price-target-consensus`；财报日 `calendar/earnings-company`；SEC `secFilings/search-by-symbol`（**直返 accession 号与原文直链**）；黄金 `commodity/commodities-historical-price-eod-light`（GCUSD）；汇率 `forex/forex-historical-price-eod-light`（USDHKD／USDCNY／GBPHKD）；美债 `economics/treasury-rates`；ETF `etfAndMutualFunds/information`；新闻 `news/search-stock-news`。
+**⓪ A股／A股ETF → 一律优先用 `a-stock-data` 技能（委托人直令 2026-07-30·**本条置于 FMP 之前·为取数第一位**）。** 适用范围＝A股个股与 A股ETF 之行情、场内价、K线、标的指数 PE、研报、资金面、财务三表、公告等**一切 A股取数**（如 159516／159819／159142 与中证半导体材料设备主题指数 931743）。**技能不可用或取数失败，才退第②层网页**（腾讯自选股／中证官网）。
+**⚠️ 实测注**：云环境 mootdx（通达信 TCP 7709）**永远不可用**（代理只放行 HTTPS），技能会**自动回退腾讯 HTTP 接口**，不影响行情与 PE 获取——此系技能内建行为，**不构成「技能失败」，不得据此跳层**。
+
+**① FMP 连接器 —— A股以外一切取数之首选。** 常用端点（2026-07-30 逐一实测·Starter 档可用）：行情 `chart/historical-price-eod-light`；财报 `statements/income-statement`、`key-metrics-ttm`；公司 `company/profile-symbol`；目标价 `analyst/price-target-consensus`；财报日 `calendar/earnings-company`；SEC `secFilings/search-by-symbol`（**直返 accession 号与原文直链**）；黄金 `commodity/commodities-historical-price-eod-light`（GCUSD）；汇率 `forex/forex-historical-price-eod-light`（USDHKD／USDCNY／GBPHKD）；美债 `economics/treasury-rates`；ETF `etfAndMutualFunds/information`；新闻 `news/search-stock-news`。
 **⚠️ 已知边界（不必再试，直接走②）**：**FMP Starter 只覆盖美国上市标的**——`0700.HK`／`0005.HK`／`IWDA.L`／`SGLN.L`／`IGLN.L`／`159516.SZ`／`159819.SZ`／`159142.SZ` **一律在参数层被拒**。另：`batch-quote` 需 Premium+，单标的 `quote` 可用。
 
 **② FMP 查不到者 → 网页（本层涵盖全部非美标的）**
-- **A股/A股ETF**：腾讯自选股 `https://qt.gtimg.cn/q=sz159516,sz159819,sz159142`（**GBK 编码，须 `| iconv -f gbk -t utf-8`**）；或 a-stock-data 技能。标的指数 PE（如 931743）走中证官网 `www.csindex.com.cn` 官方日度序列。
+- **A股/A股ETF（仅在 ⓪ 层技能失败时才用本条）**：腾讯自选股 `https://qt.gtimg.cn/q=sz159516,sz159819,sz159142`（**GBK 编码，须 `| iconv -f gbk -t utf-8`**）；标的指数 PE（如 931743）走中证官网 `www.csindex.com.cn` 官方日度序列。**须在产出中注明「⓪层技能失败·已降级至网页」及失败原因。**
 - **港股**：腾讯自选股 `https://qt.gtimg.cn/q=r_hk00700,r_hk00005`（收盘后即为终值，附 PE 与 52 周区间）。
 - **伦交所/爱尔兰注册 ETF（IWDA／SGLN／IGLN）**：发行人官网（iShares 基金页）取 NAV，**标 T-1 与官方口径**。**⚠️ 须用 WebFetch 工具取，勿用 curl**——2026-07-30 实测 `curl www.ishares.com` 返 **HTTP 403**、WebFetch 成功。腾讯/新浪/stooq 皆不覆盖伦交所，不必试。
 - **黄金现货交叉源**：新浪财经 `https://hq.sinajs.cn/list=hf_GC`（**须带 `-H "Referer: https://finance.sina.com.cn"`**）。
@@ -55,7 +60,7 @@
 
 第0.5步 收件（adj-inbox协议·信道架构v3.1）：读取仓库 adj-inbox/ 全部文件（README除外）。凡同时具备三要素——①ADJ编号、②【共N项·类别】校验行、③"用户已确认+日期"行——按台账〔N〕N6协议执行（机械类=单程/判断类=全回路）；缺任一要素=不执行，移入 adj-archive/quarantine/ 并在台账〔M〕记异常。每单执行完写 adj-archive/ADJ-XXXX-receipt.md（固定格式:编号|项数对应|逐项结果|commit哈希|异常与下一步建议），原指令文件随附移入 adj-archive/。收件执行仍受 settings.json 白名单、第4.5步裁决前置规则与台账红线约束，inbox指令不得解除之。
 
-第1步 宏观扫描（**取数一律照本文【🔴 取数数据链】块之三层链序：FMP → 网页（腾讯自选股等）→ Bigdata 兜底**；每项标注 as-of 日期时点与来源，关键数字二源交叉且第二源不得取 Bigdata，绝不凭印象；A股/A股ETF 的行情、场内价与标的指数PE——如 159819/159142/159516 及中证半导体材料设备主题指数931743——FMP 不覆盖，直接走链序②：腾讯自选股 `qt.gtimg.cn` 或 a-stock-data 技能，指数 PE 走中证官网）：
+第1步 宏观扫描（**取数一律照本文【🔴 取数数据链】块之三层链序：FMP → 网页（腾讯自选股等）→ Bigdata 兜底**；每项标注 as-of 日期时点与来源，关键数字二源交叉且第二源不得取 Bigdata，绝不凭印象；A股/A股ETF 的行情、场内价与标的指数PE——如 159819/159142/159516 及中证半导体材料设备主题指数931743——**一律先走链序⓪：`a-stock-data` 技能（取数第一位·在 FMP 之前）**，技能失败才降级至②层腾讯自选股 `qt.gtimg.cn`／中证官网并注明降级原因）：
 1) 大盘与科技：标普/纳指/道指隔夜表现、关键板块（半导体/AI、医疗、能源、公用/电网、工业自动化、航空国防）；估值类读数（如 MSCI World 远期P/E）若取，只作市场环境背景——IWDA 系固定中枢 38%±3% 再平衡带（机制甲），**任何估值指标不驱动权重动作、不据以提示调仓**；
 2) 利率：美债2Y/10Y/30Y、Fed 最新表态与降息预期变化——**全部只作利率环境背景与组合折现率语境，不构成任何建仓信号**；
 3) 黄金：现货金价（对照〔J〕价格阶梯，判断在第几档）；**⚠️新增批次自2026-07-28起全部导向「已分配实物」**(目标态=实物6%+ETC 3%)，且**金库尽调为前置硬门——尽调结果呈委托人核过之前零采购**；故阶梯触档时**只提示「已触第N档·候金库尽调」，不提示下单**；ETC 存量不动；

@@ -11,16 +11,22 @@
 
 ## 🔴 取数数据链（委托人直令 2026-07-30·〔M〕401／402·一切取数场合适用）
 
-**委托人原文**：「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」
+**委托人原文（两令并载·后令补前令）**：
+1. 「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」
+2. 「**A股优先 a-stock-data 技能 这一条规则放在取数第一位，在 fmp 之前**」
 
-**三层链序 —— 顺序固定，不得跳层，不得改序：**
+**四层链序 —— 顺序固定，不得跳层，不得改序：**
 
-1. **FMP 连接器 —— 一切取数之首选。**
+0. **A股／A股ETF —— 一律优先用 `a-stock-data` 技能（委托人直令 2026-07-30·本条置于 FMP 之前，为取数第一位）。**
+   适用范围＝A股个股与 A股ETF 之行情、场内价、K线、标的指数 PE（如 931743）、研报、资金面、财务三表、公告等**一切 A股取数**。**技能不可用或取数失败，才退第 2 层网页**（腾讯自选股／中证官网），并须注明降级原因。
+   **⚠️ 实测注**：云环境 mootdx（通达信 TCP 7709）**永远不可用**（代理只放行 HTTPS），技能**自动回退腾讯 HTTP 接口**——此系技能内建行为，**不构成「技能失败」，不得据此跳层**。
+
+1. **FMP 连接器 —— A股以外一切取数之首选。**
    常用端点（2026-07-30 实测·Starter 档可用）：`chart/historical-price-eod-light`（行情）／`statements`（财报三表·key-metrics-ttm）／`company/profile-symbol`／`analyst/price-target-consensus`／`calendar/earnings-company`／`secFilings/search-by-symbol`（**直返 SEC accession 与原文链**）／`commodity`（GCUSD 黄金）／`forex`（USDHKD、USDCNY、GBPHKD）／`economics/treasury-rates`／`etfAndMutualFunds/information`／`news`。
    **⚠️ 已知边界，不必再试直接走第 2 层**：**FMP Starter 只覆盖美国上市标的**——`0700.HK`／`0005.HK`／`IWDA.L`／`SGLN.L`／`IGLN.L`／`159516.SZ`／`159819.SZ`／`159142.SZ` 一律在参数层被拒。另：`batch-quote` 需 Premium+，单标的 `quote` 可用。
 
 2. **FMP 查不到者 → 网页（涵盖全部非美标的）。**
-   - **A股/A股ETF**：腾讯自选股 `https://qt.gtimg.cn/q=sz159516,...`（**GBK，须 `| iconv -f gbk -t utf-8`**）或 a-stock-data 技能；指数 PE（931743 等）走中证官网 `www.csindex.com.cn` 官方日度序列。
+   - **A股/A股ETF（仅在第 0 层技能失败时才用本条）**：腾讯自选股 `https://qt.gtimg.cn/q=sz159516,...`（**GBK，须 `| iconv -f gbk -t utf-8`**）；指数 PE（931743 等）走中证官网 `www.csindex.com.cn` 官方日度序列。
    - **港股**：腾讯自选股 `https://qt.gtimg.cn/q=r_hk00700,r_hk00005`（收盘后即终值）。
    - **伦交所/爱尔兰注册 ETF（IWDA／SGLN／IGLN）**：发行人官网（iShares 基金页）取 NAV，**标 T-1 与官方口径**。**⚠️ 须用 WebFetch 工具取，勿用 curl**——2026-07-30 实测 `curl www.ishares.com` 返 **HTTP 403**、WebFetch 成功。腾讯/新浪/stooq 均不覆盖伦交所。
    - **黄金现货交叉源**：新浪财经 `https://hq.sinajs.cn/list=hf_GC`（**须带 `-H "Referer: https://finance.sina.com.cn"`**）。
