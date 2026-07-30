@@ -32,6 +32,7 @@
 | 12 | `round2-light-perturbation-preregister-2026-07-30.md` | CGM | 随ADJ-0730-07增补封存commit | 第二轮轻劣化清单(ADJ-0730-07⑥·内部预注册非外审件·时序义务=**早于变体包生成与席位开跑**) | — | — | 存档 |
 | 13 | `round2-placebo-factorial-preregister-2026-07-30.md` | CGM | 随ADJ-0730-07增补封存commit | 第二轮安慰剂因子表(含升级预案条件预注册·同上时序义务) | — | — | 存档 |
 | 14 | `round2-continuous-score-rule-2026-07-30.md` | CGM | 随ADJ-0730-07增补封存commit | 第二轮连续分计分细则(锚定量表+两席均值+**核定阈值终稿·封存即锁**·同上时序义务) | — | — | 存档 |
+| 15 | `round3-mid-perturbation-preregister-2026-07-30.md` | CGM | 随甲案点火commit | 第三轮(甲案)中间强度劣化清单(委托人「点火」·治第二轮唯一存活对抗解释「中间窗未取样」·单端点轮只测(a″)·条件分步·**跨引擎GPT席位·机械核降级申报在卷**·时序义务=**早于任何relay投放**) | — | — | 存档 |
 
 ### #9 之注
 
