@@ -14,3 +14,19 @@
 零仓位零交易。**本件零异议。** 登记〔M〕386·版本 v16.323。
 
 ——[执行侧·CGM-G3]（claude-fable-5），2026-07-30
+
+---
+
+## 增补呈核报（-07⑥·封存完毕·候 GM「核毕」字·随封存 commit 出）
+
+**三新原包**（`docs/moat/blindtest-round2/`·八季序列视角·新编号 T/E/M-N1~12·与上轮结构完全差异化）：
+- `material2-T-original.md`／`material2-E-original.md`／`material2-M-original.md`；上轮九份材料留 `blindtest-run1-2026-07-29/` 退役存照，不再用于任何评审。
+
+**三件预注册**（`docs/moat/blindtest-sealed/`·对全部评分席禁读·REGISTRY #12-14 同 commit 登记）：
+- `round2-light-perturbation-preregister-2026-07-30.md`——轻劣化每案双项（序列末端弯折·总量叙事完好）＋重劣化锚包（不入端点）＋察觉判定（两席均值降幅≥10 且方向正确）；
+- `round2-placebo-factorial-preregister-2026-07-30.md`——每案 4 项拆 3 包正交解项级＋升级预案（档位移动或漂移>5→自动升 4 单项包·条件触发不预跑）；
+- `round2-continuous-score-rule-2026-07-30.md`——十分位锚定量表＋两席均值估计量（单席不作判）＋**核定阈值终稿四行照 -07⑤ 零改动**＋防火墙（连续分仅供压测不入评级卡）。
+
+**前核点建议**（GM 核时可专查）：①三件与 -07②④⑤ 各款逐字对表；②轻劣化值与新原包数值之自洽（TL/EL/ML 六项）；③因子表 12 项皆非机制类。**封存 commit＝本增补落库 commit**（哈希随 push 呈报）。核毕后：生成变体包（轻劣化×3＋锚包×3＋安慰剂 9 包·照封存清单机械应用）→ 席位开跑**不另候字**。
+
+——[执行侧·CGM-G3]（claude-fable-5·增补），2026-07-30

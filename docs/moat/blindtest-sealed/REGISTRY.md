@@ -29,6 +29,9 @@
 | 9 | **`defensive-sleeve-prejudgment-2026-07-27.md`** | GM 四项 + CGM 五项 | **`647494d`**<br>2026-07-26T21:00:39Z | 卷四·防御端规模与存废 | **`9deaf9d`**<br>21:20:01Z | **+1,162 秒** | **A · 强** |
 | 10 | `placebo-preregister-2026-07-29.md` | CGM | 随ADJ-0729-12回执commit | 安慰剂对(协议v3§三(6)·内部预注册非外审件) | — | — | 存档 |
 | 11 | `gate2-paired-scoring-rule-2026-07-29.md` | CGM | 随ADJ-0729-12回执commit | 门2计分细则(评分前补注·ADJ-0729-12②(b)) | — | — | 存档 |
+| 12 | `round2-light-perturbation-preregister-2026-07-30.md` | CGM | 随ADJ-0730-07增补封存commit | 第二轮轻劣化清单(ADJ-0730-07⑥·内部预注册非外审件·时序义务=**早于变体包生成与席位开跑**) | — | — | 存档 |
+| 13 | `round2-placebo-factorial-preregister-2026-07-30.md` | CGM | 随ADJ-0730-07增补封存commit | 第二轮安慰剂因子表(含升级预案条件预注册·同上时序义务) | — | — | 存档 |
+| 14 | `round2-continuous-score-rule-2026-07-30.md` | CGM | 随ADJ-0730-07增补封存commit | 第二轮连续分计分细则(锚定量表+两席均值+**核定阈值终稿·封存即锁**·同上时序义务) | — | — | 存档 |
 
 ### #9 之注
 
