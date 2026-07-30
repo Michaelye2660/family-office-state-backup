@@ -4,6 +4,8 @@
 
 【环境同步 · 每次必做第一步】本任务每次在全新会话中运行。开始前先执行:`git fetch origin master && git reset --hard origin/master`；随后克隆深度核验（用户直令2026-07-12,浅克隆假象判例〔M〕50）:执行 `[ -f .git/shallow ] && git fetch --unshallow origin || true`,凡引用git历史结论前先确认非浅克隆`，把工作区强制对齐 master 最新内容。
 
+🔴【取数数据链 · 委托人直令（2026-07-30·〔M〕401／402）· 本班一切取数适用】委托人原文：「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」。**三层链序（顺序固定·不得跳层·不得改序）**：**① FMP 连接器优先**（已知边界：**Starter 只覆盖美国上市标的**，`0700.HK`／`0005.HK`／`IWDA.L`／`SGLN.L`／`IGLN.L`／`159516.SZ`／`159819.SZ`／`159142.SZ` 在参数层被拒，不必再试）→ **② 网页**（A股/港股走腾讯自选股 `qt.gtimg.cn`，须 `iconv -f gbk -t utf-8`；伦交所 ETF 走 iShares 官网 NAV 标 T-1、**须用 WebFetch 勿用 curl**〔curl 返 403〕；黄金交叉源新浪 `hq.sinajs.cn/list=hf_GC` 须带 Referer；余者交易所/IR/监管备案优先于一般检索）→ **③ 确实查不到才走 Bigdata.com（最后兜底）**。**二源交叉硬约束**：Bigdata 行情段自陈 `source: fmp`，**以 Bigdata 复核 FMP 不构成印证**，关键数字之第二源必须取②层。**本块适用于第1.6步预测结算之 data-verifier 取数与第②项机械扫描所涉一切数字**；取不到即如实报「未取到」，绝不以推断或旧值充实测。完整版见 `routines/morning-0900sgt-prompt.md` 之【🔴 取数数据链】块。
+
 第0.5步 收件（与每日简报 routine 同协议）：读取 adj-inbox/ 全部文件（README除外），三要素齐备者按台账〔N〕N6 执行并写回执归档；缺要素移 quarantine/ 记〔M〕异常。
 
 第1步 调用 pm-retro 子agent 做本周复盘。输入范围=上次复盘报告以来（首次运行=2026-07-05 建库起）的全部记录：git log（全分支）、portfolio-state.md〔M〕决策日志与〔N〕架构、briefings/ 全部归档、adj-archive/ 回执与 quarantine/、routines/ 存档 prompt、.claude/agents/ 配置。要求其严格按固定四节输出：

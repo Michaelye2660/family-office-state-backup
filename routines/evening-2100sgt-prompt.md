@@ -28,13 +28,35 @@
 - **零卖出原则**：核心未满配，降目标＝定投提前收官，**不产生任何减持动作**。
 
 
+══════ 🔴 取数数据链 · 委托人直令（2026-07-30·〔M〕401／402·**凌驾本文一切旧取数表述**）══════
+
+**委托人原文**：「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」
+
+**三层链序（顺序固定·不得跳层·不得改序）**
+
+**① FMP 连接器 —— 一切取数之首选。** 常用端点（2026-07-30 逐一实测·Starter 档可用）：行情 `chart/historical-price-eod-light`；财报 `statements/income-statement`、`key-metrics-ttm`；公司 `company/profile-symbol`；目标价 `analyst/price-target-consensus`；财报日 `calendar/earnings-company`；SEC `secFilings/search-by-symbol`（**直返 accession 号与原文直链**）；黄金 `commodity/commodities-historical-price-eod-light`（GCUSD）；汇率 `forex/forex-historical-price-eod-light`（USDHKD／USDCNY／GBPHKD）；美债 `economics/treasury-rates`；ETF `etfAndMutualFunds/information`；新闻 `news/search-stock-news`。
+**⚠️ 已知边界（不必再试，直接走②）**：**FMP Starter 只覆盖美国上市标的**——`0700.HK`／`0005.HK`／`IWDA.L`／`SGLN.L`／`IGLN.L`／`159516.SZ`／`159819.SZ`／`159142.SZ` **一律在参数层被拒**。另：`batch-quote` 需 Premium+，单标的 `quote` 可用。
+
+**② FMP 查不到者 → 网页（本层涵盖全部非美标的）**
+- **A股/A股ETF**：腾讯自选股 `https://qt.gtimg.cn/q=sz159516,sz159819,sz159142`（**GBK 编码，须 `| iconv -f gbk -t utf-8`**）；或 a-stock-data 技能。标的指数 PE（如 931743）走中证官网 `www.csindex.com.cn` 官方日度序列。
+- **港股**：腾讯自选股 `https://qt.gtimg.cn/q=r_hk00700,r_hk00005`（收盘后即为终值，附 PE 与 52 周区间）。
+- **伦交所/爱尔兰注册 ETF（IWDA／SGLN／IGLN）**：发行人官网（iShares 基金页）取 NAV，**标 T-1 与官方口径**。**⚠️ 须用 WebFetch 工具取，勿用 curl**——2026-07-30 实测 `curl www.ishares.com` 返 **HTTP 403**、WebFetch 成功。腾讯/新浪/stooq 皆不覆盖伦交所，不必试。
+- **黄金现货交叉源**：新浪财经 `https://hq.sinajs.cn/list=hf_GC`（**须带 `-H "Referer: https://finance.sina.com.cn"`**）。
+- 其余：交易所／公司 IR／监管备案 优先于一般 web 检索。
+
+**③ 确实查不到，才走 Bigdata.com —— 最后兜底**，不得作首选或第二顺位。
+
+**二源交叉印证之硬约束（不因链序变更而放松）**：Bigdata 之行情段自陈 `source: fmp`，故**以 Bigdata 复核 FMP 不构成任何印证**。凡关键数字（**下单前现价／红线权重／门槛边界值**），**第二源必须取②层**（腾讯自选股／新浪／官方 IR／交易所），且**动钱前须重取现价**。
+
+**取数纪律（照旧·本块不豁免）**：每个数字标注 **as-of 日期与时点 ＋ 来源**；美股盘中取数须注明**系盘中值、非最终收盘**（机械判据＝当日成交量显著低于前两日）；**取不到就如实报「未取到」，绝不以推断、旧值或 web 拼凑充作实测**。
+
 ══════ 执行流程（共7步，顺序固定，不可跳步，第6/7步为收尾必做）══════
 
 第0步 时间与事件定位：先确定今天真实日期（搜索必须用真实当天日期，严禁旧年份）；对照〔K〕事件日历，重大数据/财报公布前后1小时，大额单一律标注"限价单/避开公布窗口"（美国经济数据多在SGT晚间公布，晚间场尤须注意今晚有无CPI/非农/FOMC）。**占位先行归档（黑匣子机制·ADJ-0729-10②）**：本步末立即写 `briefings/YYYY-MM-DD-pm.md` 占位一行（「运行开始 HH:MM SGT·正文生成中」）并 `git push origin HEAD:master`；第6步归档时**整文件覆写**。此举系晚班死亡留痕分段器——有占位无正文＝死在生成段；无占位＝死在启动段。
 
 第0.5步 收件（adj-inbox协议·信道架构v3.1）：读取仓库 adj-inbox/ 全部文件（README除外）。凡同时具备三要素——①ADJ编号、②【共N项·类别】校验行、③"用户已确认+日期"行——按台账〔N〕N6协议执行（机械类=单程/判断类=全回路）；缺任一要素=不执行，移入 adj-archive/quarantine/ 并在台账〔M〕记异常。每单执行完写 adj-archive/ADJ-XXXX-receipt.md（固定格式:编号|项数对应|逐项结果|commit哈希|异常与下一步建议），原指令文件随附移入 adj-archive/。收件执行仍受 settings.json 白名单、第4.5步裁决前置规则与台账红线约束，inbox指令不得解除之。
 
-第1步 宏观扫描（web_search 核实当前数据、每项标注核实日期与来源，关键数字多源交叉，绝不凭印象；A股数据来源：A股/A股ETF 的行情、场内价与标的指数PE——如 159819/159142/159516 及中证半导体材料设备主题指数931743——优先用 a-stock-data 技能直连接口实测取数，技能不可用或取数失败时再用 web 搜索兜底）：
+第1步 宏观扫描（**取数一律照本文【🔴 取数数据链】块之三层链序：FMP → 网页（腾讯自选股等）→ Bigdata 兜底**；每项标注 as-of 日期时点与来源，关键数字二源交叉且第二源不得取 Bigdata，绝不凭印象；A股/A股ETF 的行情、场内价与标的指数PE——如 159819/159142/159516 及中证半导体材料设备主题指数931743——FMP 不覆盖，直接走链序②：腾讯自选股 `qt.gtimg.cn` 或 a-stock-data 技能，指数 PE 走中证官网）：
 1) 亚洲收盘复盘：上证/沪深300/恒生/恒生科技当日收盘涨跌与成交、南北向资金、政策监管动向、持仓A股ETF(159819/159142/159516)当日表现；
 2) 欧美盘前：美股期货与欧股盘中表现、今晚重要数据/财报时间表、关键板块（半导体/AI、医疗、能源、公用/电网、工业自动化、航空国防）；估值类读数（如 MSCI World 远期P/E）若取，只作市场环境背景——IWDA 系固定中枢 38%±3% 再平衡带（机制甲），**任何估值指标不驱动权重动作、不据以提示调仓**；
 3) 利率：美债2Y/10Y/30Y、Fed 最新表态与降息预期变化——**全部只作利率环境背景与组合折现率语境，不构成任何建仓信号**；
