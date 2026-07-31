@@ -18,29 +18,7 @@ LED=portfolio-state.md
 #    **实况比其诊断更重**：并非取最近一份而落后一代，是**永远只取 -49**——
 #    再交接十代，块7 仍出 GM-8 之四句。**其所报之后果成立，其所指之根因偏轻。**
 # 判据：`adj-archive` ∪ `adj-inbox` 内**首行含「交接书」且形如 E<n>→E<m>**者（排除回执件），取件号最大者。
-read -r HB HB_LABEL <<EOF
-$(python3 - <<'PY'
-import glob, re, os
-c = []
-for f in glob.glob('adj-archive/ADJ-*.md') + glob.glob('adj-inbox/ADJ-*.md'):
-    if 'receipt' in os.path.basename(f):      # 回执件首行亦含「交接书」，须排除
-        continue
-    with open(f, encoding='utf-8') as fh:
-        h = fh.readline()
-    if '交接书' not in h:
-        continue
-    lab = re.search(r'E\d+\s*(?:→|->)\s*E\d+', h.replace('*', ''))
-    n = re.search(r'ADJ-(\d{4})-(\d+)', f)
-    if lab and n:
-        c.append(((int(n.group(1)), int(n.group(2))), f, lab.group(0).replace(' ', '')))
-if not c:
-    print('NONE NONE')
-else:
-    c.sort()
-    print(c[-1][1], c[-1][2])
-PY
-)
-EOF
+read -r HB HB_LABEL HB_RCPT < <(python3 tools/_latest-handover.py || echo "NONE NONE")
 [ "$HB" = "NONE" ] && { echo "🔴 未找到任何交接书 —— 块7 无料源，**中止生成**（不出半成品包）"; exit 3; }
 
 {

@@ -4,11 +4,15 @@
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
 python3 - <<'PY'
-import os,glob
+import os,glob,sys
+sys.path.insert(0,'tools')
+from _latest_handover import latest_handover
+_HB = latest_handover() or ('（未找到交接书）','','')
 MUST=[('宪法正本','docs/constitution.md'),
       ('继任章程','docs/succession/gm-succession.md'),
-      ('最近交接书','adj-archive/ADJ-0731-49.md'),
-      ('交接书回执','adj-archive/ADJ-0731-48-and-49-receipt.md'),
+      # 🔴 原把 ADJ-0731-49 与其回执**硬写死**→分母之「最近交接书」永远停在 -49（CGM 自捕·ADJ-0731-53 收件时）
+      ('最近交接书', _HB[0]),
+      ('交接书回执', _HB[2] or '（回执尚不存在）'),
       ('gm-snapshot','docs/gm-snapshot.md'),
       ('裁决侧知识库','docs/adjudicator-knowledge.md'),
       ('热启动包','docs/gm-warmstart.md')]
