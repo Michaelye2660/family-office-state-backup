@@ -98,6 +98,21 @@ elif [ "$N8" -gt 5 ]; then R="🔴 落后 ${N8} 版（>5 版即标红）"; RED=$
 elif [ "$N8" -gt 0 ]; then R="🟡 落后 ${N8} 版（未越 5 版闸）"; else R="🟢 同版"; fi
 say "| ⑧ | gm-snapshot 戳 vs 台账版本 | 台账 ${LV}／戳 ${SV} | ${R} | CGM |"
 
+# ── 源⑨ 台账增长闸（ADJ-0731-54⑥-b 三·2026-07-31 立）─────
+LG=$(python3 - <<'LEDGER'
+import io,re
+raw=io.open("portfolio-state.md",encoding="utf-8").read()
+seg=raw[raw.index("\n## 〔M〕"):raw.index("\n## 〔N〕")]
+nums=[int(m.group(1)) for m in re.finditer(r"(?m)^(\d+)\. \*\*",seg)]
+print(f"{len(raw.encode())}|{max(nums)}|{max(nums)-200}")
+LEDGER
+)
+LB="${LG%%|*}"; lr="${LG#*|}"; LM="${lr%%|*}"; LN="${lr##*|}"
+if [ "$LN" -ge 200 ]; then R="🔴 〔M〕自上次归档已新增 ${LN} 条（≥200 即触发归档批次）"; RED=$((RED+1));
+else R="🟢 距 200 条余 $((200-LN)) 条"; fi
+say "| ⑨ | **台账增长闸**：主档字节／〔M〕末号／距 200 条触发（**上限值候 GM 裁·-54⑥-b 一**） | ${LB} B／〔M〕${LM}／新增 ${LN} | ${R} | CGM 出数·GM 裁 |"
+say "| ⑨b | **⚠️ 上限尚未裁定** —— **-54⑥-b 四明令「上限与检测同一件内立」，而本源只得其半**：在上限裁定前，本源**只能测「200 条」一条触发，测不了「超上限」那一条**——如实标，**不以半闸充全闸** | — | ⚠️ 半闸 | GM |"
+
 say ""
 say "**标红合计：${RED} 项**"
 say ""
