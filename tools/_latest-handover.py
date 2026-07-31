@@ -51,8 +51,29 @@ def latest_handover():
     return path, label, rcpt
 
 
+def latest_skeleton():
+    """**唯一**之「下一代空骨架」判据（ADJ-0731-57②4）。
+
+    🔴 立此之由（CGM 自捕·ADJ-0731-58 收件当轮）：
+      两处各以 `sorted(glob(...))[-1]` / `ls | tail -1` 取骨架件 —— **皆系字典序**，
+      故 `E11-declaration-SKELETON.md` < `E9-declaration-SKELETON.md`，**取到的是上上代之骨架**。
+      **本日同族第四例**（块7 硬写死／reading-set 硬写死／warmstart-ratio 漏 sort()／本处字典序）。
+      → **凡以「最新」取件者，一律按数值序，且判据只此一份。**
+    """
+    c = []
+    for f in glob.glob('docs/succession/E*-declaration-SKELETON.md'):
+        m = re.search(r'E(\d+)-declaration-SKELETON', os.path.basename(f))
+        if m:
+            c.append((int(m.group(1)), f))
+    if not c:
+        return ''
+    c.sort(key=lambda t: t[0])          # 🔴 数值序·勿改回字典序
+    return c[-1][1]
+
+
 if __name__ == '__main__':
     r = latest_handover()
     if not r:
         sys.exit('🔴 未找到任何交接书')
     print('\t'.join(r))
+    print(latest_skeleton())

@@ -30,7 +30,11 @@ echo "> **本届交接书**：\`${HB}\`（${HB_LABEL}）｜**其回执**：\`${H
 echo
 
 # ── 分母：复用 reading-set-size.sh 之总量，不另算一遍 ──────────────────────────
-DEN=$(bash tools/reading-set-size.sh 2>/dev/null | grep -oP '\*\*合计\*\* \| \*\*\K[0-9,]+' | tr -d ',')
+# 🔴 pattern 放宽之由（CGM 自捕·-58 收件当轮）：原为 `**合计** | **`，
+#    而 -58② 改表头为「**合计（载入六项）**」→ **pattern 失配、分母取不到**。
+#    **本器当时照设计 fail-closed 中止，未以旧值充数——该行为是对的，留痕于此**；
+#    惟须记：**一个写死了上游表头字样的取数器，会在上游改一个字时静默失效**。
+DEN=$(bash tools/reading-set-size.sh 2>/dev/null | grep -oP '\*\*合计[^|]*\*\* \| \*\*\K[0-9,]+' | tr -d ',')
 if [ -z "$DEN" ]; then
   echo "🔴 分母取不到 —— **默认先疑取数坏了，不以旧值或估值充替代**；中止。"
   exit 4
@@ -56,10 +60,16 @@ add(){ # $1=路径 $2=是否在分母集内(Y/N)
 }
 add docs/gm-warmstart.md            Y
 add docs/constitution.md            Y
-add CLAUDE.md                       N
+# -58② 起 CLAUDE.md 已明入载入集 → 此前「分子非分母之子集」之缺口自此闭合
+add CLAUDE.md                       Y
 add docs/succession/gm-succession.md Y
 add "$HB"                           Y
 [ -n "$HB_RCPT" ] && add "$HB_RCPT" Y || printf '| 交接书回执 | — | 🔴 **尚不存在** |\n'
+# 🔴 数值序取骨架·非 ls|tail（字典序会取到上上代之骨架·CGM 自捕）
+# 🔴 并留痕：本行原把注释写在同一行末尾，**注释遂吞掉其后之 add 调用**，分子少算 6,533 B——
+#    而表面上分子仍是个像样的数、比值仍出得来。**又一次「输出自洽而算错」。**
+SK=$(python3 -c "import sys;sys.path.insert(0,'tools');from _latest_handover import latest_skeleton;print(latest_skeleton())")
+[ -n "$SK" ] && add "$SK" Y || printf '| 下一代空骨架 | — | 🔴 **尚未备** |\n'
 echo "| **合计** | **${NUM}** | 其中在分母集内者 **${NUM_IN}** |"
 echo
 
@@ -79,6 +89,14 @@ print("**🔴 分母系内生的（ADJ-0731-54③ 立·此段不得删）**：�
       "CGM 已自陈「本轮分母之增长部分来自本席自己之输出」。**故比值可以在负载上升时反而下降。**")
 print("**一个会被自己所测之活动推动的分母，单独看比值即是自欺。** 周对账第九源须**看三条曲线，不看一条**："
       "**分子／分母／比值**——**分母上行而比值下行者，系负担加重不是减轻。**")
+print()
+if num_in/den > 0.95:
+    print("**🔴 本比值已失去分辨力（CGM 自陈·ADJ-0731-58 收件当轮所见）**：")
+    print("`ADJ-0731-58②` 把载入集重定义为六项，**而该六项恰即本比值之分子** ——")
+    print("**分母收敛到了分子上，比值遂逼近 100%。**")
+    print("**本比值原所量者＝「热启动路径让你少读多少必读集」；如今必读集就是热启动路径，故它已无物可量。**")
+    print("**不得把这个 100% 读成「甲条大获成功」** —— 它只说明两个集合合并了，不说明继任成本降了多少。")
+    print("**真正之减法读数在 `reading-set-size.sh` 之「已移出」表**（绝对字节），**不在本比值**。")
 PY
 echo
 

@@ -37,46 +37,18 @@ echo "> **改由 CGM 于「收交接书」之同一 commit 内重跑本脚本并
 echo "> **候任仍须自核者只一条**：块7 顶部之「料源是否仍系最新交接书」——该核 GM 侧以目录枚举即可执行。"
 echo
 
-echo "## 块1 · 现役宪制终态"
+echo "## 块1 · 现役宪制终态 —— **指针（ADJ-0731-57②1 去内容）**"
 echo
-echo "**正本＝\`docs/constitution.md\`（该文件即宪法正本；claude.ai 项目指令系 bootstrap 指针）**"
-echo "**🔴 必须去读正本之情形**：任何**修宪**、任何**权重变更之裁定**、任何对**条文原文**之援引。本块只供定位，不可作条文引用。"
-echo
-echo "〔本块系静态终态表·**不自台账正则抽取**——ADJ-0731-51③ 缘起即原实现误捕〔H-0〕节内一行 5 列内容入 2 列表〕"
-echo
-echo "| 项 | 现役值 |"
-echo "|---|---|"
-echo "| 核心四件 | IWDA 38%（机制甲 ±3%·触发线 35／41）／短债 30%／黄金 9%（实物 6%＋ETC 3%）／UHFS 3% |"
-echo "| 总权益 | 58% ＝ **宪法地板**（再降须修宪） |"
-echo "| 三条红线 | L1≥25%（单独达标口径）／含杠杆≤7%（现占 UHFS 3%）／锁定≤10%（现 3%）／中港≤10%（**实算 2.94%**） |"
-echo "| 科技带 | 25–30%｜**分母按总金额·分子穿透算**（委托人 2026-07-31 定）｜满配推算 24.99% 贴线／**当期实算 8.09%**〔与 snapshot 之 ≈10.5% **待并轨**〕 |"
-echo "| 三闸 | 双门制（門A ∧ 門B）／U 档零惩罚／MDG-5 观测证据闸 |"
-echo "| 功能货币 | USD |"
-echo "| 修宪流程 | 委托人裁定 → commit → **即时生效** |"
-echo "| 已退役 | 科技平台域尺 v1.1（降为证据组织模板·四件强制） |"
+echo "**正本＝\`docs/constitution.md\`**（该文件即宪法正本；claude.ai 项目指令系 bootstrap 指针）。**本块不复制任何条文与数值。**"
+echo "**🔴 何时必须去读正本**：任何**修宪**、任何**权重变更之裁定**、任何对**条文原文**之援引 —— 即**凡须用到具体数值或条文者，一律去正本**。"
+echo "〔**去内容之由**（-57① 实测·照录）：**块 1／2 是「复制了内容的指针」—— 既复制，又注明不可引用，两头成本各付一次。** 原内容一字不删存于 \`docs/gm-warmstart-block12-ARCHIVE-2026-07-31.md\`〕"
 echo
 
-echo "## 块2 · 当期权威四字段"
+echo "## 块2 · 当期权威四字段 —— **指针（ADJ-0731-57②1 去内容）**"
 echo
-echo "**正本＝\`portfolio-state.md\` 权威状态块（第 9–14 行）**"
-echo "**🔴 必须去读正本之情形**：收件校验失配时、纪元交接时。"
-echo
-echo '```'
-sed -n '10p' "$LED" | sed 's/｜/\n/g' | sed 's/^> //' | grep -oE '(ACTIVE_GM_EPOCH|SESSION_FINGERPRINT|ACTIVATION_SHA)=[A-Za-z0-9]+'
-python3 - "$GENDATE" <<'PZ'
-import glob,re,sys,os
-d=sys.argv[1]; mmdd=d[5:7]+d[8:10]
-ns=[]
-for f in glob.glob('adj-archive/ADJ-*.md')+glob.glob('adj-inbox/ADJ-*.md'):
-    m=re.match(rf'ADJ-{mmdd}-(\d+)', os.path.basename(f))
-    if m: ns.append(int(m.group(1)))
-nxt=f"ADJ-{mmdd}-{max(ns)+1:02d}" if ns else f"ADJ-{mmdd}-01"
-print(f"DOC_SEQ 起续: {nxt}（跨日则 ADJ-<MMDD>-01）")
-print(f"# 取值法：扫 adj-archive ∪ adj-inbox 内当日件号最大值 +1（本次扫得 {len(ns)} 件·最大 {max(ns) if ns else 0}）")
-PZ
-echo '```'
-echo
-echo "**校验纪律**：纪元／指纹／激活锚／编号**任一失配一律拒收并出异常回执**，不得语义推断。"
+echo "**正本＝\`portfolio-state.md\` 权威状态块（文件头之引用块）**。**本块不复制四字段之值** —— 该值一变即过期，而过期之四字段比没有更坏。"
+echo "**🔴 何时必须去读正本**：**收件校验时（每次）**、纪元交接时。**校验纪律**：纪元／指纹／激活锚／编号**任一失配一律拒收并出异常回执**，不得语义推断。"
+echo "**DOC_SEQ 取值法（法而非值）**：扫 \`adj-archive\` ∪ \`adj-inbox\` 内当日件号**最大值 +1**；跨日则 \`ADJ-<MMDD>-01\`。"
 echo
 
 echo "## 块3 · 持仓与红线读数"
