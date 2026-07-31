@@ -43,11 +43,28 @@ def latest_handover():
     _, path, label = cands[-1]
     base = os.path.basename(path)[:-3]
     rcpt = ''
-    for pat in (f'adj-archive/{base}-receipt.md', f'adj-archive/{base}-*receipt*.md'):
-        hit = sorted(glob.glob(pat))
-        if hit:
-            rcpt = hit[0]
-            break
+    # 🔴 合并回执之查找（CGM 自捕·ADJ-0731-62 收件当轮·**且系一处已发布之预言被实测证伪**）：
+    #   原实现只认 `ADJ-MMDD-NN-receipt.md` 与 `ADJ-MMDD-NN-*receipt*.md`。
+    #   **而本仓之回执常系合并件**（`ADJ-0731-57-and-58-receipt.md` 等）——
+    #   `-62` 之回执名为 `ADJ-0731-61-and-62-receipt.md`，**件号在名之尾而非首，遂查不到**。
+    #   **后果**：`reading-set-size.sh` 之「交接书回执」永远计 0，载入集总量长期少算。
+    #   🔴 **本席曾于 ADJ-0731-61-and-62-receipt §丙 与〔M〕471⑪ 断言「本回执落库后该栏即回填」——
+    #      落库后实测未回填，该预言被自己的仪器证伪。** 更正见〔M〕472。
+    #   **教训**：**一个「稍后就会好」的解释，若不回头量一次，就等于一个没被发现的缺陷。**
+    import re as _re
+    m = _re.search(r'ADJ-(\d{4})-(\d+)', base)
+    num = f'{int(m.group(2)):02d}' if m else ''
+    day = m.group(1) if m else ''
+    cands = []
+    for f in glob.glob('adj-archive/*receipt*.md'):
+        b = os.path.basename(f)
+        if not b.startswith(f'ADJ-{day}-'):
+            continue
+        # 件号须以独立 token 出现（首件、尾件、或 -and- 之任一侧），避免 -6 命中 -62
+        if _re.search(rf'(?<!\d){num}(?!\d)', b.replace('-receipt', '').replace('receipt', '')):
+            cands.append(f)
+    if cands:
+        rcpt = sorted(cands)[0]
     return path, label, rcpt
 
 
