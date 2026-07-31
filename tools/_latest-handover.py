@@ -92,5 +92,18 @@ if __name__ == '__main__':
     r = latest_handover()
     if not r:
         sys.exit('🔴 未找到任何交接书')
-    print('\t'.join(r))
-    print(latest_skeleton())
+    # 🔴 BrokenPipe 之处置（CGM 自捕·2026-08-01·随 ADJ-0801-01 落实轮）：
+    #   调用方作 `read -r A B C < <(python3 …)`——`read` 只取首行即弃管道，
+    #   第二个 print 遂抛 BrokenPipeError，**每一次正常运行都吐一段 Traceback**。
+    #   其害不在这一次：**一个每跑必吐 Traceback 之脚本，会把读者训练成看见 Traceback 不当回事**；
+    #   等到哪天吐的是真错，没有人会停下来。故此处**只吞下游停读这一种**，别的照抛。
+    try:
+        print('\t'.join(r))
+        print(latest_skeleton())
+        sys.stdout.flush()
+    except BrokenPipeError:
+        try:
+            sys.stdout.close()
+        except Exception:
+            pass
+        os._exit(0)
