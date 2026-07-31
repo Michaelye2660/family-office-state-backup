@@ -23,6 +23,8 @@ TARGETS = [
     ('META',   'docs/moat/sweep-01/evidence-META-2026-07-30.md'),
     ('TMO',    'docs/moat/sweep-01/evidence-TMO-2026-07-31.md'),
     ('0700HK', 'docs/moat/sweep-01/evidence-0700HK-2026-07-31.md'),
+    # ADJ-0731-56 扩充件（模板配对＝现役正本 4ac3eb65·同 TMO·非原文本·-56②）
+    ('AMZN',   'docs/moat/sweep-01/evidence-AMZN-2026-07-31.md'),
 ]
 
 # 可指定标的（ADJ-0731-46④ 只须重造 TMO 一卡·不重造其余三卡）
