@@ -38,7 +38,19 @@
 **⓪ A股／A股ETF → 一律优先用 `a-stock-data` 技能（委托人直令 2026-07-30·**本条置于 FMP 之前·为取数第一位**）。** 适用范围＝A股个股与 A股ETF 之行情、场内价、K线、标的指数 PE、研报、资金面、财务三表、公告等**一切 A股取数**（如 159516／159819／159142 与中证半导体材料设备主题指数 931743）。**技能不可用或取数失败，才退第②层网页**（腾讯自选股／中证官网）。
 **⚠️ 实测注**：云环境 mootdx（通达信 TCP 7709）**永远不可用**（代理只放行 HTTPS），技能会**自动回退腾讯 HTTP 接口**，不影响行情与 PE 获取——此系技能内建行为，**不构成「技能失败」，不得据此跳层**。
 
-**① FMP 连接器 —— A股以外一切取数之首选。** 常用端点（2026-07-30 逐一实测·Starter 档可用）：行情 `chart/historical-price-eod-light`；财报 `statements/income-statement`、`key-metrics-ttm`；公司 `company/profile-symbol`；目标价 `analyst/price-target-consensus`；财报日 `calendar/earnings-company`；SEC `secFilings/search-by-symbol`（**直返 accession 号与原文直链**）；黄金 `commodity/commodities-historical-price-eod-light`（GCUSD）；汇率 `forex/forex-historical-price-eod-light`（USDHKD／USDCNY／GBPHKD）；美债 `economics/treasury-rates`；ETF `etfAndMutualFunds/information`；新闻 `news/search-stock-news`。
+**① FMP —— A股以外一切取数之首选。** **🔴 实现方式已改（委托人直令 2026-07-31·〔M〕438·缘起＝MCP 连接器授权在定时会话反复弹窗、`permissions.allow` 白名单实测无效〔委托人亲验〕，故绕开 MCP）**：
+
+**主路径＝`bash tools/fmp-fetch.sh`（curl 直调 REST·不经 MCP·无授权弹窗）**
+- `bash tools/fmp-fetch.sh check` —— 开工先跑一次自检（凭据有无／网络／带凭据往返）；
+- `bash tools/fmp-fetch.sh quote MSFT META GOOG` —— 报价（可多标的）；
+- `bash tools/fmp-fetch.sh etf SMH` —— ETF 信息（含 `sectorsList`·科技带穿透用）；
+- `bash tools/fmp-fetch.sh eod IWDA.L 5` —— 历史收盘末 N 条。
+- **凭据＝环境变量 `$FMP_API_KEY`**（N8：值永不入对话、永不入仓库；脚本只报有无与长度）。
+
+**🔴 若 `check` 报「FMP_API_KEY 未定义」**：**不得空转、不得反复重试**——**当轮如实报「FMP 凭据未配置」并直接降级至第②层网页**，同时在产出「待核实」节列明该缺口。**此为硬规则**：凭据缺失系环境问题，非取数失败，**不消耗班次时间**。
+
+**备胎＝FMP MCP 连接器**（`mcp__FMP__*`）：**仅限交互会话**（有人可应答授权窗时）可用；**定时班次一律不主动调用 MCP**，避免弹窗挂死会话。**若脚本路径与 MCP 皆不可得，照降级至第②层并注明原因。**
+
 **⚠️ 已知边界（不必再试，直接走②）**：**FMP Starter 只覆盖美国上市标的**——`0700.HK`／`0005.HK`／`IWDA.L`／`SGLN.L`／`IGLN.L`／`159516.SZ`／`159819.SZ`／`159142.SZ` **一律在参数层被拒**。另：`batch-quote` 需 Premium+，单标的 `quote` 可用。
 
 **② FMP 查不到者 → 网页（本层涵盖全部非美标的）**
