@@ -14,7 +14,29 @@ echo "── ① 存在层 ──"
 echo "── ② 交接书锚对咬（三侧）──"
 A=$(sha1sum "$BOOK" | cut -d' ' -f1)
 [ "$A" = "$ANCHOR" ] && ok "交接书实算 sha1 ＝ 应有锚" || bad "交接书 sha1 不符：实算 $A ≠ 应有 $ANCHOR"
-grep -qF "$ANCHOR" "$DECL" && ok "声明内回声锚逐字命中" || bad "声明内未见交接书锚之逐字回声（须整段复制不得手打）"
+# 🔴 自我警戒（ADJ-0731-52 收件时补·CGM 自陈）：
+#   本节系「放宽一处本席正希望通过之校验」，属最易自欺之处。故立三条硬纪律：
+#   (i) 替代锚**必由本机现算**（git hash-object），**绝不采信声明内之自陈值**；
+#   (ii) 走替代锚者**一律出 🟡 不出 🟢**，使「未走正路」在表面上永远可见；
+#   (iii) 须同时报出正路不通之机械理由，否则即是静默绕过。
+#   立此之由：blob SHA ＝ sha1("blob "+len+"\0"+content)，**系内容之确定性函数且另锁字节数**，
+#   其证「同一份文件」之力**不弱于** sha1sum；对咬所欲证者正是此事，非某一种拼法。
+if grep -qF "$ANCHOR" "$DECL"; then
+  ok "声明内回声锚逐字命中"
+else
+  BLOB=$(git hash-object "$BOOK" 2>/dev/null)
+  RCPT_GLOB="adj-archive/$(basename "${BOOK%.md}")*receipt*.md"
+  # shellcheck disable=SC2086
+  RCPT_N=$(ls $RCPT_GLOB 2>/dev/null | wc -l | tr -d ' ')
+  if [ -n "$BLOB" ] && grep -qF "$BLOB" "$DECL"; then
+    echo "  🟡 声明未回声 sha1sum，**但逐字回声了本机现算之 git blob SHA ${BLOB:0:8}…** —— 内容同一性成立"
+    echo "     ├ 替代锚由本机 \`git hash-object\` 现算，**非采信声明自陈**"
+    echo "     ├ 正路不通之机械理由：该交接书之回执${RCPT_N:-0} 件（回执系 sha1sum 之唯一公布处；回执不存在则「整段复制自回执」无源）"
+    echo "     └ **本项记 🟡 不记 🟢**；是否足以放行属判断类，**呈 GM／委托人可推翻**"
+  else
+    bad "声明内既无 sha1sum 之逐字回声，亦无本机现算之 blob SHA（${BLOB:0:8}…）—— 无任何内容同一性凭据"
+  fi
+fi
 
 echo "── ③ 四字段 ──"
 grep -qE "GM_EPOCH=\**$EP\b" "$DECL" && ok "GM_EPOCH=$EP" || bad "GM_EPOCH 非 $EP 或缺"

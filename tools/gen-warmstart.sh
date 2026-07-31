@@ -12,6 +12,37 @@ AGE_0725=$(age 2026-07-25); AGE_0726=$(age 2026-07-26); AGE_0727=$(age 2026-07-2
 LIMIT=25600
 LED=portfolio-state.md
 
+# ── 块7 之料源：**最新一份交接书**（ADJ-0731-52 收件时修·GM-10 首次外部实测第①处）──────────
+# 🔴 原实现把 `adj-archive/ADJ-0731-49.md` **硬写死**在三处。
+#    GM-10 诊为「取最近一份交接书、而包生成于交接书之前 → 结构上落后一代」；
+#    **实况比其诊断更重**：并非取最近一份而落后一代，是**永远只取 -49**——
+#    再交接十代，块7 仍出 GM-8 之四句。**其所报之后果成立，其所指之根因偏轻。**
+# 判据：`adj-archive` ∪ `adj-inbox` 内**首行含「交接书」且形如 E<n>→E<m>**者（排除回执件），取件号最大者。
+read -r HB HB_LABEL <<EOF
+$(python3 - <<'PY'
+import glob, re, os
+c = []
+for f in glob.glob('adj-archive/ADJ-*.md') + glob.glob('adj-inbox/ADJ-*.md'):
+    if 'receipt' in os.path.basename(f):      # 回执件首行亦含「交接书」，须排除
+        continue
+    with open(f, encoding='utf-8') as fh:
+        h = fh.readline()
+    if '交接书' not in h:
+        continue
+    lab = re.search(r'E\d+\s*(?:→|->)\s*E\d+', h.replace('*', ''))
+    n = re.search(r'ADJ-(\d{4})-(\d+)', f)
+    if lab and n:
+        c.append(((int(n.group(1)), int(n.group(2))), f, lab.group(0).replace(' ', '')))
+if not c:
+    print('NONE NONE')
+else:
+    c.sort()
+    print(c[-1][1], c[-1][2])
+PY
+)
+EOF
+[ "$HB" = "NONE" ] && { echo "🔴 未找到任何交接书 —— 块7 无料源，**中止生成**（不出半成品包）"; exit 3; }
+
 {
 echo "# GM 热启动包（ADJ-0731-50① 立·2026-07-31）"
 echo
@@ -21,6 +52,11 @@ echo "> **与 ADJ-0731-35 之关系**：**-35 之验收一分不减**——就�
 echo "> **生成 tip**：\`$(git log -1 --format=%H | cut -c1-12)\`｜**生成日**：${GENDATE}｜**上限** ${LIMIT} B"
 echo ">"
 echo "> **🔴 包内通则（ADJ-0731-51⑤ 立）**：**本包凡引动态计数（龄／件数／字节数／版本号／未签数），一律同书读取时点；无时点者不得输出。**"
+echo ">"
+echo "> **🔴 刷新之责在 CGM，不在候任（ADJ-0731-52 收件时补）**：GM 侧无仓库 shell、沙盒无网络，**结构上跑不了本脚本**——"
+echo "> 故 -52 §一 第 1 步「接印首轮请先跑一次该脚本取独立读数」**候任办不到，非其懈怠**。"
+echo "> **改由 CGM 于「收交接书」之同一 commit 内重跑本脚本并刷新本包**（已并入收件例程）；**候任只读库中现存版本即可，且该版本必系当代**。"
+echo "> **候任仍须自核者只一条**：块7 顶部之「料源是否仍系最新交接书」——该核 GM 侧以目录枚举即可执行。"
 echo
 
 echo "## 块1 · 现役宪制终态"
@@ -139,48 +175,97 @@ echo
 echo "**正本＝\`docs/memory-digests/\` 逐日原声件 ＋ 最近一份交接书 §六。**"
 echo "**🔴 必须去读正本之情形**：**凡本块标「已截断」者，候任必须回读原声件**，不得据截断句作承接（ADJ-0731-50① 硬约束）。"
 echo
-echo "### 7-a · 前任「对下任四句」（自 \`adj-archive/ADJ-0731-49.md\` §六机械抽取）"
+echo "**🔴 块7 之料源＝\`${HB}\`（${HB_LABEL}）—— 系本包生成时全库**最新**一份交接书。**"
+echo "**🔴 候任自核（本条 GM 侧可自行执行·无须 shell）**：枚举 \`adj-inbox\` 与 \`adj-archive\`，"
+echo "**若存在件号大于 \`$(basename "${HB%.md}")\` 之交接书，则本块已过期一代，承接段一律以最新交接书 §六 为准，不得用本块。**"
+echo "〔立此条之由：ADJ-0731-52 收件时 GM-10 首次外部实测查出，原实现把 \`ADJ-0731-49\` **硬写死**，"
+echo "使块7 之「前任」永远停在 GM-8——**承接段整段错位一代，恰恰命中 -35④ 所防之「打勾式承接」**。〕"
 echo
-python3 - <<'PY'
-import re
-t=open('adj-archive/ADJ-0731-49.md',encoding='utf-8').read()
-m=re.search(r'\*\*对下任四句\*\*[：:](.+?)(?:\n\n|---)', t, re.S)
+echo "### 7-a · 前任「对下任四句」（自 \`${HB}\` §六机械抽取·两种书写格式皆可解）"
+echo
+python3 - "$HB" <<'PY'
+import re, sys
+t = open(sys.argv[1], encoding='utf-8').read()
+m = re.search(r'\*\*对下任(?:之)?[一二三四五六]句\*\*[：:]', t)
 if not m:
     print("| — | **🔴 抽取失败·必须回读正本** | 已截断 |")
 else:
-    body=m.group(1).strip()
-    parts=re.split(r'(?=[①②③④])', body)
+    seg = t[m.end():]
+    e = re.search(r'\n---\s*\n|\n##\s', seg)          # 截到下一水平线或下一节标题
+    seg = seg[:e.start()] if e else seg[:3000]
     print("| # | 原句 | 完整／已截断 |")
     print("|---|---|---|")
-    for p in parts:
-        p=p.strip().rstrip('；;。 ')
-        if not p: continue
-        flag = "**完整**" if len(p) <= 200 else "**🔴已截断·须回读原声件**"
-        mk=p[0] if p and p[0] in '①②③④⑤⑥⑦⑧⑨' else '—'
-        print(f"| {mk} | {p[:200]} | {flag} |")
+    n = 0
+    for p in re.split(r'(?=[①②③④⑤⑥])', seg):
+        p = ' '.join(p.split()).strip().rstrip('；;。 ')
+        if not p or p[0] not in '①②③④⑤⑥':
+            continue
+        n += 1
+        mk, body = p[0], p[1:].strip()          # 序号入首列，正文不重复带序号
+        flag = "**完整**" if len(body) <= 200 else "**🔴已截断·须回读原声件**"
+        print(f"| {mk} | {body[:200]} | {flag} |")
+    if n == 0:
+        print("| — | **🔴 抽取到 0 句·必须回读正本**（标记法或有变） | 已截断 |")
 PY
 echo
-echo "### 7-b · 前任自纠之同型清单（GM-8 自陈：十二次自纠、九次同型）"
+echo "### 7-b · 前任自纠／自陈之同型清单（自 \`${HB}\` §六机械抽取）"
 echo
-echo "**根因一句（逐字）**：「**以「未见」代「不存在」，而未先读专为该事所设之档。**」"
-echo
-echo "| # | 同型条（截断至标题层·**全文须回读交接书 §六**） |"
-echo "|---|---|"
-python3 - <<'PY'
-import re
-t=open('adj-archive/ADJ-0731-49.md',encoding='utf-8').read()
-i=t.find('本届十二次自纠')
-seg=t[i:i+2600] if i>0 else ''
-for n,line in enumerate(re.findall(r'^\d+\.\s+\*\*(.+?)\*\*', seg, re.M), 1):
+python3 - "$HB" <<'PY'
+import re, sys
+t = open(sys.argv[1], encoding='utf-8').read()
+i = t.find('## §六')
+seg = t[i:] if i >= 0 else t
+j = re.search(r'\*\*对下任(?:之)?[一二三四五六]句\*\*', seg)
+seg = seg[:j.start()] if j else seg
+lead = re.search(r'^\*\*(.+?)\*\*\s*$', seg, re.M)
+print(f"**领句（逐字）**：「**{lead.group(1)}**」" if lead else "**领句**：🔴 未抽到·须回读正本")
+print()
+print("| # | 同型／自陈条（截断至标题层·**全文须回读交接书 §六**） |")
+print("|---|---|")
+rows = re.findall(r'^\d+\.\s+\*\*(.+?)\*\*', seg, re.M)
+for n, line in enumerate(rows, 1):
     print(f"| {n} | **{line[:80]}** |")
+if not rows:
+    print("| — | **🔴 抽取到 0 条·必须回读正本** |")
 PY
 echo
-echo "**🔴 上表仅标题层，皆记为「已截断」——依 -50① 硬约束，候任须回读 \`adj-archive/ADJ-0731-49.md\` §六全文方得作承接。**"
+echo "**🔴 上表仅标题层，皆记为「已截断」——依 -50① 硬约束，候任须回读 \`${HB}\` §六全文方得作承接。**"
 echo
 echo "### 7-c · 在途·缺席·未决项"
 echo
 echo "**在途**：SWEEP-01 Fable 席五卡**已造并全部扣住**（**读前不得只见其一、不得先见 Fable 侧**）；旧 TMO v1 卡已隔离（**污染件·不入任何比较与统计**）；EXT-12 组包在途。"
-echo "**缺席**：\`docs/approvals.md\` L7 级亲笔锚候周批未补；前一纪元最后 7 日逐日件**形态性缺档**（逐日件形态 2026-07-31 方立）。"
+echo "**缺席**：\`docs/approvals.md\` L7 级亲笔锚候周批未补。"
+echo
+echo "**最近 7 日逐日件在档实况（机械枚举·非静态断言）**——"
+echo "〔原实现静书「前一纪元最后 7 日逐日件**形态性缺档**」，经 GM-10 实测**该断言过宽**：GM 侧 E8 期实有三件。"
+echo "**一句「缺档」写死在包里，会让候任跳过本来读得到的档**；故改为逐日机械枚举，缺与不缺皆由枚举说话。〕"
+echo
+python3 - "$GENDATE" <<'PY'
+import datetime, glob, os, sys, re
+d0 = datetime.date.fromisoformat(sys.argv[1])
+names = [os.path.basename(p) for p in glob.glob('docs/memory-digests/*.md')]
+print("| 日期 | GM 侧 | CGM 侧 |")
+print("|---|---|---|")
+for k in range(6, -1, -1):
+    d = d0 - datetime.timedelta(days=k)
+    iso, dd = d.isoformat(), f"{d.month:02d}-{d.day:02d}"
+    cell = []
+    for pre in ('gm', 'cgm'):
+        hit = [n for n in names
+               if re.match(rf'{pre}-', n) and not re.match(r'c?gm-\d{{4}}-\d{{2}}\.md$', n)
+               and (iso in n or re.search(rf'{pre}-\d{{4}}-\d{{2}}-\d{{2}}_{d.day:02d}\.md$', n))]
+        cell.append('／'.join(sorted(hit)) if hit else '**无**')
+    print(f"| {dd} | {cell[0]} | {cell[1]} |")
+print()
+print("**判读纪律**：本表只报**在档与否**，**不判缺档是否正当**——"
+      "标「当日无该侧会话」者亦须有其件方计在档（ADJ-0731-35 加严一：**缺席本身即信息**）；"
+      "**「无」＝该日该侧无任何逐日件，须于就位声明显式报出，不得默认为「无会话」。**")
+print()
+print("**形态沿革（供判读·不作免责）**：逐日件形态系 **ADJ-0731-34③ 于 2026-07-31 方立**，"
+      "**在此之前之日期，其记录居当月月档**（`gm-2026-07.md`／`cgm-2026-07.md`）——"
+      "故该段之「无」**属形态未立，非漏记**。**惟 2026-07-31 起之「无」即属真缺档，不得援本注开脱。**")
+PY
+echo
 echo "**未决**：见块 6。"
 echo
 
