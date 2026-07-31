@@ -25,6 +25,12 @@ TARGETS = [
     ('0700HK', 'docs/moat/sweep-01/evidence-0700HK-2026-07-31.md'),
 ]
 
+# 可指定标的（ADJ-0731-46④ 只须重造 TMO 一卡·不重造其余三卡）
+if len(sys.argv) > 1:
+    want = set(sys.argv[1:])
+    TARGETS = [t for t in TARGETS if t[0] in want]
+    if not TARGETS: sys.exit(f'🔴 未匹配任何标的：{want}')
+
 OUT = pathlib.Path('docs/moat/sweep-01/cards-fable')
 OUT.mkdir(parents=True, exist_ok=True)
 
