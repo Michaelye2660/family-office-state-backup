@@ -4,7 +4,22 @@
 
 【环境同步 · 每次必做第一步】本任务每次在全新会话中运行。开始前先执行:`git fetch origin master && git reset --hard origin/master`；随后克隆深度核验（用户直令2026-07-12,浅克隆假象判例〔M〕50）:执行 `[ -f .git/shallow ] && git fetch --unshallow origin || true`,凡引用git历史结论前先确认非浅克隆`，把工作区强制对齐 master 最新内容。
 
-🔴【取数数据链 · 委托人直令（2026-07-30·〔M〕401／402）· 本班一切取数适用】委托人原文（两令并载）：①「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」②「**A股优先 a-stock-data 技能 这一条规则放在取数第一位，在 fmp 之前**」。**四层链序（顺序固定·不得跳层·不得改序）**：**⓪ A股／A股ETF 一律优先用 `a-stock-data` 技能**（委托人直令2026-07-30·**置于 FMP 之前·取数第一位**；云环境 mootdx 不可用系技能内建自动回退腾讯 HTTP，**不构成技能失败不得据此跳层**；技能确实失败才降②层并注明原因）→ **① FMP（主路径＝`bash tools/fmp-fetch.sh` curl直调·不经MCP无弹窗·凭据`$FMP_API_KEY`；缺凭据即如实报并降级第②层不空转；MCP仅限交互会话）**（A股以外之首选）（已知边界：**Starter 只覆盖美国上市标的**，`0700.HK`／`0005.HK`／`IWDA.L`／`SGLN.L`／`IGLN.L`／`159516.SZ`／`159819.SZ`／`159142.SZ` 在参数层被拒，不必再试）→ **② 网页**（港股走腾讯自选股 `qt.gtimg.cn`，须 `iconv -f gbk -t utf-8`；A股仅在⓪层技能失败时用本层；伦交所 ETF 走 iShares 官网 NAV 标 T-1、**须用 WebFetch 勿用 curl**〔curl 返 403〕；黄金交叉源新浪 `hq.sinajs.cn/list=hf_GC` 须带 Referer；余者交易所/IR/监管备案优先于一般检索）→ **③ 确实查不到才走 Bigdata.com（殿后）**。**网页层内部证据等级（ADJ-0730-18③·GM补）**：一手（港交所披露易/交易所官网/公司IR/监管备案）优先于门户聚合（腾讯自选股/东财/同花顺/新浪·**系二手·须标来源URL+as-of·未经原文核者不得作MDG-5**）；**下单前现价须二源交叉且同源转载不构成第二源**。**Bigdata特有能力不降级（ADJ-0730-18④·GM补）**：殿后仅限「取价与常规基本面」用途——**私营公司数据／新闻检索与情绪（`bigdata_search`·`bigdata_sentiment_tearsheet`）／事件日历（`bigdata_events_calendar`）／ETF tearsheet** 系他源皆无之能力，**照旧可直用不受次序限制**。**二源交叉硬约束**：Bigdata 行情段自陈 `source: fmp`，**以 Bigdata 复核 FMP 不构成印证**，关键数字之第二源必须取②层。**本块适用于第1.6步预测结算之 data-verifier 取数与第②项机械扫描所涉一切数字**；取不到即如实报「未取到」，绝不以推断或旧值充实测。完整版见 `routines/morning-0900sgt-prompt.md` 之【🔴 取数数据链】块。
+🔴【取数数据链 · 委托人直令（2026-07-30·〔M〕401／402）· 本班一切取数适用】委托人原文（两令并载）：①「所有取数优先用 fmp，fmp 查不到的例如非美数据优先通过网页查询例如腾讯自选股等其它网页，最后确实查不到才走 bigdata」②「**A股优先 a-stock-data 技能 这一条规则放在取数第一位，在 fmp 之前**」。**四层链序（顺序固定·不得跳层·不得改序）**：**⓪ A股／A股ETF 一律优先用 `a-stock-data` 技能**（委托人直令2026-07-30·**置于 FMP 之前·取数第一位**；云环境 mootdx 不可用系技能内建自动回退腾讯 HTTP，**不构成技能失败不得据此跳层**；技能确实失败才降②层并注明原因）→ **① FMP（主路径＝`bash tools/fmp-fetch.sh` curl直调·不经MCP无弹窗·凭据`$FMP_API_KEY`；缺凭据即如实报并降级第②层不空转；MCP仅限交互会话）**（A股以外之首选）（已知边界：**Starter 只覆盖美国上市标的**，`0700.HK`／`0005.HK`／`IWDA.L`／`SGLN.L`／`IGLN.L`／`159516.SZ`／`159819.SZ`／`159142.SZ` 在参数层被拒，不必再试）→ **② 网页**（港股走腾讯自选股 `qt.gtimg.cn`，须 `iconv -f gbk -t utf-8`；A股仅在⓪层技能失败时用本层；伦交所 ETF 走 iShares 官网 NAV 标 T-1、**须用 WebFetch 勿用 curl**〔curl 返 403〕；黄金交叉源新浪 `hq.sinajs.cn/list=hf_GC` 须带 Referer；余者交易所/IR/监管备案优先于一般检索）→ **③ 确实查不到才走 Bigdata.com（殿后）**。**网页层内部证据等级（ADJ-0730-18③·GM补）**：一手（港交所披露易/交易所官网/公司IR/监管备案）优先于门户聚合（腾讯自选股/东财/同花顺/新浪·**系二手·须标来源URL+as-of·未经原文核者不得作MDG-5**）；**下单前现价须二源交叉且同源转载不构成第二源**。**Bigdata特有能力不降级（ADJ-0730-18④·GM补）**：殿后仅限「取价与常规基本面」用途——**私营公司数据／新闻检索与情绪（`bigdata_search`·`bigdata_sentiment_tearsheet`）／事件日历（`bigdata_events_calendar`）／ETF tearsheet** 系他源皆无之能力，**照旧可直用不受次序限制**。**🔴🔴 简报班次禁用 Bigdata（委托人直令 2026-07-31·〔M〕439·射程＝三份简报班次·交互会话不受此限）**：
+**缘起**：Bigdata 与 FMP 同为 **MCP 连接器**，其授权窗在定时班次**无人可应答 → 会话挂死**；`permissions.allow` 白名单对连接器授权**实测无效**（委托人亲验·〔M〕437②）。**FMP 已改 curl 直调绕开，Bigdata 无同款公开 REST 端点，故不能同法解决 → 本班次一律不用。**
+
+**本班次一律不调用任何 `mcp__Bigdata_com__*` 工具**（含 `bigdata_search`／`bigdata_sentiment_tearsheet`／`bigdata_events_calendar`／`bigdata_*_tearsheet`／`find_securities` 等全部）。**第③层在本班次内为空——链序实际退化为 ⓪→①→②。**
+
+**其原有职能之替代（逐项指定·不留空档）**：
+| 原 Bigdata 能力 | 本班次改用 |
+|---|---|
+| 新闻检索与情绪（`bigdata_search`／`sentiment_tearsheet`） | **WebSearch**（多关键词多语言）＋ **WebFetch** 取一手原文；情绪一律**不作量化读数**，只列「原文要点＋来源 URL＋as-of」，**不得以检索命中数充情绪指标** |
+| 事件日历（`bigdata_events_calendar`） | **`bash tools/fmp-fetch.sh`**（FMP `calendar/earnings-company` 等端点）＋ **公司 IR 一手**（照 BDX/ORLY 之「一手 IR 为准」判例） |
+| ETF tearsheet（前十大权重／板块国别） | **`bash tools/fmp-fetch.sh etf SYM`**（返 `sectorsList`·**科技带穿透即用此**·〔M〕436 已实战）＋ 发行人官网 |
+| 私营公司数据 | **本班次无此需求**（系猎场私募端能力·简报不涉）；确需时**如实报「本班次不可得」并列为待核**，不以公开检索充私营数据 |
+
+**🔴 兜底纪律**：上述替代若仍取不到，**照数据链纪律如实报「未取到」并列入「待核实」节**——**绝不因禁用 Bigdata 而以推断、旧值或 web 拼凑充作实测**。**禁用系为保班次能跑完，不是为降低取数标准。**
+
+**二源交叉硬约束**：Bigdata 行情段自陈 `source: fmp`，**以 Bigdata 复核 FMP 不构成印证**，关键数字之第二源必须取②层。**本块适用于第1.6步预测结算之 data-verifier 取数与第②项机械扫描所涉一切数字**；取不到即如实报「未取到」，绝不以推断或旧值充实测。完整版见 `routines/morning-0900sgt-prompt.md` 之【🔴 取数数据链】块。
 
 第0.5步 收件（与每日简报 routine 同协议）：读取 adj-inbox/ 全部文件（README除外），三要素齐备者按台账〔N〕N6 执行并写回执归档；缺要素移 quarantine/ 记〔M〕异常。
 
