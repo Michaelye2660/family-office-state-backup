@@ -51,13 +51,13 @@ SAN_KW = '三、裁决侧自画像'
 
 print("# 裁决侧知识库 · 摘录件 DIGEST（ADJ-0801-04③ 立）\n")
 print("> **🔴 摘录·非正本。冲突一律以 `docs/adjudicator-knowledge.md` 为准。**")
-print("> **生成**：`bash tools/gen-knowledge-digest.sh`｜**机械逐字截取，禁手写转写**（`-04③`）")
+print("> **生成**：`bash tools/gen-knowledge-digest.sh`｜**机械逐字截取，禁手写转写**（`-04③`）｜每节注正本节号与回读触发条件")
 print(f"> **读取 commit**：`{commit}`｜**读取时点**：{ts}｜**上限** {limit} B（**超限即触发再裁，不得默默放宽**）")
-print("> **载入集第 7 项**（`-04③`·**非新增一整份必读项**：正本 26,046 B 已于 `-58②` 移出，本件仅取其约 17% 回入）\n")
+print("> **载入集第 7 项**（`-04③`）｜**切法与逐单元归类见 `tools/gen-knowledge-digest.sh`；副产品＝`docs/failure-modes-uncovered.md`**\n")
 
 print("## 🔴 乙类 · 触发式必读全文（**本件不摘录·届时读正本全文**）\n")
-print("**判据**：**操作手册类 —— 半个手册比没有手册更坏**（读者以为自己有，实则缺关键步）。\n")
-print("| 正本节 | 字节 | **触发点（写死·可机械检出）** |")
+print("**判据**：**半个手册比没有手册更坏**。\n")
+print("| 正本节 | B | **触发点（写死·可机械检出）** |")
 print("|---|---:|---|")
 for kw, trig in [('十、EXT 中转仓操作手册',
                   '**凡将发起任一 EXT／DR、或将向中转仓装载或回收任何件之前** —— 读**全文**，不得据摘要或他人转述行事'),
@@ -69,11 +69,10 @@ for kw, trig in [('十、EXT 中转仓操作手册',
     else:
         t2, b2 = find(kw.split('、')[1][:4])
         print(f"| §{t2 or kw} | {len(b2.encode()):,} | {trig} |")
-print("\n**🔴 实证之由**：`ADJ-0731-62` §六 明写「下任最可能不知道自己需要之三件事」，其一即 §十；"
-      "**而 GM-10 第一次要用中转仓时正撞上未读。**\n")
+print("\n**实证**：`ADJ-0731-62` §六 列 §十 为「下任最可能不知道自己需要」之一，**而 GM-10 第一次要用中转仓时正撞上未读**。\n")
 
 print("---\n")
-print("## 甲类 · 摘录（**逐字截取正本之句·未改写未概括**）\n")
+print("## 甲类 · 摘录（**逐字·未改写未概括**）\n")
 
 total_lines = 0
 for kw in JIA:
@@ -95,23 +94,82 @@ for kw in JIA:
 t3, b3 = find(SAN_KW[:4])
 if t3:
     print(f"### §{t3} —— **仅取「失败模式清单」段**（正本全节 {len(b3.encode()):,} B）\n")
-    print("**🔴 切法申报（`-04②` 逐字）**：仅取失败模式清单（**岗位结构性风险清单**），"
-          "其余（前任个人史、语气自述）入丙类不摘。")
-    print("**理由**：该节应读作「**此岗位之结构性风险清单**」，非前任个人档案 —— "
+    print("**切法（`-04②`）**：仅取失败模式清单（**岗位结构性风险清单**），其余（前任个人史、语气自述）入丙不摘 —— "
           "**岗位风险随岗位转移，不随实例死亡。**\n")
-    # 🔴 精确取「失败模式清单」——其系正本内之**单行**（含 ①–⑩ 与 ⑧⑨ 两条补款）
+    # 🔴 精确取「失败模式清单」——其系正本内之**单行**
     m = re.search(r'(?m)^\*\*已知失败模式.*$', b3)
-    if m:
-        fm = m.group(0)
-        print(fm.rstrip())
-        total_lines += 1
-        print()
-        print(f"**🔴 本段逐字全长 {len(fm.encode()):,} B —— 超 `-04②` 所定之「约 1,500 B」目标 "
-              f"{len(fm.encode())/1500:.1f} 倍。**")
-        print("**逐字抽取只能『选』，不能『缩』**；要压到 1,500 B 只能改写或概括，"
-              "**而 `-04③` 明令「禁手写转写」** —— **两条不能同时成立，已呈裁，本器不自行取舍。**")
-    else:
+    if not m:
         print("**🔴 未抽到「已知失败模式」标记 —— 本段抽取失败，须回读正本 §三。**")
+    else:
+        fm = m.group(0)
+        # ── ADJ-0801-07④ 之取舍判据：**该失败模式是否已被机械检测覆盖** ──
+        #   有器兜底者 → 降为索引一行 ＋ 指向该器（**不逐字**）
+        #   无器、只能靠人警觉者 → **逐字全留**
+        #   立此判据之由（-07④ 逐字）：摘录件之功能由 -04① 甲类定义＝「读了就能用，不读就会犯错」；
+        #   **有检测器会喊的失败模式，不读也不会犯错——器会说话；没有器的，才是必须靠读来防的。**
+        MARKS = ['**⑧转写稀释', '**⑨步0搜索不完备', '**⑨-补款', '**⑧⑨补充', '**⑩归属过度断言']
+        cuts, prev = [], 0
+        for mk in MARKS:
+            k = fm.find(mk)
+            if k < 0:
+                continue
+            cuts.append(fm[prev:k]); prev = k
+        cuts.append(fm[prev:])
+        units = [c for c in cuts if c.strip()]
+        # 🔴 对平核：切完之字节须等于原文，**缺一字即报错，不以「切好了」充「没丢」**
+        joined = ''.join(cuts)
+        if joined != fm:
+            print("**🔴 切分对不平原文 —— 抽取作废，须回读正本 §三。**")
+            units = []
+
+        # 判据表：单元 → (是否已有器, 器名／检测点)
+        # 🔴 判据之适用须照 GM 自己所举之例，不得比它更宽：
+        #   `-07④` 表内「无检测器、只能靠人警觉者」之三例即
+        #   **「以未见代不存在」「批量即把未核变已核」「归属过度断言」**。
+        #   本席初版把 ⑨「步0搜索不完备」归入「已有器」（理由：日对账源① 机械枚举两 inbox）——
+        #   **而 ⑨ 正是「以未见代不存在」之本条**，GM 明列其为无器。**故改归无器。**
+        #   **判据是 GM 的，例也是 GM 的；本席按自己的理解放宽一格，就等于自己改了判据。**
+        #   现状：本清单**全部单元皆无器兜底** —— 器所覆盖者系「产物状态」（锚、签收、字节、缺档），
+        #   而本清单所载者系「推理与姿态之失效」，**两类不同域，故省不下来**。此系事实，非本器之推托。
+        COVERED = {}
+        keep, idx = [], []
+        for u in units:
+            hit = next((k for k in COVERED if u.startswith(k)), None)
+            (idx if hit else keep).append((u, COVERED.get(hit, '')))
+
+        print("**切法（`-07④`）**：按「**是否已被机械检测覆盖**」切；判据全文与逐单元归类见 "
+              "`tools/gen-knowledge-digest.sh` 与副产品 `docs/failure-modes-uncovered.md`。"
+              f"**本轮实测：{len(units)} 单元全部无器兜底，故全留。**\n")
+
+        if idx:
+            print("**已有器兜底者（索引一行·不逐字）**：")
+            for u, d in idx:
+                head = u.strip().split('**')[1] if '**' in u else u[:24]
+                print(f"- {head} → **器＝{d}**（{len(u.encode()):,} B 已省）")
+            print()
+        print("**无器者·逐字全留**：\n")
+        for u, _ in keep:
+            print(u.rstrip())
+        print()
+        kb = sum(len(u.encode()) for u, _ in keep)
+        ib = sum(len(u.encode()) for u, _ in idx)
+        print(f"**本段：逐字留 {kb:,} B ／ 索引省 {ib:,} B ／ 原文 {len(fm.encode()):,} B（对平：{kb+ib:,}）**")
+        # 🔴 副产品（-07④ 明令单独输出）：尚无检测器之失败模式清单 → 下一批该建器之处
+        import io as _io
+        with _io.open('docs/failure-modes-uncovered.md', 'w', encoding='utf-8') as fh:
+            fh.write("# 尚无机械检测器之失败模式清单（ADJ-0801-07④ 之副产品·令单独输出）\n\n")
+            fh.write("> **生成**：`bash tools/gen-knowledge-digest.sh`（**摘录件切分之副产品，非另行判断**）\n")
+            fh.write(f"> **抽自**：`{src}` §三「已知失败模式」单行｜**读取 commit**：`{commit}`\n")
+            fh.write("> **🔴 本清单之用途（`-07④` 逐字）**：「**切完自动得出一张「尚无检测器之失败模式」清单，"
+                     "那正是下一批该建器的地方。**」\n")
+            fh.write("> **本清单不排优先级、不提建器方案** —— 建不建、先建哪个，**属判断类，呈 GM**。\n\n")
+            fh.write(f"**尚无器者 {len(keep)} 单元／已有器者 {len(idx)} 单元。**\n\n")
+            fh.write("## 尚无器（逐字照录·未改写）\n\n")
+            for u, _ in keep:
+                fh.write("- " + u.strip().replace('\n', ' ') + "\n")
+            fh.write("\n## 已有器（附其器）\n\n")
+            for u, d in idx:
+                fh.write("- " + u.strip()[:60].replace('\n', ' ') + f" → **{d}**\n")
     print()
 
 print("---\n")
