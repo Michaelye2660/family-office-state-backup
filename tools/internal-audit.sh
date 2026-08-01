@@ -208,6 +208,14 @@ say "| 乙3 · 台账写入 vs \`state-core\` 刷新（\`-0801-07⑦\`） | 台�
 DG=$(ls docs/memory-digests/cgm-${D}*.md 2>/dev/null | wc -l | tr -d ' ')
 if [ "${DG:-0}" -eq 0 ]; then RED=$((RED+1)); R="🔴 **当日无 CGM 摘要** —— 宪法 §六之二最高原则「入库即算，不入库即未办」"; else R="🟢 在档 ${DG} 件"; fi
 say "| 乙4 · 当日 CGM 记忆摘要在档（**宪法最高原则**） | ${DG:-0} 件 | ${R} |"
+# 乙4-b／乙4-c：GM 侧读物之当日在否（`ADJ-0801-12⑤` 之 DIGEST 令 ＋ 委托人令「能帮 gm 分担的不要丢回给 gm」）
+DIG=$([ -f "gm-inbox/AUDIT-${D}-DIGEST.md" ] && echo 1 || echo 0)
+AUDF=$([ -f "docs/internal-audit/${D}-auditor.md" ] && echo 1 || echo 0)
+if [ "$AUDF" = "1" ] && [ "$DIG" = "0" ]; then RED=$((RED+1)); R="🔴 **正本在而抽取件缺** —— GM 侧无范围读，缺抽取件即等于令其整档取回 28 KB"; else R="🟢"; fi
+say "| 乙4-b · 当日 \`gm-inbox/AUDIT-${D}-DIGEST.md\` 在否（\`-12⑤\`） | 正本 ${AUDF}／抽取件 ${DIG} | ${R} |"
+GATE=$([ -f "gm-inbox/GATE-${D}.md" ] && echo 1 || echo 0)
+if [ "$GATE" = "0" ]; then RED=$((RED+1)); R="🔴 **缺件** —— GM 须于步0 目录枚举即见〔K-0〕读数，**不必在 281 份回执里找一行**"; else R="🟢"; fi
+say "| 乙4-c · 当日 \`gm-inbox/GATE-${D}.md\` 在否（**闸读数之单行件·CGM 单边办·不问 GM**） | ${GATE} | ${R} |"
 
 # 乙5：摘要入库是否跟索引刷新（-0731-58③）
 IDXW=$(git log --since="${D} 00:00:00" --until="${D} 23:59:59" --format='%H' -- docs/memory-digests/INDEX.md 2>/dev/null | wc -l | tr -d ' ')
@@ -313,32 +321,39 @@ say ""
 #   但亦不得在未经裁决之前，用红旗压着全库 89% 之历史件。
 #   **故：出数、逐份点名、不判红，并把「该规则是否应改形态」呈 GM（G4·方法论层）。**
 # 🔴 它不核什么：只核**字样在否**，不核**那一步是否真做了** —— 一份写了「①git pull --rebase」而没跑的回执，本源判它有留痕。
-say "## §三-补三 · **收件七步之逐份留痕**（内审官 R7·**只核字样在否，不核真做没做**）"
+say "## §三-补三 · **收件七步之留痕**（**\`ADJ-0801-12①\` 裁改形态·2026-08-01**）"
 say ""
-say "| 回执 | ①pull | ②读inbox | ③四字段 | ④三要素 | ⑤逐项 | ⑥〔M〕+版本行 | ⑦git mv | N/7 |"
+say "> **🔴 判据（GM 逐字）**：**「留痕只加在『做了也看不出做没做对』的步骤上。」**"
+say "> **强制者只有 ③四字段核 ／ ④三要素＋轮号核** —— **「核过」与「没核」在库面上完全不可分，此二步是本条规则唯一真正承重之处**。"
+say "> **①pull ②读 inbox ＝ 免**（不做则后续步骤机械失败，其证据自带——**要求为一件不做就会自己暴露的事留痕，是在收集已知信息**）。"
+say "> **⑤逐项 ⑥〔M〕＋版本行 ⑦receipt＋git mv＋push ＝ 免**（**产物在库即证其已做；件仍在 inbox 即证其未做**）。"
+say "> **免者仍逐份出读数，但不判红** —— **出数是为看趋势，判红只对承重两步。**"
+say ""
+say "| 回执 | **🔴③四字段** | **🔴④三要素＋轮号** | ①pull | ②inbox | ⑤逐项 | ⑥〔M〕 | ⑦git mv | 承重 2/2？ |"
 say "|---|---|---|---|---|---|---|---|---|"
-STEP_TOT=0; STEP_N=0
+STEP_N=0; STEP_BAD=0
 for f in $(git log --since="${D} 00:00" --until="${D} 23:59" --name-only --pretty=format: -- 'adj-archive/*receipt*.md' 2>/dev/null | sort -u | grep -v '^$'); do
   [ -f "$f" ] || continue
+  s3=$(grep -qE '四字段|GM_EPOCH' "$f" && echo "✅" || echo "🔴")
+  s4a=$(grep -qE '三要素|三要件' "$f" && echo 1 || echo 0)
+  s4b=$(grep -qE '轮号|轮:|轮 ?`' "$f" && echo 1 || echo 0)
+  if [ "$s4a" = "1" ] && [ "$s4b" = "1" ]; then s4="✅"; else s4="🔴"; fi
   s1=$(grep -qE 'pull --rebase' "$f" && echo "✅" || echo "—")
   s2=$(grep -qE 'adj-inbox' "$f" && echo "✅" || echo "—")
-  s3=$(grep -qE '四字段|GM_EPOCH' "$f" && echo "✅" || echo "—")
-  s4=$(grep -qE '三要素|三要件' "$f" && echo "✅" || echo "—")
   s5=$(grep -qE '逐项执行|逐条执行|逐项办' "$f" && echo "✅" || echo "—")
-  s6=$(grep -qE '〔M〕' "$f" && grep -qE '版本 ?v16\.|版本行' "$f" && echo "✅" || echo "—")
+  s6=$(grep -qE '〔M〕' "$f" && echo "✅" || echo "—")
   s7=$(grep -qE 'git mv' "$f" && echo "✅" || echo "—")
-  n=0; for v in "$s1" "$s2" "$s3" "$s4" "$s5" "$s6" "$s7"; do [ "$v" = "✅" ] && n=$((n+1)); done
-  STEP_TOT=$((STEP_TOT+n)); STEP_N=$((STEP_N+1))
-  say "| \`$(basename "$f")\` | ${s1} | ${s2} | ${s3} | ${s4} | ${s5} | ${s6} | ${s7} | **${n}/7** |"
+  STEP_N=$((STEP_N+1))
+  if [ "$s3" = "✅" ] && [ "$s4" = "✅" ]; then OK="**2/2** 🟢"; else OK="**承重缺** 🔴"; STEP_BAD=$((STEP_BAD+1)); fi
+  say "| \`$(basename "$f")\` | ${s3} | ${s4} | ${s1} | ${s2} | ${s5} | ${s6} | ${s7} | ${OK} |"
 done
 if [ "$STEP_N" -eq 0 ]; then
   say "| **当日无新增回执** | — | — | — | — | — | — | — | **不适用** |"
 fi
-ALL_R=$(git ls-files 'adj-archive/*receipt*.md' 2>/dev/null | wc -l | tr -d ' ')
-ALL_7=$(grep -l '七步' $(git ls-files 'adj-archive/*receipt*.md' 2>/dev/null) 2>/dev/null | wc -l | tr -d ' ')
+if [ "${STEP_BAD:-0}" -gt 0 ]; then RED=$((RED+1)); RR="🔴 **${STEP_BAD} 份承重步缺留痕**"; else RR="🟢 承重两步全数留痕"; fi
 say ""
-say "**当日**：${STEP_N} 份·合计 ${STEP_TOT} / $((STEP_N*7)) 步有留痕 ｜ **全库**：${ALL_R} 份回执，含「七步」字样者 **${ALL_7}** 份（**$( [ "${ALL_R:-0}" -gt 0 ] && echo "scale=1; ${ALL_7}*100/${ALL_R}" | bc || echo '—' )%**）"
-say "**⚠️ 只报不判** —— 正本 \`portfolio-state.md\`·\`〔M〕286\`·**现役**；**该规则是否应改形态，已呈 GM（G4）**，在其被裁前本器不判红。"
+say "**当日 ${STEP_N} 份 ｜ ${RR}** ｜ 正本 \`portfolio-state.md\`·\`〔M〕286\`·**形态已由 \`ADJ-0801-12①\` 改**"
+say "**⚠️ 免留痕之五步仍出读数不判红** —— **一条把力气用在自证之处的规则，其形态即错**（GM 之承重分析）。"
 say ""
 
 # ── §三-补二 · 🔴 本器之自检（内审官 R3／R4／R6 强制回应·2026-08-01）────────
