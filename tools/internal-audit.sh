@@ -213,6 +213,9 @@ DIG=$([ -f "gm-inbox/AUDIT-${D}-DIGEST.md" ] && echo 1 || echo 0)
 AUDF=$([ -f "docs/internal-audit/${D}-auditor.md" ] && echo 1 || echo 0)
 if [ "$AUDF" = "1" ] && [ "$DIG" = "0" ]; then RED=$((RED+1)); R="🔴 **正本在而抽取件缺** —— GM 侧无范围读，缺抽取件即等于令其整档取回 28 KB"; else R="🟢"; fi
 say "| 乙4-b · 当日 \`gm-inbox/AUDIT-${D}-DIGEST.md\` 在否（\`-12⑤\`） | 正本 ${AUDF}／抽取件 ${DIG} | ${R} |"
+VER=$([ -f "gm-inbox/VERIFY-${D}.md" ] && echo 1 || echo 0)
+if [ "$VER" = "0" ]; then RED=$((RED+1)); R="🔴 **缺件** —— **GM 无法机械核实之项本日无人代核**；GM 只能回到「采信 CGM 自报」"; else R="🟢"; fi
+say "| 乙4-d · 当日 \`gm-inbox/VERIFY-${D}.md\` 在否（**审查员代核简报**·v2.0） | ${VER} | ${R} |"
 GATE=$([ -f "gm-inbox/GATE-${D}.md" ] && echo 1 || echo 0)
 if [ "$GATE" = "0" ]; then RED=$((RED+1)); R="🔴 **缺件** —— GM 须于步0 目录枚举即见〔K-0〕读数，**不必在 281 份回执里找一行**"; else R="🟢"; fi
 say "| 乙4-c · 当日 \`gm-inbox/GATE-${D}.md\` 在否（**闸读数之单行件·CGM 单边办·不问 GM**） | ${GATE} | ${R} |"
