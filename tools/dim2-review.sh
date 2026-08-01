@@ -44,8 +44,26 @@ rows=[]
 for f in uns:
     t=io.open(f,encoding='utf-8',errors='replace').read()
     base=os.path.basename(f).replace('-receipt.md','')
-    adj=f.replace('-receipt.md','.md')
-    at=io.open(adj,encoding='utf-8',errors='replace').read() if os.path.exists(adj) else ''
+    # 改⑨（**CGM 自捕·2026-08-01·CR-20260801-35**）：原以 `<base>.md` 单档取 ADJ 正本，
+    #   而 **16/91 件之回执系合并档名**（`ADJ-0731-24-25-receipt.md`／`-34-and-37`／`-07-to-18`），
+    #   其正本分存于 `-24.md`／`-25.md`。原码遂对**名册之 17.6%** 报「⚠️ 无 ADJ 正本」，
+    #   **②栏对该 16 件等同于没跑**。真无正本者只 `E9-activation` 一件（系激活声明非 ADJ·本就无正本）。
+    #   🔴 **并存之限度**：`-to-` 形态（如 `-07-to-18`）系**区间**，覆盖 12 个件号，
+    #   而本修只寻回端点两件 —— **故该形态之②栏仍系欠采样，不得读作已全覆盖**。
+    def _adj_paths(b):
+        p='adj-archive/%s.md'%b
+        if os.path.exists(p): return [p]
+        m=re.match(r'(ADJ-\d{4})-(\d+)(?:-(?:and-|to-)?(\d+))?$', b)
+        out=[]
+        if m:
+            pre,a,c=m.group(1),m.group(2),m.group(3)
+            for n in ([a,c] if c else [a]):
+                q='adj-archive/%s-%s.md'%(pre,n)
+                if os.path.exists(q): out.append(q)
+        return out
+    _ps=_adj_paths(base)
+    at='\n'.join(io.open(p,encoding='utf-8',errors='replace').read() for p in _ps)
+    _span = bool(re.search(r'-to-\d+$', base))
     # ① 逐项覆盖
     # 🔴 审查员 2026-08-01 复审所捕之六处·逐一改（其判：**锚太松，落差系仪器伪影，不是回执质量**）
     # 改①：圈码原止于⑩ → N>10 数学上永不可能 ✅，**4 个红中 3 个系此伪影**；扩至⑳。
@@ -107,6 +125,7 @@ for f in uns:
     elif orders==0: c2='n/a'
     elif done>=orders: c2='✅' + (' 🟡未办%d'%undone if undone else '')
     else: c2='🔴 令%d/办%d'%(orders,done)
+    if _span and at: c2 += ' 〔区间件·只取端点两正本·欠采样〕'
     # ③ 越权
     # 改⑥：③锚原**只搜自白不搜行为**，全库 0 次触发；且 `'不得代' not in t` 系**全档级抑制闸**。
     #   **删抑制闸，并改走 git**——章程所列「擅动 routines/agents」「改写 master 历史」**恰是 git 可机械直取者，原一条未检**。
