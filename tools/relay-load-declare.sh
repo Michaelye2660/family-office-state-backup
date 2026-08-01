@@ -23,6 +23,12 @@ export TZ=Asia/Singapore
 #       「他报口径·未经机械验证」）；本器只核该项**有无被申报**，不核其真伪；
 #   (c) 本器**不判该批该不该发** —— 发不发属判断类。
 #
+# 🔴 两处已修之缺陷（首跑当轮自捕·写死免复发）：
+#   (a) 双引号内含反引号 → shell 当成命令替换，把 `-09⑤` 整段吞掉，
+#       **只在 stderr 留一行 command not found，正文里看不出缺了字**；改单引号。
+#   (b) `cut -c1-90` 在 C locale 下**按字节切**，截断多字节字符 → **产出之文件不是合法 UTF-8**；
+#       改以 python 按字符截。**两处共性：坏掉的是输出，而输出本身看起来是完整的。**
+#
 # 用法： bash tools/relay-load-declare.sh <证据包路径> <外发文本路径> [标的]
 # ============================================================================
 set -uo pipefail
@@ -34,7 +40,9 @@ echo "# 装载申报（ADJ-0801-09④ · 三项自核）"
 echo
 echo "- **标的**：${SYM}｜**证据包**：\`${PKG}\`｜**外发文本**：\`${OUT}\`"
 echo "- **读取 commit**：\`$(git log -1 --format=%H)\`"
-echo "- **🔴 §十 全文读毕之申报**：装载支之读全文义务已于 `-09⑤` 转归 CGM；**本次装载前是否读毕 §十 全文＝〔须由执行者当轮填「是／否」，本器不代填〕**"
+# 🔴 此行曾以双引号内含反引号书写 —— shell 当成命令替换，把 `-09⑤` 整段吞掉且**只在 stderr 留一行 command not found**。
+#   其形态＝**输出看起来完整，缺的那几个字不会在正文里留下任何痕迹**；故改单引号。
+echo '- **🔴 §十 全文读毕之申报**：装载支之读全文义务已于 `ADJ-0801-09⑤` 转归 CGM；**本次装载前是否读毕 §十 全文＝〔须由执行者当轮填「是／否」，本器不代填〕**'
 echo
 
 echo "## (i) 证据包锚 sha1"
@@ -58,9 +66,9 @@ if [ -f "$PKG" ] && [ -f "$OUT" ]; then
     printf '%s\n' "$DIFF" | while IFS= read -r ln; do
       i=$((i+1))
       if printf '%s' "$ln" | grep -qE '执行侧·CGM|裁决侧·GM|claude-opus|claude-sonnet|claude-fable|证据包构建|模型'; then
-        printf '  | %d | `%s` | 🟢 属（席位署名／模型标识） |\n' "$i" "$(printf '%s' "$ln" | cut -c1-90)"
+        printf '  | %d | `%s` | 🟢 属（席位署名／模型标识） |\n' "$i" "$(printf '%s' "$ln" | python3 -c 'import sys;print(sys.stdin.read().rstrip()[:60])')"
       else
-        printf '  | %d | `%s` | 🔴 **不属二类——证据实体不得剔** |\n' "$i" "$(printf '%s' "$ln" | cut -c1-90)"
+        printf '  | %d | `%s` | 🔴 **不属二类——证据实体不得剔** |\n' "$i" "$(printf '%s' "$ln" | python3 -c 'import sys;print(sys.stdin.read().rstrip()[:60])')"
       fi
     done
     echo
