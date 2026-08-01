@@ -390,6 +390,49 @@ else R="⚠️ 取不到版本戳"; fi
 say "| 补四-4 · **\`gm-snapshot.md\` ↔ 台账件头之版本差**（E13 所捕·阈值 >3 版） | snapshot v${SV:-?} ／ 台账 v${LV:-?} | ${R} |"
 say ""
 
+# ── §三-补五 · 🔴 委托人前置过滤之核（v1.9·委托人直令 2026-08-01）────────────
+say "## §三-补五 · **委托人前置过滤**（v1.9·阈值 **4,000 B**）"
+say ""
+say "| 当日新增呈裁件 | 字节 | 达阈？ | 回执内「已先呈委托人」留痕 | 结果 |"
+say "|---|---:|---|---|---|"
+PF_BAD=0; PF_N=0
+for f in $(git log --since="${D} 00:00" --until="${D} 23:59" --diff-filter=A --name-only --pretty=format: -- "gm-inbox/CGM-*.md" 2>/dev/null | sort -u | grep -v "^$"); do
+  [ -f "$f" ] || continue
+  PF_N=$((PF_N+1))
+  B=$(wc -c < "$f" | tr -d " ")
+  # 🔴 生效时点闸（**落库前自捕·2026-08-01**）：v1.9 立于 `5d81057` 之后；
+  #   首版无本闸，遂把**立规之前**落库之五件（`-05`／`-06`／`-08`／`-09`／`-10`）全数判红。
+  #   **一条新规不得追溯地把旧件染红** —— 同内审官 §丙-3 之判据：
+  #   **一把在最常见情形下必然报红的尺，会在几天内把人训练成不看它。**
+  #   **判据＝该件之加入 commit 是否晚于 v1.9 之立规 commit。**
+  # 🔴 锚须是「v1.9 那一节首次入库之 commit」，不是任何代理物。
+  #   **首版误以 `adjudication-lanes-CURRENT.md` 之创建 commit 为锚 —— 而该件早于 v1.9 立规，
+  #   且与 `CGM-0801-10-ACTIVATION.md` 同一 commit，遂把该件误判为「立规后」并报红。**
+  #   **本日第五次「判据自身写错」，形态＝拿一个代理物当那件事本身。**
+  #   **锚取不到时（本节尚未入库）→ 一律视同「立规前」**，fail-safe 偏向不报红：
+  #   **一条尚未落库之规则，不该先把任何件染红。**
+  V19=$(git log -S"# 🔴 v1.9 ·" --format=%H -- docs/adjudication-lanes.md 2>/dev/null | tail -1)
+  ADDC=$(git log --diff-filter=A --format=%H -1 -- "$f" 2>/dev/null)
+  PRE=no
+  if [ -z "$V19" ]; then PRE=yes
+  elif [ -n "$ADDC" ] && ! git merge-base --is-ancestor "$V19" "$ADDC" 2>/dev/null; then PRE=yes; fi
+  if [ "$PRE" = "yes" ]; then
+    say "| \`$(basename "$f")\` | ${B} | $( [ "$B" -ge 4000 ] && echo "**是**" || echo "否" ) | **立规前** | ⚪ **不适用·本件落库早于 v1.9 立规** |"
+    continue
+  fi
+  if [ "$B" -ge 4000 ]; then
+    OVER="**是**"
+    if grep -rqs "已先呈委托人" adj-archive/*receipt*.md "$f" 2>/dev/null; then T="✅"; R="🟢"; else T="—"; R="🔴 **达阈而无前置留痕**"; PF_BAD=$((PF_BAD+1)); fi
+  else OVER="否"; T="不适用"; R="🟢 **未达阈·字节已书使其可复算**"; fi
+  say "| \`$(basename "$f")\` | ${B} | ${OVER} | ${T} | ${R} |"
+done
+[ "$PF_N" -eq 0 ] && say "| **当日无新增呈裁件** | — | — | — | 🟢 |"
+[ "${PF_BAD:-0}" -gt 0 ] && RED=$((RED+1))
+say ""
+say "**⚠️ 本核之限度（写死）**：只核**达阈者有无前置留痕**，**核不了「短而重」者是否该前置** ——"
+say "**v1.9 §三 之三类（甲档／自陈失守／改变 GM 工作量）系语义判断，本器判不了，归委托人判断门。**"
+say ""
+
 # ── §三-补二 · 🔴 本器之自检（内审官 R3／R4／R6 强制回应·2026-08-01）────────
 # 🔴 立此之由（内审官逐字）：「**这是一个把自己报告内容删掉却不报错的失效**」——
 #   本器 line 80／216 之未转义反引号被 bash 当命令替换执行，**把「谁来核裁决侧」与丙2 所依之规则号删空**，
