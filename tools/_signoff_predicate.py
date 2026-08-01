@@ -130,7 +130,25 @@ if __name__ == '__main__':
     import glob, sys
     files = [f for f in sorted(glob.glob('adj-archive/*receipt*.md')) if 'signoff' not in f]
     uns = [f for f in files if not is_signed(f)]
+    # 🔴 `ADJ-0801-19⑪`（2026-08-02·GM 裁）：**未签收数在结构上不可能收敛**——
+    #   每出一份回执即 +1，**而结案动作本身产生回执**；审查员实见分母 91／92／93 三值且无时点钉。
+    #   **裁：改「按批次钉时点之存量」＋「新增流量」两栏；单一存量数不得再作进度指标。**
+    import subprocess as _sp
+    _tip = _sp.run(['git','log','-1','--format=%H %ad','--date=short'],
+                   capture_output=True, text=True).stdout.strip()
+    _roster = 'docs/internal-audit/2026-08-01-91-roster.txt'
+    try:
+        _r = {x.strip() for x in io.open(_roster, encoding='utf-8') if x.strip()}
+    except OSError:
+        _r = set()
+    _base = lambda f: os.path.basename(f).replace('-receipt.md', '')
+    _stock = [f for f in uns if _base(f) in _r]
+    _flow = [f for f in uns if _base(f) not in _r]
     print(f"回执 {len(files)} 件｜已签 {len(files)-len(uns)}｜**未签 {len(uns)}**")
+    print(f"🔴 **两栏分列（`-19⑪`·单一存量数不得作进度指标）**：")
+    print(f"   **存量**（钉于 2026-08-01 之 91 件名册）＝ **{len(_stock)}/{len(_r) or '—'}**")
+    print(f"   **流量**（名册之后新增未签）＝ **{len(_flow)}**｜**读取 tip ＝ {_tip}**")
+    print(f"   ⚠️ 名册缺失则存量栏不可算——**本器不以「当前未签收集合」回落充之**。" if not _r else '')
     susp = [f for f in files if is_near_suspect(f)]
     print(f"🔴 **NEAR 疑似（须人核·不判已签·`-14③`(a)）＝{len(susp)} 件**"
           f"{'：' + ', '.join(os.path.basename(x) for x in susp[:5]) if susp else ''}")
