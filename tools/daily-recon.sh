@@ -96,13 +96,59 @@ say "| ③b | 〔K-0〕**非日期型触发条件**之「待执行」行（如�
 # ── 源⑦ 记忆摘要当日缺档（宪法§六之二·最高原则）───────────────────
 # 容忍并日件形态（如 gm-2026-07-30_31.md）：凡文件名含该日期数字段者皆计为在档。
 DD="${D//-/}"; Y="${D%%-*}"; MD="${D#*-}"
-gm_hit=$(ls docs/memory-digests/ 2>/dev/null | grep -c -e "gm-${D}" -e "gm-.*_${MD#*-}\.md" || true)
-cg_hit=$(ls docs/memory-digests/ 2>/dev/null | grep -c -e "cgm-${D}" -e "cgm-.*_${MD#*-}\.md" || true)
+# 🔴 须锚定行首（CGM 立 ⑦b 当轮顺带自捕·2026-08-01）：
+#   原式作 `grep -e "gm-${D}"`，**而 `cgm-2026-08-01.md` 内含子串 `gm-2026-08-01`**
+#   —— 故 CGM 之件被一并计入 GM 之数（本日实测：报「GM 5」，真值 3）。
+#   **其真正的害不在数偏大，在于：某日 GM 若无摘要而 CGM 有，本源会把 GM 报成在档。**
+#   一个把别人的作业算成自己交了的检查，正是本仓反复记载之「存在性检查被读成义务已尽」。
+gm_hit=$(ls docs/memory-digests/ 2>/dev/null | grep -c -e "^gm-${D}" -e "^gm-.*_${MD#*-}\.md" || true)
+cg_hit=$(ls docs/memory-digests/ 2>/dev/null | grep -c -e "^cgm-${D}" -e "^cgm-.*_${MD#*-}\.md" || true)
 miss=""
 [ "$gm_hit" -eq 0 ] && miss="${miss}GM "
 [ "$cg_hit" -eq 0 ] && miss="${miss}CGM "
 if [ -n "$miss" ]; then R="🔴 缺档：${miss}（**缺席须显式标注「当日无该侧会话」·未标注即计缺档**）"; RED=$((RED+1)); else R="🟢 两侧皆在档"; fi
 say "| ⑦ | \`docs/memory-digests/\` 当日原声件 | GM ${gm_hit}／CGM ${cg_hit} | ${R} | 各自 |"
+
+# ── 源⑦b 当日件之**覆盖核**（CGM 自捕后补·2026-08-01）───────────────
+# 🔴 立此源之由（本席自陈·系本日第四次撞上同一形态）：
+#   源⑦ 只测「当日有没有这个文件」，**不测这个文件覆不覆盖当日的事**。
+#   实证：`cgm-2026-08-01.md` 落于本日早段，**其后本席又办六件 ADJ、三份呈报、五个新工具、
+#   台账四条条目——全不在件内**，而源⑦ 照报 🟢「两侧皆在档」。
+#   **一个只测存在性的检查，会被读成「义务已尽」** —— 同型于委托人所指之
+#   「空的收件箱不是『无待办』之证据」与「A3 已办而无人回头销它」。
+# 判据（机械·只报不裁）：该侧当日**最后一次提交**之时点，是否晚于其当日摘要件之**最后一次改动**。
+#   晚者即报 🟡「在档但落后其后 N 个提交」——**不判其内容是否足够，只判其是否可能未覆盖**。
+# 🔴 取件须按**时点**不按字典序（本日同族第五例·CGM 立本源当轮自捕）：
+#   `ls | tail -1` 取字典序末位，而 `gm-2026-08-01-part2.md` **<** `gm-2026-08-01.md`
+#   （`-`＝0x2D 小于 `.`＝0x2E），故它取到的是**基础件而非最新追加件**——
+#   与 `_latest-handover.py` 所记之「E11 骨架 < E9 骨架」**同一族**。
+#   **凡以「最新」取件者，一律按数值／时点序** —— 此规本日已第五次被同一形态验证。
+cov_report(){  # $1=侧名 $2=文件通配 $3=提交主题之判别模式
+  local side="$1" pat="$2" mode="$3" f last_d n c ts best_ts
+  best_ts=-1; f=""
+  for c in $(ls docs/memory-digests/ 2>/dev/null | grep -e "$pat"); do
+    ts=$(git log -1 --format=%ct -- "docs/memory-digests/$c" 2>/dev/null)
+    [ -z "$ts" ] && ts=9999999999          # 未提交＝本轮新写，视为最新
+    if [ "$ts" -gt "$best_ts" ]; then best_ts="$ts"; f="$c"; fi
+  done
+  [ -z "$f" ] && { say "| ⑦b-${side} | 覆盖核 | — | ⚪ 无当日件·见源⑦ | ${side} |"; return; }
+  last_d="$best_ts"
+  [ "$last_d" -eq 9999999999 ] && { say "| ⑦b-${side} | **覆盖核** | \`${f}\`（**本轮新写·尚未提交**） | 🟢 当日件即本轮所写 | ${side} |"; return; }
+  if [ "$mode" = "gm" ]; then
+    n=$(git log --format='%ct %s' --since="@$last_d" 2>/dev/null | awk '$2 ~ /^\[裁决侧·GM/ {c++} END{print c+0}')
+  else
+    n=$(git log --format='%ct %s' --since="@$last_d" 2>/dev/null | awk '$2 !~ /^\[裁决侧·GM/ {c++} END{print c+0}')
+  fi
+  if [ "${n:-0}" -gt 0 ]; then
+    say "| ⑦b-${side} | **覆盖核**：当日件之后该侧仍有提交 | \`${f}\` 后 **${n}** 个 | 🟡 **在档但可能未覆盖**——照宪法§六之二须补追加件（**追加不重写**·\`-34③\`） | ${side} |"
+    RED=$((RED+1))
+  else
+    say "| ⑦b-${side} | **覆盖核** | \`${f}\` 后 0 个 | 🟢 当日件不落后于该侧最后一次提交 | ${side} |"
+  fi
+}
+cov_report GM  "^gm-${D}"  gm
+cov_report CGM "^cgm-${D}" cgm
+say "| ⑦c | **⚠️ 本核只判「时序上是否可能未覆盖」，不判内容是否足够**——**内容之足够属判断类，不可机械判** | — | ⚠️ 有界 | GM |"
 
 # ── 源⑧ gm-snapshot 戳 vs 台账版本（CGM 自罚项）──────────────────────
 LAG=$(python3 - <<'PY'
