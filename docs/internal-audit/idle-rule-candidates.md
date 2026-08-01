@@ -12,7 +12,7 @@
 > **它会把空转报少，不会报多。故本表之 🔴 系下限，不是全集。**
 
 **扫描面** ＝ `docs/adjudication-lanes.md`／`docs/state-core.md`／`docs/cc-knowledge.md`／`docs/succession/gm-succession.md`／`docs/moat/moat-researcher-knowledge.md`
-｜**读取 tip ＝ `50c588a25c62557925c51408b095923eeabd4da8`**
+｜**读取 tip ＝ `4efa7fce63c312c2bd4c6c5e84ea38e25e0383a8`**
 
 | 读数 | 件数 |
 |---|---:|
