@@ -70,9 +70,28 @@ for f in uns:
     # 改②：原用 `len(set)>=N` **只计数不认身份**；改为 **{①..N} ⊆ marks**（逐号点名）。
     # 改③：标记池原取全文（含七步行与引述块）；改为**剔七步表行与引述行**，且**每号须绑同行处置词**。
     CIRC='①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'
-    m=re.search(r'【共\s*(\d+)\s*项', at) or re.search(r'【共\s*(\d+)\s*项', t)
-    N=int(m.group(1)) if m else 0
+    # 改⑩（**审查员 2026-08-01 复审所捕之第五处·最重·CR-RECHECK 之首条**）：
+    #   原 `re.search` 只取**第一个**匹配，而 `at` 系多份 ADJ 正本之拼接 →
+    #   **合并件之 N 只等于第一份 ADJ 之项数**。审查员实算 16 件**低报 142 项**，
+    #   表内 N 合计 457 而真分母 ≈599 → **① 锚之视野外 ＝ 23.7%**；
+    #   **且 16 件中 12 件因此读 ✅✅ —— 表内最漂亮那段连绿，其成因就是分母被截短。**
+    #   改：`findall` 求和取真 N。
+    #   🔴 **并须如实报本锚之真限度**：圈码域止于 ⑳，而合并件真 N 可达 60；
+    #   **圈码在各份 ADJ 内各自从①起编，拼接后命名空间重叠** ——
+    #   **故合并件之逐项覆盖，本锚结构上测不了**。不伪装可测，改标「本锚测不了」。
+    _ns=[int(x) for x in re.findall(r'【共\s*(\d+)\s*项', at)]
+    if not _ns: _ns=[int(x) for x in re.findall(r'【共\s*(\d+)\s*项', t)]
+    N=sum(_ns) if _ns else 0
+    _multi = len(_ns) > 1
+    # 改⑫（**审查员所捕之第七处**）：原词表对本仓最高频之非「已X」处置词**一个不覆盖**——
+    #   `领受` 22/91 ｜ `照办` 22/91 ｜ `认领` 13/91 ｜ `收悉` 12/91 ｜ `采纳` 9/91
+    #   （**`采认` 在词表内而 `采纳` 不在**）。审查员独立复算：严读红 **59 → 40**，
+    #   **19 件（32%）之红仅因词表闭合而生**。
+    #   🔴 **本改使本席之红变少，故并出两读，不静默取低值**（同改⑦之处置）：
+    #   `DISPOSE`＝原词表（审查员未改者）／`DISPOSE_W`＝并入其所列五词。
     DISPOSE=re.compile(r'已办|已改|已修|已落|已立|已登|采认|不采|撤回|正式异议|未办|不裁|照录|登记')
+    DISPOSE_W=re.compile(r'已办|已改|已修|已落|已立|已登|采认|不采|撤回|正式异议|未办|不裁|照录|登记'
+                         r'|领受|照办|认领|收悉|采纳')
     # 改⑦（**校准所捕·2026-08-01·CGM 自捕，非审查员所指**）：
     #   以 `ADJ-0801-16-receipt.md` 校准——该件本席亲书、十项皆有专节、有直接记忆，
     #   同行锚却读 6/10，**四红全系伪影**，两种成因：
@@ -83,18 +102,25 @@ for f in uns:
     #   **两读之差 ＝ 本锚之不确定带，不择一充作真值**，取舍留予审查员。
     #   DISPOSE2 系开放式「已X」，**只用于标「词表外」以令词表之限度可见，不用于判绿**。
     DISPOSE2=re.compile(r'已[^\s，。：；、）】]')
+    # 改⑪（**审查员所捕之第六处**）：剔七步之滤器原**只认表格形**，
+    #   而本仓大量回执写作**散文形**「**步③四字段**：…以旁证放行…权威值**照录**」——
+    #   该行同时含圈码 ③ 与处置词 `照录`，遂**为项③记一个假绿**。审查员实测受污 **12 件**，
+    #   **其分布恰落在 CGM 自陈判得最弱的 36–45 段**。补散文形否定闸。
+    STEP=re.compile(r'步\s*[①-⑳]|七步|收件七步|['+CIRC+r']\s*(pull|读 ?inbox|四字段|三要素|逐项执行|receipt|git ?mv|push)')
     body=[l for l in t.split('\n')
           if not re.match(r'^\|\s*[①-⑳]?\s*(pull|读 inbox|四字段|三要素|逐项|receipt)', l)
-          and not l.lstrip().startswith('>')]
+          and not l.lstrip().startswith('>')
+          and not STEP.search(l)]
     HDR=re.compile(r'^\s*#{2,6}\s*(['+CIRC+r'])')
     ANY_HDR=re.compile(r'^\s*#{1,6}\s')
-    def marks_of(block_mode):
+    def marks_of(block_mode, vocab=None):
+        v = vocab or DISPOSE
         marks=set(); cur=None
         for l in body:
             h=HDR.match(l)
             if h: cur=h.group(1)
             elif ANY_HDR.match(l): cur=None
-            if DISPOSE.search(l):
+            if v.search(l):
                 for ch in re.findall(r'['+CIRC+r']', l): marks.add(ch)
                 if block_mode and cur: marks.add(cur)
         return marks
@@ -104,13 +130,19 @@ for f in uns:
         if h: cur=h.group(1); blocks.setdefault(cur,[])
         elif ANY_HDR.match(l): cur=None
         if cur: blocks[cur].append(l)
-    if N==0: c1=c1b='n/a'
-    elif N>len(CIRC): c1=c1b='⚠️ N=%d 超圈码域'%N
+    if N==0: c1=c1b=c1w='n/a'
+    elif _multi:
+        # 🔴 合并件：圈码在各份 ADJ 内各自从①起编，拼接后命名空间重叠 → **本锚结构上测不了**。
+        #   原码对此读 ✅✅（因 N 被截成第一份之项数）。**假绿比无读数坏，故改报「测不了」。**
+        c1=c1b=c1w='⛔ 合并件·真N=%d(%d份)·**本锚测不了**'%(N,len(_ns))
+    elif N>len(CIRC): c1=c1b=c1w='⚠️ N=%d 超圈码域·本锚测不了'%N
     else:
         need=set(CIRC[:N])
         miss_s=need-marks_of(False); miss_b=need-marks_of(True)
+        miss_w=need-marks_of(False, DISPOSE_W)
         oov={ch for ch in miss_b if ch in blocks and DISPOSE2.search('\n'.join(blocks[ch]))}
         c1='✅' if not miss_s else '🔴 缺'+''.join(sorted(miss_s,key=CIRC.index))
+        c1w='✅' if not miss_w else '🔴 缺'+''.join(sorted(miss_w,key=CIRC.index))
         if not miss_b: c1b='✅'
         else:
             c1b='🔴 缺'+''.join(sorted(miss_b,key=CIRC.index))
@@ -141,15 +173,17 @@ for f in uns:
     #   **方向错者不可调参，只可整条换掉** → 移至 commit 层：`tools/routines-authority-scan.sh`。
     #   本栏遂退回三种自陈形态，**并显书其覆盖面近于零**，不得再被读作「已核过越权」。
     c3 = '🔴 '+'／'.join(bad) if bad else '〰 仅自陈三式无命中'
-    rows.append((base,N,c1,c1b,c2,c3))
+    rows.append((base,N,c1,c1w,c1b,c2,c3))
 
 bad1s=sum(1 for r in rows if r[2].startswith('🔴'))
-bad1=sum(1 for r in rows if r[3].startswith('🔴'))
-bad2=sum(1 for r in rows if r[4].startswith('🔴'))
-bad3=sum(1 for r in rows if r[5].startswith('🔴'))
-anybad=sum(1 for r in rows if any(str(x).startswith('🔴') for x in r[3:]))
+bad1w=sum(1 for r in rows if r[3].startswith('🔴'))
+bad1=sum(1 for r in rows if r[4].startswith('🔴'))
+bad2=sum(1 for r in rows if r[5].startswith('🔴'))
+bad3=sum(1 for r in rows if r[6].startswith('🔴'))
+unmeas=sum(1 for r in rows if str(r[2]).startswith('⛔') or '测不了' in str(r[2]))
+anybad=sum(1 for r in rows if any(str(x).startswith('🔴') for x in r[4:]))
 anybad_s=sum(1 for r in rows if any(str(x).startswith('🔴') for x in r[2:]))
-band=sum(1 for r in rows if r[2].startswith('🔴') and not r[3].startswith('🔴'))
+band=sum(1 for r in rows if r[2].startswith('🔴') and not r[4].startswith('🔴'))
 
 tip=subprocess.run(['git','log','-1','--format=%H'],capture_output=True,text=True).stdout.strip()
 
@@ -212,10 +246,10 @@ A('**本表 ③ 栏遂退回三种自陈形态，其覆盖面近于零，标 〰
 A('')
 A('## 二 · 逐件机械锚')
 A('')
-A('| # | 件 | 件载项数 | ①a 同行锚（严） | ①b 块锚（宽） | ②令与办对齐 | ③自陈越权(近零覆盖) |')
-A('|---:|---|---:|---|---|---|---|')
-for i,(b,N,c1,c1b,c2,c3) in enumerate(rows,1):
-    A(f'| {i} | `{b}` | {N or "—"} | {c1} | {c1b} | {c2} | {c3} |')
+A('| # | 件 | 真项数 | ①a 同行·原词表 | ①a′ 同行·宽词表 | ①b 块锚 | ②令与办对齐 | ③自陈越权(近零覆盖) |')
+A('|---:|---|---:|---|---|---|---|---|')
+for i,(b,N,c1,c1w,c1b,c2,c3) in enumerate(rows,1):
+    A(f'| {i} | `{b}` | {N or "—"} | {c1} | {c1w} | {c1b} | {c2} | {c3} |')
 A('')
 A('**🔴 本表之限度**：①之两读只数圈码之在否，**不核那一项是否真被处置**——')
 A('**块锚尤宽：块内任一处置词即可为该号记绿，纵其所处置者系别事**；')
