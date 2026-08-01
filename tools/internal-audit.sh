@@ -305,6 +305,42 @@ say "| 补3 · 备案册待复核存量 | ${UNREV:-0} 行 | **只出数不催**�
 say "| 补4 · **⚠️ 本器不核「备案得对不对」** | — | **依据论点是否成立、反证条件是否真可证伪 —— 属判断质量，归每周二次批量复核**（委托人令：**内审官每日复核重点是机械核**） |"
 say ""
 
+# ── §三-补三 · 🔴 收件七步之逐份留痕（内审官 R7 强制回应·v1.6 §十-A 立）────────
+# 🔴 立此之由（内审官逐字）：「该规则立于「第⑦步曾漏一次」，其立规之全部意义就是让漏步可被看见；
+#   而现在它自己漏了 89%，且没有任何检查在量它。」——**本源即那个「没有任何检查」之出口。**
+# 🔴 何以只判 ⚠️ 不判 🔴（写死·免被读作放水）：
+#   本器无权把一条现役规则（〔M〕286）之违反自行降格为「无事」；
+#   但亦不得在未经裁决之前，用红旗压着全库 89% 之历史件。
+#   **故：出数、逐份点名、不判红，并把「该规则是否应改形态」呈 GM（G4·方法论层）。**
+# 🔴 它不核什么：只核**字样在否**，不核**那一步是否真做了** —— 一份写了「①git pull --rebase」而没跑的回执，本源判它有留痕。
+say "## §三-补三 · **收件七步之逐份留痕**（内审官 R7·**只核字样在否，不核真做没做**）"
+say ""
+say "| 回执 | ①pull | ②读inbox | ③四字段 | ④三要素 | ⑤逐项 | ⑥〔M〕+版本行 | ⑦git mv | N/7 |"
+say "|---|---|---|---|---|---|---|---|---|"
+STEP_TOT=0; STEP_N=0
+for f in $(git log --since="${D} 00:00" --until="${D} 23:59" --name-only --pretty=format: -- 'adj-archive/*receipt*.md' 2>/dev/null | sort -u | grep -v '^$'); do
+  [ -f "$f" ] || continue
+  s1=$(grep -qE 'pull --rebase' "$f" && echo "✅" || echo "—")
+  s2=$(grep -qE 'adj-inbox' "$f" && echo "✅" || echo "—")
+  s3=$(grep -qE '四字段|GM_EPOCH' "$f" && echo "✅" || echo "—")
+  s4=$(grep -qE '三要素|三要件' "$f" && echo "✅" || echo "—")
+  s5=$(grep -qE '逐项执行|逐条执行|逐项办' "$f" && echo "✅" || echo "—")
+  s6=$(grep -qE '〔M〕' "$f" && grep -qE '版本 ?v16\.|版本行' "$f" && echo "✅" || echo "—")
+  s7=$(grep -qE 'git mv' "$f" && echo "✅" || echo "—")
+  n=0; for v in "$s1" "$s2" "$s3" "$s4" "$s5" "$s6" "$s7"; do [ "$v" = "✅" ] && n=$((n+1)); done
+  STEP_TOT=$((STEP_TOT+n)); STEP_N=$((STEP_N+1))
+  say "| \`$(basename "$f")\` | ${s1} | ${s2} | ${s3} | ${s4} | ${s5} | ${s6} | ${s7} | **${n}/7** |"
+done
+if [ "$STEP_N" -eq 0 ]; then
+  say "| **当日无新增回执** | — | — | — | — | — | — | — | **不适用** |"
+fi
+ALL_R=$(git ls-files 'adj-archive/*receipt*.md' 2>/dev/null | wc -l | tr -d ' ')
+ALL_7=$(grep -l '七步' $(git ls-files 'adj-archive/*receipt*.md' 2>/dev/null) 2>/dev/null | wc -l | tr -d ' ')
+say ""
+say "**当日**：${STEP_N} 份·合计 ${STEP_TOT} / $((STEP_N*7)) 步有留痕 ｜ **全库**：${ALL_R} 份回执，含「七步」字样者 **${ALL_7}** 份（**$( [ "${ALL_R:-0}" -gt 0 ] && echo "scale=1; ${ALL_7}*100/${ALL_R}" | bc || echo '—' )%**）"
+say "**⚠️ 只报不判** —— 正本 \`portfolio-state.md\`·\`〔M〕286\`·**现役**；**该规则是否应改形态，已呈 GM（G4）**，在其被裁前本器不判红。"
+say ""
+
 # ── §三-补二 · 🔴 本器之自检（内审官 R3／R4／R6 强制回应·2026-08-01）────────
 # 🔴 立此之由（内审官逐字）：「**这是一个把自己报告内容删掉却不报错的失效**」——
 #   本器 line 80／216 之未转义反引号被 bash 当命令替换执行，**把「谁来核裁决侧」与丙2 所依之规则号删空**，
@@ -325,6 +361,29 @@ say "| 自检2 · **全库 UTF-8 合法性**（R6·**本日事故所属缺陷族
 # 自检3：cut -c 之同族写法（内审官指出仍在库 3 处）
 CUTC=$(grep -nE 'cut -c[0-9]' tools/*.sh 2>/dev/null | wc -l | tr -d ' ')
 say "| 自检3 · \`tools/*.sh\` 内 \`cut -c\` 同族写法（**按字节切·多字节文本上会产出非法 UTF-8**） | ${CUTC:-0} | ⚠️ **只报不判**——截 hash／英文 subject 者无害，截中文者有害；**本器分不出，须人核** |"
+# 自检4：第四验之「手敲式 vs 正本式」读数比对（`tools/_text-integrity.sh` 之外挂检出法）
+# 🔴 立此之由：2026-08-01 CGM-G5 手敲 `grep -cP '[À-ÿ]{2,}'` 得 57，正本 python 路得 0。
+#   成因＝会话 locale 空 → grep 按字节解释模式串 → 每段中文皆命中。**方向是假红，不是假绿。**
+#   假红之害在于**把人训练成「那个数一向不准」**，从而让一次真命中被当噪声。
+if [ -f tools/_text-integrity.sh ]; then
+  # shellcheck disable=SC1091
+  . tools/_text-integrity.sh
+  TI_PROBE="docs/state-core.md"
+  if [ -f "$TI_PROBE" ]; then
+    TI_CANON="$(ti_scan_file "$TI_PROBE" | awk '{print $2}')"
+    TI_NAIVE="$(ti_naive_shell_count "$TI_PROBE")"
+    if [ "${TI_CANON:-x}" = "${TI_NAIVE:-y}" ]; then
+      R="🟢 两式一致（${TI_CANON}）"
+    else
+      R="⚠️ **两式不一致：正本 ${TI_CANON} ／ 手敲 ${TI_NAIVE}** —— 系已知 locale 缺陷（\`_text-integrity.sh\` 头部载其成因），**本行不判红**；其用在于**凡回执所书之数若等于手敲值，即知其走错了路**"
+    fi
+  else
+    R="⚠️ 探针文件缺失，未能比对"
+  fi
+else
+  RED=$((RED+1)); R="🔴 **\`tools/_text-integrity.sh\` 不在** —— 第四验之单一判据正本缺失，手敲路重新敞开"
+fi
+say "| 自检4 · **第四验判据之单一入口在否 ＋ 手敲式对照**（探针 \`docs/state-core.md\`） | 正本 ${TI_CANON:-—} ／ 手敲 ${TI_NAIVE:-—} | ${R} |"
 say ""
 # ── §四 自指盲区 ─────────────────────────────────────────────────
 say "## §四 · 🔴 本器之**自指盲区**（**写死·不靠人记得**）"
