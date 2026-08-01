@@ -216,6 +216,22 @@ say "| 乙4-b · 当日 \`gm-inbox/AUDIT-${D}-DIGEST.md\` 在否（\`-12⑤\`）
 VER=$([ -f "gm-inbox/VERIFY-${D}.md" ] && echo 1 || echo 0)
 if [ "$VER" = "0" ]; then RED=$((RED+1)); R="🔴 **缺件** —— **GM 无法机械核实之项本日无人代核**；GM 只能回到「采信 CGM 自报」"; else R="🟢"; fi
 say "| 乙4-d · 当日 \`gm-inbox/VERIFY-${D}.md\` 在否（**审查员代核简报**·v2.0） | ${VER} | ${R} |"
+# 乙4-e：结转登记之**混栏机械检出**（`ADJ-0801-15⑥` 硬约束 1）
+# 🔴 判据只扫**数据行**（`| N |` 起首），不扫说明文字 ——
+#   由：登记表之卷首必须引用「批量签一份未读之回执，是把『未核』变成『已核』之留痕」这句判据本身，
+#   **而按全文扫会先命中那句话** —— 「判据档自身不入其所判之扫描面」，本仓本日已犯六次。
+CR=$(ls docs/internal-audit/*-carry-register.md 2>/dev/null | tail -1)
+if [ -n "$CR" ]; then
+  MIX=$(grep -E '^\| *[0-9]+ *\|' "$CR" 2>/dev/null | grep -E '已签|已核|维二通过' | grep -vc '未经维二' || true)
+  NOMARK=$(grep -cE '^\| *[0-9]+ *\|' "$CR" 2>/dev/null || true)
+  HASMARK=$(grep -E '^\| *[0-9]+ *\|' "$CR" 2>/dev/null | grep -c '未经维二' || true)
+  if [ "${MIX:-0}" -gt 0 ] || [ "${NOMARK:-0}" != "${HASMARK:-0}" ]; then
+    RED=$((RED+1)); R="🔴 **混栏 ${MIX} 行／缺「未经维二」$((NOMARK-HASMARK)) 行** —— **把「未核」变成「已核」之留痕，比不签更坏**"
+  else R="🟢 **${HASMARK} 行全带「未经维二」·零混栏**"; fi
+  say "| 乙4-e · **结转登记之混栏核**（\`-15⑥\` 硬约束1·**只扫数据行**） | 数据行 ${NOMARK}／带标记 ${HASMARK}／混栏 ${MIX:-0} | ${R} |"
+else
+  say "| 乙4-e · **结转登记之混栏核** | **无登记表** | ⚪ 不适用 |"
+fi
 GATE=$([ -f "gm-inbox/GATE-${D}.md" ] && echo 1 || echo 0)
 if [ "$GATE" = "0" ]; then RED=$((RED+1)); R="🔴 **缺件** —— GM 须于步0 目录枚举即见〔K-0〕读数，**不必在 281 份回执里找一行**"; else R="🟢"; fi
 say "| 乙4-c · 当日 \`gm-inbox/GATE-${D}.md\` 在否（**闸读数之单行件·CGM 单边办·不问 GM**） | ${GATE} | ${R} |"
