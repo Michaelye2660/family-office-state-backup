@@ -78,7 +78,10 @@ for src in TARGETS:
             vols.append(cur)
             cur = ['# DIGEST · `%s` · 第 %d 卷（承前·🔴 行续）' % (src, len(vols) + 1), '',
                    '> **本卷系分卷，非截断** —— 前卷未尽之 🔴 行全数在此，**一条不丢**。', '']
-        cur.append('- ' + r[:300].replace('|', '｜'))
+        # 🔴 **承重条文不按长度截**（2026-08-02 自核所捕：原作 r[:300]，
+        #   🔴 若在 300 字之后即连标记带内容一起丢——实测 state-core 丢 2 条。
+        #   **对硬约束按长度截断，正系本器立意所禁者。**）
+        cur.append('- ' + r.replace('|', '｜'))
     vols.append(cur)
     n = len(vols)
     for k, v in enumerate(vols, 1):
