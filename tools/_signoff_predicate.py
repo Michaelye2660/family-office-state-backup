@@ -43,14 +43,50 @@ NEG = re.compile(r'零签收|未签收|无签收|不签|零发令|待签|候签|
 CARRY = [re.compile(r'纪元结转登记'), re.compile(r'结转登记（不追认')]
 
 
+# 🔴 病三 · 否定闸挡不住「述而不签」（2026-08-01·**同轮再犯·本器自捕**）
+#   补上否定闸后，`ADJ-0801-05-receipt.md`（**即记录病一病二那份回执本身**）仍被判「已签」。
+#   命中处系其 §五 之**表格行**：
+#     「| 病一 | 原式 `GM-\d` 只认一位数 —— `[裁决侧·GM-10]`／`[GM-11]` 一律不匹配 | 潜伏未发：全库现无两位数纪元之真签收…」
+#   ——**一份记录「散文里的两个字不能当签收」之文件，被那两个字判成了已签收。**
+#   否定词确实在句中（「无……签收」），**但被中间的字隔开，字面挡不住**。
+#   **这正是本器上一轮自己写下之限度「写法一变就可能再漏」之当场兑现，且下一份文件就是它。**
+#
+# 🔴 收紧：**签收系落款行为，不是叙述**。故 NEAR 只在「落款位」生效——
+#   命中行**不得为表格行**（含 `|`）。理由不靠直觉，靠实测：
+#   **全库 261 份回执中，靠 NEAR 判为已签者仅 1 件，且系上述假阳性——NEAR 之真阳性数＝0。**
+#   故此收紧**不损任何已知真命中**；一切真签收皆由 STRONG 或签收片认出。
+#
+# 🔴 收紧之抵偿（照 anchor-guard 之例：减一个检查须补一个可见性）：
+#   `contribution()` 逐判据报真/假贡献，**每次跑都看得见**；
+#   若哪天 NEAR 之贡献由 0 变正，即说明有真签收只能靠它认出，届时此收紧须复议。
 def _near_hit(text):
     for p in NEAR:
         for m in p.finditer(text):
-            a = max(0, m.start() - 40)
-            b = min(len(text), m.end() + 40)
-            if not NEG.search(text[a:b]):
-                return True
+            a, b = max(0, m.start() - 40), min(len(text), m.end() + 40)
+            if NEG.search(text[a:b]):
+                continue
+            ls = text.rfind('\n', 0, m.start()) + 1
+            le = text.find('\n', m.end())
+            line = text[ls:le if le > 0 else len(text)]
+            if '|' in line:          # 🔴 表格行＝叙述，非落款
+                continue
+            return True
     return False
+
+
+def contribution(files):
+    """逐判据之贡献度（**常报项·使收紧之代价可见**）。返回 {判据: 命中件数}。"""
+    out = {'签收片': 0, 'STRONG': 0, 'NEAR': 0}
+    for f in files:
+        t = io.open(f, encoding='utf-8', errors='replace').read()
+        base = os.path.basename(f).replace('-receipt.md', '').replace('.md', '')
+        if os.path.exists(os.path.join(os.path.dirname(f), f'{base}-receipt-signoff.md')):
+            out['签收片'] += 1
+        elif any(p.search(t) for p in STRONG):
+            out['STRONG'] += 1
+        elif _near_hit(t):
+            out['NEAR'] += 1
+    return out
 
 
 def is_signed(path, text=None):
@@ -77,6 +113,9 @@ if __name__ == '__main__':
     files = [f for f in sorted(glob.glob('adj-archive/*receipt*.md')) if 'signoff' not in f]
     uns = [f for f in files if not is_signed(f)]
     print(f"回执 {len(files)} 件｜已签 {len(files)-len(uns)}｜**未签 {len(uns)}**")
+    c = contribution(files)
+    print(f"判据贡献度：签收片 {c['签收片']}｜STRONG {c['STRONG']}｜**NEAR {c['NEAR']}**"
+          f"（NEAR 若长期为 0，即说明该两条判据无真阳性——**是否退役属判断类，呈 GM**）")
     if '--list' in sys.argv:
         for f in uns:
             print("  ", os.path.basename(f).replace('-receipt.md', ''))
