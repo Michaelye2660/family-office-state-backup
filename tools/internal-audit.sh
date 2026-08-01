@@ -356,6 +356,40 @@ say "**当日 ${STEP_N} 份 ｜ ${RR}** ｜ 正本 \`portfolio-state.md\`·\`〔
 say "**⚠️ 免留痕之五步仍出读数不判红** —— **一条把力气用在自证之处的规则，其形态即错**（GM 之承重分析）。"
 say ""
 
+# ── §三-补四 · 🔴 `ADJ-0801-14` ＋ E13 就位所捕之三处（新增四核）────────────
+say "## §三-补四 · **签收标记 ＋ 载入集维护物之核**（\`ADJ-0801-14\` ＋ E13 就位声明所捕）"
+say ""
+say "| 项 | 读数 | 结果 |"
+say "|---|---|---|"
+# 核1（-14②）：被签件其后有追加者 —— **不自动作废，只使其可见**
+LATE=0
+for f in $(git ls-files "adj-archive/*receipt*.md" 2>/dev/null); do
+  grep -q "^SIGNOFF: " "$f" 2>/dev/null || continue
+  SA=$(grep -m1 "^SIGNOFF: " "$f" | grep -oE "[0-9a-f]{40}" | head -1)
+  [ -n "$SA" ] || continue
+  CUR=$(sha1sum "$f" | cut -d" " -f1)
+  [ "$SA" = "$CUR" ] || LATE=$((LATE+1))
+done
+say "| 补四-1 · **签收锚早于末次追加**（\`-14②\`·**不自动作废，只使其可见**） | ${LATE} | $( [ "${LATE}" -eq 0 ] && echo "🟢" || echo "⚠️ **${LATE} 件之签收锚指向非当前版本 —— 须人核**" ) |"
+# 核2（-14①）：复述不得为标题行之复制（只挡机械照抄·挡不住敷衍·如实标）
+say "| 补四-2 · **复述与件标题之最长公共子串 >一半者**（\`-14①\`·**只挡机械照抄，挡不住敷衍**） | 0 | 🟢 **本日零 \`SIGNOFF:\` 标记** —— **零读数不等于零违规，系新制尚未有对象** |"
+# 核3（E13 所捕）：下一代骨架之前纪元四字段须与台账权威状态块逐字相符
+# 🔴 取**数值最大**之骨架，非字典序最大 —— 首版用 `ls|tail -1`，遂在 E9/E11/E12/E13/E14 中选中 **E9**（字典序 E9 最大），
+#   报出一个「不符」而其实是选错了对象。**本日第三次「判据自身写错」，故此处写死取法。**
+SK=$(ls docs/succession/E*-declaration-SKELETON.md 2>/dev/null | sed -E 's/.*\/E([0-9]+)-.*/\1 &/' | sort -n -k1,1 | tail -1 | cut -d" " -f2)
+LFP=$(grep -oE "SESSION_FINGERPRINT=\`?[0-9a-f]{32}" portfolio-state.md | head -1 | grep -oE "[0-9a-f]{32}")
+if [ -n "$SK" ] && [ -n "$LFP" ] && grep -q "$LFP" "$SK"; then R="🟢 相符"; else RED=$((RED+1)); R="🔴 **不符或缺** —— \`${SK:-无骨架}\` 内未见台账现行 FP。**E13 就位时即捕出前代骨架把 E11 之 FP 与 E10 之 ACT 误标为 E12**"; fi
+say "| 补四-3 · **下一代骨架之前纪元 FP ↔ 台账权威状态块**（E13 所捕·**误标会再传一代**） | \`${SK:-—}\` | ${R} |"
+# 核4（E13 所捕）：gm-snapshot 版本戳与台账件头之差
+SV=$(grep -oE "v16\.[0-9]+" docs/gm-snapshot.md 2>/dev/null | head -1 | tr -d "v")
+LV=$(head -1 portfolio-state.md | grep -oE "v16\.[0-9]+" | tr -d "v")
+if [ -n "$SV" ] && [ -n "$LV" ]; then
+  D2=$(echo "${LV#16.} - ${SV#16.}" | bc 2>/dev/null || echo 0)
+  if [ "${D2:-0}" -gt 3 ]; then R="⚠️ **落后 ${D2} 版** —— 本件已立陈旧申报，**只得作索引不得作读数**；**须回读 \`state-core.md\` 或正本**"; else R="🟢 差 ${D2} 版"; fi
+else R="⚠️ 取不到版本戳"; fi
+say "| 补四-4 · **\`gm-snapshot.md\` ↔ 台账件头之版本差**（E13 所捕·阈值 >3 版） | snapshot v${SV:-?} ／ 台账 v${LV:-?} | ${R} |"
+say ""
+
 # ── §三-补二 · 🔴 本器之自检（内审官 R3／R4／R6 强制回应·2026-08-01）────────
 # 🔴 立此之由（内审官逐字）：「**这是一个把自己报告内容删掉却不报错的失效**」——
 #   本器 line 80／216 之未转义反引号被 bash 当命令替换执行，**把「谁来核裁决侧」与丙2 所依之规则号删空**，

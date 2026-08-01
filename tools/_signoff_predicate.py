@@ -98,6 +98,24 @@ def is_signed(path, text=None):
         return True
     if any(p.search(text) for p in STRONG):
         return True
+    # 🔴 `ADJ-0801-14③`(a)（2026-08-01·GM-12 裁·委托人「adj14你现在处理」）：
+    #   **NEAR 两判据自「判为已签」降为「报为疑似·须人核」** —— 故本函数不再据 NEAR 返回 True。
+    #   **GM 之丙路照录**：「NEAR 之真阳性 0%，其样本系全库 261 份历史回执 —— 而这 261 份，
+    #   全部写于『结构化签收标记尚不存在』的时代。在一个没有硬格式的时代，NEAR 本就没有可分辨的对象。
+    #   **0% 不是它失效的证据，是它从未在其设计场景中被测试过的证据。**」
+    #   故不退役、不作废，只改其效力：**捕捉不合规之签收企图**（(b)）。
+    #   **退役端点改为**：结构化标记现役满 60 日（**＝2026-09-30**）后，若 NEAR 在新制下仍真阳性为 0，
+    #   **方得再议退役；旧样本不得再作退役依据**（(c)）。
+    return False
+
+
+def is_near_suspect(path, text=None):
+    """🔴 `-14③`(a)：NEAR 命中＝**疑似签收·须人核**，不判已签。
+    与 `is_signed` 分离，使「已签」与「疑似」在读数上不可混。"""
+    if text is None:
+        text = io.open(path, encoding='utf-8', errors='replace').read()
+    if is_signed(path, text):
+        return False          # 已由 STRONG／签收片认定者，不再计入疑似
     return _near_hit(text)
 
 
@@ -113,6 +131,9 @@ if __name__ == '__main__':
     files = [f for f in sorted(glob.glob('adj-archive/*receipt*.md')) if 'signoff' not in f]
     uns = [f for f in files if not is_signed(f)]
     print(f"回执 {len(files)} 件｜已签 {len(files)-len(uns)}｜**未签 {len(uns)}**")
+    susp = [f for f in files if is_near_suspect(f)]
+    print(f"🔴 **NEAR 疑似（须人核·不判已签·`-14③`(a)）＝{len(susp)} 件**"
+          f"{'：' + ', '.join(os.path.basename(x) for x in susp[:5]) if susp else ''}")
     c = contribution(files)
     print(f"判据贡献度：签收片 {c['签收片']}｜STRONG {c['STRONG']}｜**NEAR {c['NEAR']}**"
           f"（NEAR 若长期为 0，即说明该两条判据无真阳性——**是否退役属判断类，呈 GM**）")
