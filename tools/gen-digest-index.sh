@@ -67,8 +67,21 @@ EPOCH = {
     'cgm-2026-07.md':           '月档·跨纪元',
 }
 
-files = sorted(p for p in glob.glob('docs/memory-digests/*.md')
-               if os.path.basename(p) != 'INDEX.md')
+_all = sorted(p for p in glob.glob('docs/memory-digests/*.md')
+              if os.path.basename(p) not in ('INDEX.md',)
+              and not os.path.basename(p).startswith('INDEX-ARCHIVE-'))
+
+# 🔴 保留窗＝只留当月（委托人直令 2026-08-02「1 只留当月」·CGM-G6 落）
+#   立此之由：`loadset-watch` 实测本索引 3,820 → 11,109 B（**+190.8%·🔴 触发**），
+#   而其真因系逐日件累积（2026-08-01 单日即 21 条），**非索引冗余**。
+#   委托人裁「只留当月」→ 早于当月者迁 INDEX-ARCHIVE-<YYYY-MM>.md，**不删只迁**。
+#   🔴 **归档索引不入载入集**，惟本表末尾**逐月列其路径与件数**，使「去哪儿找」不因瘦身而丢。
+CUR = ts[:7]                      # 当月 YYYY-MM（ts 系本器既有之读取时点）
+def _ym(p):
+    _, d = parse(os.path.basename(p))
+    return d[:7] if d and d[0].isdigit() else '0000-00'
+files   = [p for p in _all if _ym(p) == CUR]
+archived = [p for p in _all if _ym(p) != CUR]
 
 print("# 记忆摘要索引 · INDEX（ADJ-0731-58③ 立·2026-07-31）\n")
 print("> **🔴 本索引系「载入集」之一部；逐日件与月档自 ADJ-0731-58② 起**改按需回读，不再直读载入**。")
@@ -97,8 +110,43 @@ for p in files:
              ('🟡 **代补·非原声·据原件摘写**' if own == 'proxy' else '🔴 **标题行·非亲书主题句**'))
           + " |")
 
-print(f"\n**件数 {len(files)}**｜**主题句缺 {miss} 件** → "
+print(f"\n**当月件数 {len(files)}**｜**主题句缺 {miss} 件** → "
       f"{'🟢 无缺' if miss == 0 else '🔴 **周对账须标红**（-58③④·主题句系强制项）'}\n")
+
+# 🔴 归档索引之指针（保留窗之配套·不删只迁）
+if archived:
+    bym = {}
+    for p in archived:
+        bym.setdefault(_ym(p), []).append(p)
+    print(f"## 🔴 早于当月者 —— **已迁归档索引，不删只迁**（保留窗＝当月·委托人直令 2026-08-02）\n")
+    print("**本表所以留此节**：瘦身之代价是「找不到」，**而找不到不是瘦身之目的**。")
+    print("故逐月列其路径与件数，**使「去哪儿找」不因瘦身而丢**。\n")
+    print("| 月 | 归档索引 | 件数 | 字节合计 |")
+    print("|---|---|---:|---:|")
+    for ym in sorted(bym, reverse=True):
+        tot = sum(os.path.getsize(x) for x in bym[ym])
+        print(f"| {ym} | `docs/memory-digests/INDEX-ARCHIVE-{ym}.md` | {len(bym[ym])} | {tot:,} |")
+    print()
+    # 逐月写归档索引（体例同上表·主题句照旧逐字抽取不概括）
+    for ym, ps in bym.items():
+        ap = f'docs/memory-digests/INDEX-ARCHIVE-{ym}.md'
+        with open(ap, 'w', encoding='utf-8') as fh:
+            fh.write(f"# 记忆摘要归档索引 · {ym}（**不入载入集**·委托人直令 2026-08-02「只留当月」）\n\n")
+            fh.write(f"> **正本索引**：`docs/memory-digests/INDEX.md`（只列当月）｜**生成**：`bash tools/gen-digest-index.sh`\n")
+            fh.write(f"> **本件系迁出件，非删除件** —— 逐日件原档一律在库未动，本表只是其索引。\n")
+            fh.write(f"> **读取 commit**：`{commit}`｜**读取时点**：{ts}\n\n")
+            fh.write("| 日期 | 侧 | 纪元 | 文件名 | 字节 | 一句话主题 | 主题句来源 |\n")
+            fh.write("|---|---|---|---|---:|---|---|\n")
+            for p in sorted(ps):
+                n = os.path.basename(p)
+                side, date = parse(n)
+                topic, own = meta(p)
+                fh.write(f"| {date} | {side} | {EPOCH.get(n,'〔未载〕')} | `{n}` | {os.path.getsize(p):,} | "
+                         f"{topic[:110]} | "
+                         + ('**亲书**' if own is True else
+                            ('🟡 **代补·非原声·据原件摘写**' if own == 'proxy' else '🔴 **标题行·非亲书主题句**'))
+                         + " |\n")
+            fh.write(f"\n**件数 {len(ps)}**\n")
 print("## 🔴 本索引之已知限度（引用本表者须连引本节）\n")
 print("**索引所解决者＝「知道去哪儿找」；所不解决者＝「知道自己需要找」。**")
 print("-58④ 已明写此代价：**一个不知道自己缺什么的人，不会按索引去找。** 三条缓解已立——")
