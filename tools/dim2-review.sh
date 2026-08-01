@@ -114,11 +114,14 @@ for f in uns:
     if re.search(r'本席.{0,8}代 ?GM.{0,4}签收|代其签收', t): bad.append('代签收')
     if re.search(r'本席.{0,6}代.{0,4}原声|代拟其结论', t): bad.append('代写原声(自述)')
     if re.search(r'本席.{0,10}自行解除.{0,6}红|自解其红', t): bad.append('自解红')
-    adjid=base
-    touched=subprocess.run(['git','log','--format=','--name-only','-S',adjid,'--','routines/','.claude/agents/'],
-                           capture_output=True,text=True).stdout.strip()
-    if touched: bad.append('同件触及 routines/agents')
-    c3 = '🔴 '+'／'.join(bad) if bad else '✅'
+    # 改⑧（**CGM 自捕·2026-08-01·CR-20260801-29·撤销改⑥之 git 谓词**）：
+    #   改⑥ 曾以 `git log -S<ADJ编号> -- routines/ .claude/agents/` 判越权，实测 13 件命中。
+    #   **逐一验其引文，13 件全系伪影**——命中之文即
+    #   「ADJ-0726-02⑧立·**GM授权routines变更**」「晚场固定动作（**ADJ-0721-12②**）」等**授权留痕**。
+    #   **该谓词把授权链记得最全的件挑出来当嫌犯，与「擅动」之相关性为负；真越权一件不检。**
+    #   **方向错者不可调参，只可整条换掉** → 移至 commit 层：`tools/routines-authority-scan.sh`。
+    #   本栏遂退回三种自陈形态，**并显书其覆盖面近于零**，不得再被读作「已核过越权」。
+    c3 = '🔴 '+'／'.join(bad) if bad else '〰 仅自陈三式无命中'
     rows.append((base,N,c1,c1b,c2,c3))
 
 bad1s=sum(1 for r in rows if r[2].startswith('🔴'))
@@ -178,9 +181,19 @@ A(f'| **P2** 逐项覆盖不全 | ≥8/91 | **{bad1s}/{len(rows)}** | **{bad1}/{
 A(f'| **P3** 承重两步俱缺 | ≈45/91 | 见 `carry-register` 之 ③④ 栏 | 同左 | ⚠️ 另表 |')
 A(f'| **P4** 改判自己原结论 | ≥2 件 | **候 CGM 亲判后填** | 同左 | ⚠️ **若为 0，即「自审从不推翻自己」之直接证据** |')
 A('')
+A('## 二之前 · 🔴 ③ 栏已作废并整条换掉（**CGM 自捕**）')
+A('')
+A('前一版 ③ 以 `git log -S<ADJ编号> -- routines/ .claude/agents/` 判越权，**读 13 件命中**。')
+A('**逐一验其引文，13 件全系伪影**——命中之文即「ADJ-0726-02⑧立·**GM授权routines变更**」')
+A('「晚场固定动作（**ADJ-0721-12②**）」等**授权留痕**。')
+A('**该谓词把授权链记得最全的件挑出来当嫌犯，与「擅动」之相关性为负；真越权一件不检。**')
+A('**方向错者不可调参，只可整条换掉** —— 越权之真谓词在 **commit 层**：')
+A('**凡改 `routines/`／`.claude/agents/` 而其 commit 无授权引据者**，见 `docs/internal-audit/routines-authority-scan.md`。')
+A('**本表 ③ 栏遂退回三种自陈形态，其覆盖面近于零，标 〰 ——不得再读作「已核过越权」。**')
+A('')
 A('## 二 · 逐件机械锚')
 A('')
-A('| # | 件 | 件载项数 | ①a 同行锚（严） | ①b 块锚（宽） | ②令与办对齐 | ③无越权 |')
+A('| # | 件 | 件载项数 | ①a 同行锚（严） | ①b 块锚（宽） | ②令与办对齐 | ③自陈越权(近零覆盖) |')
 A('|---:|---|---:|---|---|---|---|')
 for i,(b,N,c1,c1b,c2,c3) in enumerate(rows,1):
     A(f'| {i} | `{b}` | {N or "—"} | {c1} | {c1b} | {c2} | {c3} |')
