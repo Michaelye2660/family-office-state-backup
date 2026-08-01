@@ -6,6 +6,14 @@ cd "$(dirname "$0")/.." || exit 1
 EP="${1:?纪元号}"; DECL="${2:?就位声明路径}"; BOOK="${3:?交接书路径}"; ANCHOR="${4:?交接书应有 sha1}"
 PASS=1; bad(){ echo "  🔴 $*"; PASS=0; }; ok(){ echo "  🟢 $*"; }
 
+# ── 🔴 前置核之前置：仓库历史深度（CGM-G5 补·2026-08-01·SGT）───────────────
+#   本器第 ⑤ 节以 `git log --diff-filter=A -1 -- <声明>` 取「单文件单提交」之 commit，
+#   **而该 commit 自身之哈希即写入台账之 ACTIVATION_SHA**。浅克隆下，凡早于浅边界之声明件
+#   一律解析为**边界提交**——即「拟写入之新 ACT」会是一个**错的、且看起来正常的哈希**。
+#   立案实证与波及面见 `tools/_repo-depth-guard.sh` 文件头。**fail-closed：不核不放行。**
+. tools/_repo-depth-guard.sh
+if ! repo_depth_ok; then repo_depth_banner "原子激活钢印对咬"; echo; echo "**判：不放行（历史深度不足，ACT 之取值不可信）**"; exit 3; fi
+
 echo "── ⓪ 锚存续前置核（ADJ-0801-01④ 立·主责 CGM）──"
 # 🔴 何以把它放在**激活之最前**：E11 之覆写事故（`c40c6ecc`）正发生在**轮换权威状态块**这一动作里，
 #    而权威状态块之轮换恰恰只在激活时做。**事故发生在哪一步，检测点就钉在哪一步。**

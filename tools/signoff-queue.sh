@@ -31,6 +31,13 @@ set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
 LIMIT_DAYS="${1:-3}"
 
+# ── 🔴 前置核：仓库历史深度（CGM-G5 补 · 2026-08-01 · SGT）───────────────
+#   本器之「入队时点」取自 `git log --diff-filter=A -- <回执>`；**浅克隆下该读数会静默失真**
+#   （一切早于浅边界之文件皆解析为边界提交 → 龄全部 ≤3 日 → 逾时限 48 变 0）。
+#   立案实证与波及面见 `tools/_repo-depth-guard.sh` 文件头。**fail-closed：不出表，不出假绿。**
+. tools/_repo-depth-guard.sh
+if ! repo_depth_ok; then repo_depth_banner "签收队列与时限核"; exit 3; fi
+
 python3 - "$LIMIT_DAYS" <<'PY'
 import glob, io, os, re, subprocess, sys, datetime, collections
 

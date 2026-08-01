@@ -38,6 +38,19 @@ say ""
 say "| 源 | 项 | 计数 | 结果 | 主责 |"
 say "|---|---|---:|---|---|"
 
+# ── 源⓪ 仓库历史深度前置核（CGM-G5 立·2026-08-01·SGT）─────────────────
+# 🔴 为哪次事故而立：CGM-G5 就位当轮首跑签收队列器得「逾时限 0·🟢」，而前任同日同 HEAD 之
+#   实测为「逾时限 48」——**换代新容器之克隆系浅克隆**，致本表源②b／⑦b 之龄与时点读数
+#   **静默偏向更好看的一侧**。全案与波及四器见 `tools/_repo-depth-guard.sh` 文件头。
+# 🔴 本源之边界：只核「历史是否完整」，**不核历史内容是否正确**，**不自动修复**。
+. tools/_repo-depth-guard.sh
+if repo_depth_ok; then
+  say "| ⓪ | **仓库历史深度前置核**（\`tools/_repo-depth-guard.sh\`·**换代新容器之常态前提**） | 提交 $(git rev-list --count HEAD) | 🟢 历史完整（非浅克隆） | CGM |"
+else
+  RED=$((RED+1))
+  say "| ⓪ | **仓库历史深度前置核** | 提交 $(git rev-list --count HEAD)·**浅克隆** | 🔴 **本表之龄／时点类源（②b・⑦b）读数不可信** —— 须先 \`git fetch --unshallow origin\` 再复跑 | CGM |"
+fi
+
 # ── 源① 两 inbox 在途包裹 ───────────────────────────────────────────
 A=$(ls adj-inbox/*.md 2>/dev/null | grep -v 'README' | wc -l | tr -d ' ')
 G=$(ls gm-inbox/*.md 2>/dev/null | grep -v 'README' | wc -l | tr -d ' ')

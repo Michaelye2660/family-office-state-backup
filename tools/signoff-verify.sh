@@ -15,6 +15,14 @@
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
 R="${1:?用法: bash tools/signoff-verify.sh adj-archive/ADJ-XXXX-receipt.md}"
+
+# ── 🔴 前置核：仓库历史深度（CGM-G5 补·2026-08-01·SGT）───────────────────
+#   本器以 `git log -1 <commit>` 判回执所引 commit「是否在史」。**浅克隆下，真在史之历史
+#   commit 会被报成「不在史」** —— 而「所引 commit 不在史」在本仓之语义近于篡改立案，
+#   **一个环境缺陷会被读成一次事故**。方向虽偏红（不偏绿），仍系假读数，故同样 fail-closed。
+#   立案实证与波及面见 `tools/_repo-depth-guard.sh` 文件头。
+. tools/_repo-depth-guard.sh
+if ! repo_depth_ok; then repo_depth_banner "维一保真核"; exit 3; fi
 [ -f "$R" ] || { echo "🔴 回执不存在：$R"; exit 2; }
 
 echo "# 维一保真核 · 机械表"
