@@ -28,12 +28,33 @@ TARGETS = [
 ]
 
 # 可指定标的（ADJ-0731-46④ 只须重造 TMO 一卡·不重造其余三卡）
-if len(sys.argv) > 1:
-    want = set(sys.argv[1:])
+#
+# 🔴 扩用（ADJ-0801-09② 步2·SWEEP·SPGI）：`--target NAME=PATH --out DIR`
+#   **不另造第二个 runner** —— 本仓已实证「**一条判据被复制第二份，它就开始各自演化**」
+#   （`_latest-handover.py` 三处各坏各的／签收判据两器对不上 80 vs 79）。
+#   模板取用、零工具、每标的一次独立调用、stop_reason 与 usage 之机械凭据，**一律共用本器同一段代码**。
+OUT = pathlib.Path('docs/moat/sweep-01/cards-fable')
+BATCH = 'SWEEP-01'
+argv = sys.argv[1:]
+if '--target' in argv:
+    i = argv.index('--target')
+    spec = argv[i+1]
+    if '=' not in spec: sys.exit('🔴 --target 须作 NAME=PATH')
+    n, pth = spec.split('=', 1)
+    if not pathlib.Path(pth).exists(): sys.exit(f'🔴 证据包不存在：{pth}——不猜，停。')
+    TARGETS = [(n, pth)]
+    argv = argv[:i] + argv[i+2:]
+if '--out' in argv:
+    i = argv.index('--out')
+    OUT = pathlib.Path(argv[i+1]); argv = argv[:i] + argv[i+2:]
+if '--batch' in argv:
+    i = argv.index('--batch')
+    BATCH = argv[i+1]; argv = argv[:i] + argv[i+2:]
+if argv:
+    want = set(argv)
     TARGETS = [t for t in TARGETS if t[0] in want]
     if not TARGETS: sys.exit(f'🔴 未匹配任何标的：{want}')
 
-OUT = pathlib.Path('docs/moat/sweep-01/cards-fable')
 OUT.mkdir(parents=True, exist_ok=True)
 
 total_in = total_out = 0
@@ -57,7 +78,7 @@ for name, path in TARGETS:
     text = ''.join(c.get('text', '') for c in d.get('content', []))
     u = d.get('usage', {})
     total_in += u.get('input_tokens', 0); total_out += u.get('output_tokens', 0)
-    hdr = (f"# SWEEP-01 护城河评级卡 · {name} · **API-Fable 造卡席**\n\n"
+    hdr = (f"# {BATCH} 护城河评级卡 · {name} · **API-Fable 造卡席**\n\n"
            f"> **席位**：API-Fable（`claude-fable-5`·经 `$FABL_API_KEY` 直调 `/v1/messages`）\n"
            f"> **证据包**：`{path}`\n"
            f"> **模板**：`card-builder-prompt-SEALED.md`（模板正文**逐字未改**）\n"
