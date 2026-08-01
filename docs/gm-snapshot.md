@@ -1,7 +1,7 @@
 # GM工作摘录（`ADJ-0721-12` 立制｜**`ADJ-0802-01⑩` 改机械导出**｜`tools/gen-gm-snapshot.sh` 生成）
 
 > # 🔴 **本件系抽取件·非正本。冲突一律以 `portfolio-state.md` 为准。**
-> **源**：`portfolio-state.md` ＝ **v16.454**｜**抽取 tip**：`6935256487ce6c9be92af11cce82a5efaa40f333`｜**生成器**：`tools/gen-gm-snapshot.sh`
+> **源**：`portfolio-state.md` ＝ **v16.454**｜**抽取 tip**：`f56bcc45eae91e7b0bd266a65deb2d6b207d3a23`｜**生成器**：`tools/gen-gm-snapshot.sh`
 > **本件由机械逐字搬运，零改写、零概括、零补写。** 抽哪几节由生成器文件头之**字段清单**写定，**非逐次挑选**。
 >
 > **🔴 本件不含者（显式列·免「未含」被读作「无此事」）**：
