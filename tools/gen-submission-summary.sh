@@ -41,7 +41,16 @@ for f in "$@"; do
   echo
   echo "### 含 🔴 之行（逐字·截前 200 字）"; echo
   echo '```'
-  grep -n '🔴' "$f" | cut -c1-200 | head -60 || echo "（无）"
+  # 🔴 按字符截，非按字节（CGM-G5 修·2026-08-01）：初版用 `cut -c1-200`，
+  #   在多字节中文上**从半个字符中间切开，产出非法 UTF-8** —— G4 已记之同族坑
+  #   （`cut -c` 按字节切／`grep -oE {0,40}` 同病），**而本器首跑即复犯，且已随 commit 2443573 入 master**。
+  #   **共性一句：坏掉的是载体不是内容——内容本身正确，毁于传输层。**
+  grep -n '🔴' "$f" | head -60 | python3 -c "
+import sys
+for l in sys.stdin:
+    l=l.rstrip('\n')
+    print(l if len(l)<=200 else l[:200]+'…')
+" || echo "（无）"
   echo '```'
   N=$(grep -c '🔴' "$f" || true); M=$(grep -c '🔴' "$f" || true)
   if [ "${N:-0}" -gt 60 ]; then echo; echo "**⚠️ 本源含 🔴 之行共 ${N} 条，上表只列前 60 条 —— 余 $((N-60)) 条未列，须读正本。**"; fi
