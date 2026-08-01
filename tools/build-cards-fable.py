@@ -5,7 +5,7 @@
 纪律：模板正文逐字不改；每标的一次独立调用（互不见）；产出落 cards-fable/ 并**扣住不呈**，
       候 GPT 席两卡齐备后同一 commit 呈 GM（-39③④）。
 """
-import os, sys, json, urllib.request, re, pathlib
+import os, sys, json, urllib.request, re, pathlib, hashlib
 
 K = os.environ.get('FABL_API_KEY', '')
 if not K:
@@ -57,10 +57,44 @@ if argv:
 
 OUT.mkdir(parents=True, exist_ok=True)
 
+# ── 🔴 外发剔除（ADJ-0801-03① · CGM-G5 补 · 2026-08-01 · SGT）─────────────
+#   **为哪次事故而立**：CGM-G5 于起跑前机械比对「Fable 席实收 prompt」vs「GPT 席实收 relay brief」，
+#   得两席**不逐字恒等**；其中一处系实质——**证据包原文末行之我方席位署名兼模型标识行**
+#   （`——证据包构建：[执行侧·CGM]（claude-opus-5…）`）**在外发正本内已依 -03① 剔除，
+#   而本 runner 读的是证据包原文，故该行会随 payload 送进 Fable 席**。
+#   -03① 之理由逐字：「把**我方用什么模型**外发给持权外部席，本身即是喂给对方一条破盲线索」——
+#   **本路径与外发路径同类，只是入口不同**；且它造成**两席输入不对称**，
+#   而外发正本包头正自陈「两席收到同一份内容」。**一个只在一条路上执行的剔除规则，等于没有规则。**
+#
+#   **可剔判据预先写死（-03①：仅此二类·证据实体内容一字不得剔）**：
+#     ① 我方席位署名行：含 `[执行侧·CGM]` 或 `[裁决侧·GM`
+#     ② 模型标识行：含 `claude-opus` / `claude-fable` / `claude-sonnet` / `claude-haiku` / `gpt-`
+#   **剔除之申报落回执与封存清单，不落 payload**（设盲通则 ADJ-0731-46②：
+#   **验证语句必然指涉被验证之物；在盲性场景下，指涉即泄漏**）——故本器把被剔行印到 stdout，
+#   **不在 payload 内留任何「已剔除」字样**。
+#
+#   **它不核什么**：只按行匹配二类标记；**分不出「署名行」与「正文里恰好提到某模型名」**
+#   ——故每一行被剔者一律逐字印出，由人在回执内逐行判，**不以计数充审计**。
+STRIP_PAT = re.compile(r'\[执行侧·CGM\]|\[裁决侧·GM|claude-opus|claude-fable|claude-sonnet|claude-haiku|gpt-')
+
+def strip_outbound(text):
+    keep, cut = [], []
+    for ln in text.split('\n'):
+        (cut if STRIP_PAT.search(ln) else keep).append(ln)
+    return '\n'.join(keep).rstrip() + '\n', cut
+
 total_in = total_out = 0
 for name, path in TARGETS:
-    pkg = pathlib.Path(path).read_text(encoding='utf-8')
+    raw = pathlib.Path(path).read_text(encoding='utf-8')
+    pkg, cut = strip_outbound(raw)
+    print(f'── {name} · 外发剔除申报（ADJ-0801-03①·可剔二类·逐行·证据实体剔除须为 0）')
+    if cut:
+        for c in cut:
+            print(f'   剔｜{c}')
+    else:
+        print('   （无命中）')
     prompt = f"{BODY}\n\n---\n\n## 证据包 · {name}\n\n{pkg}"
+    print(f'   payload sha1 = {hashlib.sha1(prompt.encode()).hexdigest()}｜{len(prompt.encode())} B')
     req = urllib.request.Request(
         f'{BASE}/v1/messages',
         data=json.dumps({
@@ -80,7 +114,8 @@ for name, path in TARGETS:
     total_in += u.get('input_tokens', 0); total_out += u.get('output_tokens', 0)
     hdr = (f"# {BATCH} 护城河评级卡 · {name} · **API-Fable 造卡席**\n\n"
            f"> **席位**：API-Fable（`claude-fable-5`·经 `$FABL_API_KEY` 直调 `/v1/messages`）\n"
-           f"> **证据包**：`{path}`\n"
+           f"> **证据包**：`{path}`（**外发剔除后**·`ADJ-0801-03①` 可剔二类·剔除申报见回执）\n"
+           f"> **payload sha1**：`{hashlib.sha1(prompt.encode()).hexdigest()}`（**席位实收之逐字凭据**）\n"
            f"> **模板**：`card-builder-prompt-SEALED.md`（模板正文**逐字未改**）\n"
            f"> **零工具**：本次调用无任何工具、无检索、无文件访问——席位只见模板正文与本证据包\n"
            f"> **互不见**：本席未见 GPT 席之任何产出；本卡**扣住不呈**，候两卡齐备后同一 commit 呈 GM（ADJ-0731-39③④）\n"
